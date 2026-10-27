@@ -80,6 +80,10 @@ section{padding-block:56px 12px}
 .card:hover{transform:translateY(-4px);box-shadow:0 14px 28px var(--shadow)}
 .art{aspect-ratio:1/.92;display:grid;place-items:center;position:relative;border-bottom:1px solid var(--line)}
 .art svg{width:74%;height:auto}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.add:disabled{opacity:.5;cursor:not-allowed}
+.add:disabled:hover{background:transparent;color:var(--ink);border-color:var(--rose-deep)}
 .tag{position:absolute;top:12px;left:12px;background:var(--rose-deep);color:var(--btn-ink);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:3px}
 .info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
 .info h3{font-size:1.5rem}
@@ -221,14 +225,14 @@ aside.on{transform:none}
 
 <script>
 /* ---- Shop settings: edit these ---- */
-const CONFIG = {
+let CONFIG = {
   instagram: "anneshop.bh",
   whatsapp: "",            // e.g. "97333123456" (country code, no + or spaces). Leave empty to hide the WhatsApp button.
   currency: "BD"
 };
 
 /* ---- Products: sample items, replace with your real candles ---- */
-const PRODUCTS = [
+let PRODUCTS = [
   {id:"rose-tea",  name:"Rose Tea Cup",       cat:"Teacups", type:"cup",  size:"Vintage teacup, 180 g", price:5.5, notes:"Pressed rose, black tea and a little honey.", tag:"New",  c1:"#f3e3df", c2:"#e7b9bb", c3:"#c98f91"},
   {id:"sage-linen",name:"Sage & Linen",       cat:"Jars",    type:"jar",  size:"Amber-lidded jar, 220 g", price:6,   notes:"Fresh sage, sun-dried linen, a hint of cedar.", c1:"#cdd8c4", c2:"#e9eddc", c3:"#7d9174"},
   {id:"biscuit",   name:"Vanilla Biscuit",    cat:"Tins",    type:"tin",  size:"Travel tin, 100 g", price:3.5, notes:"Warm vanilla, butter biscuit and toasted sugar.", c1:"#e8cfa6", c2:"#f6e6c6", c3:"#b98a54"},
@@ -244,7 +248,9 @@ function flame(x,y,s){s=s||1;
   return `<g class="flame"><path d="M${x} ${y-30*s} C${x+10*s} ${y-16*s} ${x+10*s} ${y-4*s} ${x} ${y} C${x-10*s} ${y-4*s} ${x-10*s} ${y-16*s} ${x} ${y-30*s}Z" fill="#f2b765"/><path d="M${x} ${y-17*s} C${x+5*s} ${y-9*s} ${x+5*s} ${y-3*s} ${x} ${y} C${x-5*s} ${y-3*s} ${x-5*s} ${y-9*s} ${x} ${y-17*s}Z" fill="#fff0c7"/></g>`}
 function wick(x,y1,y2){return `<path d="M${x} ${y1} L${x} ${y2}" stroke="#4a3a35" stroke-width="2.4" stroke-linecap="round"/>`}
 function label(x,y,w,h,c){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#f9efe3" stroke="${c}" stroke-width="1.4"/><path d="M${x+8} ${y+h/2-3} H${x+w-8} M${x+14} ${y+h/2+5} H${x+w-14}" stroke="${c}" stroke-width="1.6" stroke-linecap="round"/><circle cx="${x+w/2}" cy="${y+8}" r="2.4" fill="${c}"/>`}
-function art(p){
+const HERO = PRODUCTS[0];
+function art(p){ return p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : artSvg(p); }
+function artSvg(p){
   let s="";
   if(p.type==="jar"){
     s=`<ellipse cx="100" cy="182" rx="64" ry="8" fill="#000" opacity=".12"/>
@@ -292,7 +298,6 @@ const fmt = n => CONFIG.currency + " " + n.toFixed(3);
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem("anneshop-cart") || "{}") || {}; } catch(e) { cart = {}; }
 const byId = id => PRODUCTS.find(p => p.id === id);
-cart = Object.fromEntries(Object.entries(cart).filter(([id,q]) => byId(id) && q > 0));
 let filter = "All", step = "cart", form = {name:"", phone:"", area:"", notes:""};
 const $ = id => document.getElementById(id);
 const save = () => { try { localStorage.setItem("anneshop-cart", JSON.stringify(cart)); } catch(e) {} };
@@ -302,22 +307,21 @@ const count = () => Object.values(cart).reduce((a,b) => a+b, 0);
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),1800)}
 
 /* ---- Render shop ---- */
-$("heroArt").insertAdjacentHTML("afterbegin", art(PRODUCTS[0]));
-const cats = ["All", ...new Set(PRODUCTS.map(p => p.cat))];
+let cats = ["All"];
 function renderChips(){
   $("chips").innerHTML = cats.map(c => `<button class="chip" aria-pressed="${c===filter}" data-c="${c}">${c}</button>`).join("");
 }
 function renderGrid(){
   $("grid").innerHTML = PRODUCTS.filter(p => filter==="All" || p.cat===filter).map(p => `
     <article class="card">
-      <div class="art" style="background:color-mix(in srgb, ${p.c1} 22%, var(--paper))">${p.tag?`<span class="tag">${p.tag}</span>`:""}${art(p)}</div>
+      <div class="art" style="background:color-mix(in srgb, ${p.c1} 22%, var(--paper))">${p.soldOut?`<span class="tag">Sold out</span>`:p.tag?`<span class="tag">${p.tag}</span>`:""}${art(p)}</div>
       <div class="info">
         <span class="size">${p.size}</span>
         <h3>${p.name}</h3>
         <p class="notes">${p.notes}</p>
-        <div class="buy"><span class="price">${fmt(p.price)}</span><button class="add" data-add="${p.id}">Add to cart</button></div>
+        <div class="buy"><span class="price">${fmt(p.price)}</span><button class="add" data-add="${p.id}" ${p.soldOut?"disabled":""}>${p.soldOut?"Sold out":"Add to cart"}</button></div>
       </div>
-    </article>`).join("");
+    </article>`).join("") || `<p class="notes">New candles are on the way. Follow along on Instagram.</p>`;
 }
 $("chips").addEventListener("click", e => { const b=e.target.closest("[data-c]"); if(!b) return; filter=b.dataset.c; renderChips(); renderGrid(); });
 $("grid").addEventListener("click", e => { const b=e.target.closest("[data-add]"); if(!b) return; add(b.dataset.add, 1); toast(byId(b.dataset.add).name + " added to your cart"); });
@@ -389,5 +393,23 @@ function closeCart(){ $("drawer").classList.remove("on"); $("scrim").classList.r
 $("openCart").addEventListener("click", openCart); $("closeCart").addEventListener("click", closeCart); $("scrim").addEventListener("click", closeCart);
 document.addEventListener("keydown", e => { if(e.key==="Escape") closeCart(); });
 
-renderChips(); renderGrid(); renderCart();
+/* ---- Load products.json (edited from admin.html); falls back to the built-in list ---- */
+async function loadData(){
+  try{
+    const r = await fetch("products.json?v=" + Date.now(), {cache:"no-store"});
+    if(!r.ok) return;
+    const d = await r.json();
+    if(Array.isArray(d.products)) PRODUCTS = d.products;
+    if(d.settings) CONFIG = Object.assign({}, CONFIG, d.settings);
+  }catch(e){}
+}
+function init(){
+  cart = Object.fromEntries(Object.entries(cart).filter(([id,q]) => byId(id) && q > 0));
+  cats = ["All", ...new Set(PRODUCTS.map(p => p.cat).filter(Boolean))];
+  $("heroArt").insertAdjacentHTML("afterbegin", artSvg(PRODUCTS[0] || HERO));
+  const ig = document.querySelectorAll('a[href*="instagram.com/anneshop.bh"]');
+  ig.forEach(a => { a.href = "https://www.instagram.com/" + CONFIG.instagram + "/"; });
+  renderChips(); renderGrid(); renderCart();
+}
+loadData().then(init);
 </script>

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Anne Shop Manager</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Karla:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#f5e8e2;--paper:#fbf3ee;--ink:#47302f;--muted:#85676a;--rose:#c98f91;--deep:#8f525a;--sage:#5f7259;--line:#e2cbc4;--chip:#efdcd5;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Karla,system-ui,sans-serif;padding:0 max(16px,env(safe-area-inset-left)) 110px}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;margin:0;line-height:1.1}
+.wrap{max-width:760px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 0 14px;flex-wrap:wrap}
+header h1{font-size:2.1rem}
+header small{color:var(--muted)}
+button,.btn{font:inherit;cursor:pointer}
+.btn{background:var(--deep);color:#fff8f4;border:0;border-radius:999px;padding:10px 22px;font-weight:700}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--rose)}
+.btn.sm{padding:6px 14px;font-size:.85rem}
+.btn.danger{background:transparent;color:#a23b3b;border:1.5px solid #a23b3b}
+:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:18px}
+.card h2{font-size:1.6rem;margin-bottom:10px}
+label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;font-weight:700;color:var(--muted)}
+input,select,textarea{font:400 1rem Karla,sans-serif;color:var(--ink);background:#fffaf7;border:1.5px solid var(--line);border-radius:8px;padding:9px 11px;width:100%}
+textarea{min-height:64px;resize:vertical}
+input[type=color]{padding:2px;height:40px;width:64px}
+input[type=checkbox]{width:auto}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:14px}
+.row>*{min-width:0}
+.fine{font-size:.86rem;color:var(--muted);margin:6px 0 0}
+.err{color:#a23b3b;font-weight:700;margin:10px 0 0}
+details.prod{border:1px solid var(--line);border-radius:10px;background:var(--paper);margin-bottom:10px}
+details.prod summary{list-style:none;display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer}
+details.prod summary::-webkit-details-marker{display:none}
+.th{width:46px;height:46px;border-radius:8px;background:var(--chip);flex:none;overflow:hidden;display:grid;place-items:center;font-size:1.3rem}
+.th img{width:100%;height:100%;object-fit:cover}
+.sm-name{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sm-price{color:var(--muted);font-variant-numeric:tabular-nums}
+.pill{background:var(--rose);color:#fff;border-radius:999px;font-size:.72rem;padding:2px 9px;font-weight:700}
+.form{padding:6px 16px 16px;border-top:1px dashed var(--line)}
+.form .row:first-child{margin-top:14px}
+.photo{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.photo .th{width:84px;height:84px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;margin-top:6px}
+.chk{flex-direction:row;align-items:center;gap:8px;color:var(--ink)}
+.colors{display:flex;gap:10px;align-items:end}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom))}
+.bar .wrap{display:flex;gap:14px;align-items:center;justify-content:space-between}
+#status{font-size:.92rem;color:var(--muted)}
+#status.ok{color:var(--sage);font-weight:700}
+#status.bad{color:#a23b3b;font-weight:700}
+ol{padding-left:20px;margin:8px 0}
+code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:.88em}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div><h1>Anne Shop Manager</h1><small id="repoLabel">Private page for editing your shop</small></div><button class="btn ghost sm" id="signOut" hidden>Sign out</button></header>
+
+<section id="login" class="card">
+  <h2>Sign in</h2>
+  <p class="fine" style="margin-top:0">This page saves your changes straight to your GitHub repository, so it needs a GitHub access token. Only you can use it, and it stays in this browser.</p>
+  <div class="row">
+    <label for="repo">Repository<input id="repo" value="sayedalnaser2/CANDLES" autocomplete="off" spellcheck="false"></label>
+    <label for="token">GitHub access token<input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..."></label>
+  </div>
+  <label class="chk" for="remember"><input id="remember" type="checkbox" checked> Remember me on this device</label>
+  <p style="margin:14px 0 0"><button class="btn" id="go">Sign in</button></p>
+  <p class="err" id="loginErr" hidden></p>
+  <details style="margin-top:16px"><summary style="cursor:pointer;font-weight:700">How do I get a token?</summary>
+    <ol>
+      <li>On GitHub, open <b>Settings, Developer settings, Personal access tokens, Fine-grained tokens</b>, then <b>Generate new token</b>.</li>
+      <li>Name it <code>shop manager</code> and pick an expiry date.</li>
+      <li>Under <b>Repository access</b>, choose <b>Only select repositories</b> and pick <b>CANDLES</b>.</li>
+      <li>Under <b>Permissions, Repository permissions</b>, set <b>Contents</b> to <b>Read and write</b>.</li>
+      <li>Generate the token, copy it, and paste it above.</li>
+    </ol>
+    <p class="fine">Never share this token with anyone. If it leaks, delete it on GitHub and make a new one.</p>
+  </details>
+</section>
+
+<div id="app" hidden>
+  <section class="card">
+    <h2>Shop settings</h2>
+    <div class="row">
+      <label for="setIg">Instagram username<input id="setIg" data-s="instagram" placeholder="anneshop.bh"></label>
+      <label for="setWa">WhatsApp number<input id="setWa" data-s="whatsapp" inputmode="tel" placeholder="97333123456"></label>
+    </div>
+    <p class="fine">WhatsApp: country code first, no + or spaces. Leave empty to hide the WhatsApp order button.</p>
+  </section>
+
+  <section>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 12px;gap:10px;flex-wrap:wrap">
+      <h2 style="font-size:1.8rem">Your candles</h2>
+      <button class="btn sm" id="add">+ Add a candle</button>
+    </div>
+    <div id="list"></div>
+  </section>
+</div>
+</div>
+
+<div class="bar" id="saveBar" hidden><div class="wrap"><span id="status">No changes yet</span><button class="btn" id="save" disabled>Save changes</button></div></div>
+<datalist id="cats"></datalist>
+<input type="file" id="file" accept="image/*" hidden>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const TYPES = {jar:"Jar", tin:"Tin", cup:"Teacup", pillar:"Pillar", trio:"Gift set"};
+const S = {repo:"", token:"", sha:null, data:{settings:{instagram:"anneshop.bh", whatsapp:"", currency:"BD"}, products:[]}, dirty:false, open:new Set(), pendingDelete:null, imgTarget:null};
+
+function utf8ToB64(str){ const b = new TextEncoder().encode(str); let s=""; b.forEach(x => s += String.fromCharCode(x)); return btoa(s); }
+function b64ToUtf8(b64){ const s = atob(b64); const a = new Uint8Array(s.length); for(let i=0;i<s.length;i++) a[i]=s.charCodeAt(i); return new TextDecoder().decode(a); }
+function api(path, opt){
+  opt = opt || {};
+  return fetch("https://api.github.com/repos/" + S.repo + path, Object.assign({}, opt, {headers:{Authorization:"Bearer " + S.token, Accept:"application/vnd.github+json"}}));
+}
+function status(msg, cls){ const s=$("status"); s.textContent=msg; s.className=cls||""; }
+function setDirty(v){ S.dirty=v; $("save").disabled=!v; if(v) status("You have unsaved changes"); }
+window.addEventListener("beforeunload", e => { if(S.dirty){ e.preventDefault(); e.returnValue=""; } });
+
+/* ---- Sign in ---- */
+async function signIn(){
+  const err=$("loginErr"); err.hidden=true;
+  S.repo=$("repo").value.trim(); S.token=$("token").value.trim();
+  if(!S.repo || !S.token){ err.textContent="Enter the repository and your access token."; err.hidden=false; return; }
+  $("go").disabled=true; $("go").textContent="Signing in...";
+  try{
+    const r = await api("/contents/products.json");
+    if(!r.ok){
+      err.textContent = r.status===401 ? "GitHub did not accept that token. Check that you copied all of it and that it has not expired."
+        : "Could not open products.json in " + S.repo + ". Check the repository name, and that the token has Contents read and write access to it.";
+      err.hidden=false; return;
+    }
+    const j = await r.json();
+    S.sha = j.sha;
+    S.data = JSON.parse(b64ToUtf8(j.content.replace(/\n/g,"")));
+    S.data.settings = Object.assign({instagram:"anneshop.bh", whatsapp:"", currency:"BD"}, S.data.settings);
+    S.data.products = S.data.products || [];
+    try{ if($("remember").checked) localStorage.setItem("anneshop-admin", JSON.stringify({repo:S.repo, token:S.token})); }catch(e){}
+    $("login").hidden=true; $("app").hidden=false; $("saveBar").hidden=false; $("signOut").hidden=false;
+    $("repoLabel").textContent = S.repo;
+    render(); status("Loaded " + S.data.products.length + " candles");
+  }catch(e){
+    err.textContent="Something went wrong while connecting: " + e.message; err.hidden=false;
+  }finally{ $("go").disabled=false; $("go").textContent="Sign in"; }
+}
+$("go").addEventListener("click", signIn);
+$("token").addEventListener("keydown", e => { if(e.key==="Enter") signIn(); });
+$("signOut").addEventListener("click", () => {
+  if(S.dirty && !confirmedLeave){ status("Save or discard your changes first. Press Sign out again to leave without saving.", "bad"); confirmedLeave=true; return; }
+  try{ localStorage.removeItem("anneshop-admin"); }catch(e){}
+  S.dirty=false; location.reload();
+});
+let confirmedLeave=false;
+try{
+  const saved = JSON.parse(localStorage.getItem("anneshop-admin")||"null");
+  if(saved){ $("repo").value=saved.repo; $("token").value=saved.token; signIn(); }
+}catch(e){}
+
+/* ---- Render ---- */
+function thumbHTML(p){
+  const src = p._preview || p.image;
+  return src ? `<img src="${esc(src)}" alt="">` : "&#128367;";
+}
+function prodHTML(p, i, n){
+  const typeOpts = Object.entries(TYPES).map(([k,v]) => `<option value="${k}" ${p.type===k?"selected":""}>${v}</option>`).join("");
+  const del = S.pendingDelete===p.id ? "Click again to delete" : "Delete";
+  return `<details class="prod" data-id="${esc(p.id)}" ${S.open.has(p.id)?"open":""}>
+    <summary><span class="th" data-th>${thumbHTML(p)}</span><span class="sm-name" data-sn>${esc(p.name)||"New candle"}</span><span class="sm-price" data-sp>BD ${(+p.price||0).toFixed(3)}</span>${p.soldOut?'<span class="pill">Sold out</span>':""}</summary>
+    <div class="form">
+      <div class="photo">
+        <span class="th" data-th2>${thumbHTML(p)}</span>
+        <div><button class="btn sm" data-act="pick">${(p.image||p._preview)?"Change photo":"Upload photo"}</button>
+        ${(p.image||p._preview)?'<button class="btn ghost sm" data-act="nophoto">Use drawing instead</button>':""}
+        <p class="fine">Square photos look best. They are resized automatically.</p></div>
+      </div>
+      <div class="row">
+        <label>Name<input data-f="name" value="${esc(p.name)}"></label>
+        <label>Price (BD)<input data-f="price" type="number" step="0.001" min="0" inputmode="decimal" value="${esc(p.price)}"></label>
+      </div>
+      <div class="row">
+        <label>Category<input data-f="cat" list="cats" value="${esc(p.cat)}"></label>
+        <label>Label on the card (optional)<input data-f="tag" placeholder="New, Favourite, Gift" value="${esc(p.tag)}"></label>
+      </div>
+      <div class="row"><label>Size and container<input data-f="size" placeholder="Amber-lidded jar, 220 g" value="${esc(p.size)}"></label></div>
+      <div class="row"><label>Scent notes<textarea data-f="notes">${esc(p.notes)}</textarea></label></div>
+      <div class="row">
+        <label class="chk"><input type="checkbox" data-f="soldOut" ${p.soldOut?"checked":""}> Mark as sold out</label>
+      </div>
+      <details style="margin-bottom:14px"><summary style="cursor:pointer;font-weight:700;color:var(--muted)">Drawing style (used when there is no photo)</summary>
+        <div class="row" style="margin-top:10px">
+          <label>Shape<select data-f="type">${typeOpts}</select></label>
+          <div class="colors">
+            <label>Body<input type="color" data-f="c1" value="${esc(p.c1||"#f3e3df")}"></label>
+            <label>Wax<input type="color" data-f="c2" value="${esc(p.c2||"#e7b9bb")}"></label>
+            <label>Trim<input type="color" data-f="c3" value="${esc(p.c3||"#c98f91")}"></label>
+          </div>
+        </div>
+      </details>
+      <div class="actions">
+        <span><button class="btn ghost sm" data-act="up" ${i===0?"disabled":""}>Move up</button> <button class="btn ghost sm" data-act="down" ${i===n-1?"disabled":""}>Move down</button></span>
+        <button class="btn danger sm" data-act="del">${del}</button>
+      </div>
+    </div>
+  </details>`;
+}
+function render(){
+  const P = S.data.products;
+  $("list").innerHTML = P.length ? P.map((p,i) => prodHTML(p,i,P.length)).join("") : '<div class="card">No candles yet. Press "Add a candle" to start.</div>';
+  $("cats").innerHTML = [...new Set(P.map(p => p.cat).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join("");
+  $("setIg").value = S.data.settings.instagram || ""; $("setWa").value = S.data.settings.whatsapp || "";
+}
+const find = id => S.data.products.find(p => p.id === id);
+
+/* ---- Editing ---- */
+$("app").addEventListener("input", e => {
+  const s = e.target.dataset.s;
+  if(s){ S.data.settings[s] = e.target.value.trim(); setDirty(true); return; }
+  const f = e.target.dataset.f; if(!f) return;
+  const d = e.target.closest("details.prod"); const p = find(d.dataset.id); if(!p) return;
+  p[f] = e.target.type==="checkbox" ? e.target.checked : f==="price" ? parseFloat(e.target.value) : e.target.value;
+  if(f==="name") d.querySelector("[data-sn]").textContent = p.name || "New candle";
+  if(f==="price") d.querySelector("[data-sp]").textContent = "BD " + (+p.price||0).toFixed(3);
+  if(f==="soldOut") render();
+  setDirty(true);
+});
+$("list").addEventListener("toggle", e => { const d=e.target; if(d.dataset && d.dataset.id){ d.open ? S.open.add(d.dataset.id) : S.open.delete(d.dataset.id); } }, true);
+$("list").addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if(!b) return;
+  e.preventDefault();
+  const id = b.closest("details.prod").dataset.id, P = S.data.products, i = P.findIndex(p => p.id===id), p = P[i];
+  const act = b.dataset.act;
+  if(act==="pick"){ S.imgTarget=id; $("file").value=""; $("file").click(); return; }
+  if(act==="nophoto"){ p.image=""; delete p._img; delete p._preview; setDirty(true); render(); return; }
+  if(act==="up" && i>0){ [P[i-1],P[i]]=[P[i],P[i-1]]; setDirty(true); render(); return; }
+  if(act==="down" && i<P.length-1){ [P[i+1],P[i]]=[P[i],P[i+1]]; setDirty(true); render(); return; }
+  if(act==="del"){
+    if(S.pendingDelete===id){ P.splice(i,1); S.pendingDelete=null; setDirty(true); render(); }
+    else { S.pendingDelete=id; render(); }
+  }
+});
+$("add").addEventListener("click", () => {
+  const id = "c" + Date.now().toString(36);
+  S.data.products.unshift({id, name:"", cat:"Jars", type:"jar", size:"", price:5, notes:"", tag:"", soldOut:false, image:"", c1:"#f3e3df", c2:"#e7b9bb", c3:"#c98f91"});
+  S.open.add(id); setDirty(true); render();
+  const el = document.querySelector('details[data-id="' + id + '"] [data-f="name"]'); if(el) el.focus();
+});
+
+/* ---- Photos: resize in the browser, upload on save ---- */
+$("file").addEventListener("change", () => {
+  const f = $("file").files[0], p = find(S.imgTarget); if(!f || !p) return;
+  const img = new Image(), url = URL.createObjectURL(f);
+  img.onload = () => {
+    const max = 1000, k = Math.min(1, max / Math.max(img.width, img.height));
+    const c = document.createElement("canvas"); c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    const data = c.toDataURL("image/jpeg", .82);
+    p._img = data.split(",")[1]; p._preview = data; URL.revokeObjectURL(url);
+    setDirty(true); render();
+  };
+  img.onerror = () => status("That file could not be read as a picture.", "bad");
+  img.src = url;
+});
+
+/* ---- Save ---- */
+async function save(){
+  const P = S.data.products;
+  for(const p of P){
+    if(!String(p.name||"").trim()){ status("Every candle needs a name.", "bad"); S.open.add(p.id); render(); return; }
+    if(!isFinite(p.price) || p.price < 0){ status("Check the price of " + p.name + ".", "bad"); S.open.add(p.id); render(); return; }
+  }
+  $("save").disabled = true; status("Saving...");
+  try{
+    for(const p of P){
+      if(!p._img) continue;
+      const path = "images/" + p.id + "-" + Date.now().toString(36) + ".jpg";
+      const r = await api("/contents/" + path, {method:"PUT", body:JSON.stringify({message:"Add photo for " + p.name, content:p._img})});
+      if(!r.ok) throw new Error("photo upload failed (" + r.status + ")");
+      p.image = path; delete p._img;
+    }
+    const clean = {settings:S.data.settings, products:P.map(p => { const o={}; Object.keys(p).forEach(k => { if(k[0]!=="_") o[k]=p[k]; }); return o; })};
+    const r = await api("/contents/products.json", {method:"PUT", body:JSON.stringify({message:"Update shop products", content:utf8ToB64(JSON.stringify(clean,null,2)+"\n"), sha:S.sha})});
+    if(r.status===409 || r.status===422) throw new Error("the shop file changed somewhere else. Reload this page and try again");
+    if(!r.ok) throw new Error("GitHub answered " + r.status);
+    const j = await r.json(); S.sha = j.content.sha;
+    S.dirty=false; confirmedLeave=false; status("Saved. Your shop updates in about a minute.", "ok"); render();
+  }catch(e){
+    $("save").disabled=false; status("Not saved: " + e.message, "bad");
+  }
+}
+$("save").addEventListener("click", save);
+</script>
+</body>
+</html>
