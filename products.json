@@ -2,128 +2,308 @@
   "settings": {
     "instagram": "anneshop.bh",
     "whatsapp": "",
-    "currency": "BD"
+    "currency": "BD",
+    "giftWrapFee": 1,
+    "goatcounter": "",
+    "announcement": {
+      "on": false,
+      "text": "Eid gift sets now available",
+      "text_ar": "مجموعات هدايا العيد متوفرة الآن",
+      "link": ""
+    }
   },
   "products": [
     {
       "id": "rose-tea",
       "name": "Rose Tea Cup",
+      "name_ar": "كوب الورد والشاي",
       "cat": "Teacups",
+      "cat_ar": "فناجين",
       "type": "cup",
       "size": "Vintage teacup, 180 g",
+      "size_ar": "فنجان عتيق، 180 غ",
       "price": 5.5,
       "notes": "Pressed rose, black tea and a little honey.",
+      "notes_ar": "ورد مجفف وشاي أسود وقليل من العسل.",
       "tag": "New",
+      "tag_ar": "جديد",
       "c1": "#f3e3df",
       "c2": "#e7b9bb",
       "c3": "#c98f91",
+      "families": [
+        "floral",
+        "sweet"
+      ],
+      "giftable": true,
+      "personalize": true,
+      "burn": "About 35 hours",
+      "burn_ar": "حوالي 35 ساعة",
+      "added": "2026-10-20",
+      "variants": [],
       "soldOut": false,
-      "image": ""
+      "image": "",
+      "images": [],
+      "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
+      "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     },
     {
       "id": "sage-linen",
       "name": "Sage & Linen",
+      "name_ar": "ميرمية وكتان",
       "cat": "Jars",
+      "cat_ar": "أواني",
       "type": "jar",
       "size": "Amber-lidded jar, 220 g",
+      "size_ar": "إناء بغطاء كهرماني، 220 غ",
       "price": 6,
       "notes": "Fresh sage, sun-dried linen, a hint of cedar.",
+      "notes_ar": "ميرمية طازجة وكتان مجفف تحت الشمس ولمسة أرز.",
+      "tag": "",
       "c1": "#cdd8c4",
       "c2": "#e9eddc",
       "c3": "#7d9174",
+      "families": [
+        "fresh",
+        "woody"
+      ],
+      "giftable": false,
+      "personalize": false,
+      "burn": "About 45 hours",
+      "burn_ar": "حوالي 45 ساعة",
+      "added": "2026-09-12",
+      "variants": [
+        {
+          "name": "Size",
+          "name_ar": "الحجم",
+          "choices": [
+            {
+              "label": "Regular",
+              "label_ar": "عادي",
+              "add": 0
+            },
+            {
+              "label": "Large",
+              "label_ar": "كبير",
+              "add": 2
+            }
+          ]
+        }
+      ],
       "soldOut": false,
       "image": "",
-      "tag": ""
+      "images": [],
+      "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
+      "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     },
     {
       "id": "biscuit",
       "name": "Vanilla Biscuit",
+      "name_ar": "بسكويت الفانيلا",
       "cat": "Tins",
+      "cat_ar": "علب",
       "type": "tin",
       "size": "Travel tin, 100 g",
+      "size_ar": "علبة سفر، 100 غ",
       "price": 3.5,
       "notes": "Warm vanilla, butter biscuit and toasted sugar.",
+      "notes_ar": "فانيلا دافئة وبسكويت بالزبدة وسكر محمّص.",
+      "tag": "",
       "c1": "#e8cfa6",
       "c2": "#f6e6c6",
       "c3": "#b98a54",
+      "families": [
+        "sweet"
+      ],
+      "giftable": true,
+      "personalize": false,
+      "burn": "About 20 hours",
+      "burn_ar": "حوالي 20 ساعة",
+      "added": "2026-08-30",
+      "variants": [],
       "soldOut": false,
       "image": "",
-      "tag": ""
+      "images": [],
+      "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
+      "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     },
     {
       "id": "oud-amber",
       "name": "Oud & Amber",
+      "name_ar": "عود وعنبر",
       "cat": "Jars",
+      "cat_ar": "أواني",
       "type": "jar",
       "size": "Amber-lidded jar, 220 g",
+      "size_ar": "إناء بغطاء كهرماني، 220 غ",
       "price": 7,
       "notes": "Soft oud, amber resin and a drop of rose.",
+      "notes_ar": "عود ناعم وراتنج العنبر وقطرة من الورد.",
       "tag": "Favourite",
+      "tag_ar": "المفضلة",
       "c1": "#a8777a",
       "c2": "#e2bfb0",
       "c3": "#6e4146",
+      "families": [
+        "woody",
+        "spicy"
+      ],
+      "giftable": true,
+      "personalize": false,
+      "burn": "About 45 hours",
+      "burn_ar": "حوالي 45 ساعة",
+      "added": "2026-10-05",
+      "variants": [
+        {
+          "name": "Size",
+          "name_ar": "الحجم",
+          "choices": [
+            {
+              "label": "Regular",
+              "label_ar": "عادي",
+              "add": 0
+            },
+            {
+              "label": "Large",
+              "label_ar": "كبير",
+              "add": 2
+            }
+          ]
+        }
+      ],
       "soldOut": false,
-      "image": ""
+      "image": "",
+      "images": [],
+      "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
+      "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     },
     {
       "id": "lavender",
       "name": "Dried Lavender",
+      "name_ar": "لافندر مجفف",
       "cat": "Pillars",
+      "cat_ar": "أسطوانية",
       "type": "pillar",
       "size": "Hand-poured pillar, 150 g",
+      "size_ar": "شمعة أسطوانية يدوية، 150 غ",
       "price": 4.5,
       "notes": "Lavender buds, chamomile and clean cotton.",
+      "notes_ar": "براعم اللافندر والبابونج وقطن نظيف.",
+      "tag": "",
       "c1": "#d9c9d8",
       "c2": "#d9c9d8",
       "c3": "#9d86a0",
+      "families": [
+        "floral",
+        "fresh"
+      ],
+      "giftable": false,
+      "personalize": false,
+      "burn": "About 30 hours",
+      "burn_ar": "حوالي 30 ساعة",
+      "added": "2026-07-18",
+      "variants": [],
       "soldOut": false,
       "image": "",
-      "tag": ""
+      "images": [],
+      "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
+      "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     },
     {
       "id": "chai",
       "name": "Cardamom Chai",
+      "name_ar": "شاي الهيل",
       "cat": "Teacups",
+      "cat_ar": "فناجين",
       "type": "cup",
       "size": "Vintage teacup, 180 g",
+      "size_ar": "فنجان عتيق، 180 غ",
       "price": 5.5,
       "notes": "Cardamom, cinnamon and milky tea.",
+      "notes_ar": "هيل وقرفة وشاي بالحليب.",
+      "tag": "",
       "c1": "#efe0cf",
       "c2": "#e8c9a0",
       "c3": "#c3894f",
+      "families": [
+        "spicy",
+        "sweet"
+      ],
+      "giftable": true,
+      "personalize": false,
+      "burn": "About 35 hours",
+      "burn_ar": "حوالي 35 ساعة",
+      "added": "2026-09-28",
+      "variants": [],
       "soldOut": false,
       "image": "",
-      "tag": ""
+      "images": [],
+      "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
+      "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     },
     {
       "id": "peony",
       "name": "Peony Petal",
+      "name_ar": "بتلات الفاوانيا",
       "cat": "Tins",
+      "cat_ar": "علب",
       "type": "tin",
       "size": "Travel tin, 100 g",
+      "size_ar": "علبة سفر، 100 غ",
       "price": 3.5,
       "notes": "Blush peony, soft musk and powdery petals.",
+      "notes_ar": "فاوانيا وردية ومسك ناعم وبتلات بودرية.",
+      "tag": "",
       "c1": "#f1cfd2",
       "c2": "#f8e3e3",
       "c3": "#d28f98",
+      "families": [
+        "floral"
+      ],
+      "giftable": true,
+      "personalize": false,
+      "burn": "About 20 hours",
+      "burn_ar": "حوالي 20 ساعة",
+      "added": "2026-08-10",
+      "variants": [],
       "soldOut": false,
       "image": "",
-      "tag": ""
+      "images": [],
+      "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
+      "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     },
     {
       "id": "trio",
       "name": "Little Trio Gift Set",
+      "name_ar": "ثلاثي الهدايا الصغير",
       "cat": "Gift sets",
+      "cat_ar": "مجموعات الهدايا",
       "type": "trio",
       "size": "Three mini tins, gift box",
+      "size_ar": "ثلاث علب صغيرة في صندوق هدية",
       "price": 9,
       "notes": "Rose, vanilla and sage in a ribbon-tied box.",
+      "notes_ar": "ورد وفانيلا وميرمية في صندوق مربوط بشريط.",
       "tag": "Gift",
+      "tag_ar": "هدية",
       "c1": "#f1cfd2",
       "c2": "#e8cfa6",
       "c3": "#a9b6a0",
+      "families": [
+        "floral",
+        "sweet",
+        "fresh"
+      ],
+      "giftable": true,
+      "personalize": false,
+      "burn": "About 12 hours each",
+      "burn_ar": "حوالي 12 ساعة لكل واحدة",
+      "added": "2026-10-24",
+      "variants": [],
       "soldOut": false,
-      "image": ""
+      "image": "",
+      "images": [],
+      "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
+      "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     }
   ]
 }
