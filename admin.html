@@ -58,6 +58,14 @@ details.prod>summary::-webkit-details-marker{display:none}
 .checks{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
 .colors{display:flex;gap:10px;align-items:end}
 .grp{border:1px dashed var(--rose);border-radius:10px;padding:12px;margin-bottom:12px}
+.mi{display:grid;grid-template-columns:96px 1fr auto;gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:#fffaf7}
+.mi>*{min-width:0}
+.mprev{width:96px;height:96px;border-radius:8px;overflow:hidden;background:var(--chip);display:grid;place-items:center;font-size:.75rem;color:var(--muted);text-align:center}
+.mprev img,.mprev video{width:100%;height:100%;object-fit:cover}
+.mfields{display:grid;gap:8px}
+.mbtn{display:flex;flex-direction:column;gap:6px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+@media (max-width:600px){.mi{grid-template-columns:80px 1fr}.mbtn{grid-column:1/-1;flex-direction:row}.mprev{width:80px;height:80px}}
 .bar{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom));z-index:5}
 .bar .wrap{display:flex;gap:14px;align-items:center;justify-content:space-between}
 #status{font-size:.92rem;color:var(--muted)}
@@ -105,6 +113,18 @@ code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:.88em}
   </section>
 
   <section class="card">
+    <h2>Candle of the month</h2>
+    <label class="chk" for="ftOn"><input id="ftOn" type="checkbox" data-s="featuredOn"> Show a featured candle above the shelf</label>
+    <div class="row" style="margin-top:12px">
+      <label for="ftPick">Which candle<select id="ftPick" data-s="featuredId"></select></label>
+    </div>
+    <div class="row">
+      <label for="ftNote">Short note, optional (English)<input id="ftNote" data-s="featuredNote" placeholder="Our October favourite"></label>
+      <label for="ftNoteAr">Short note, optional (Arabic)<input id="ftNoteAr" class="ar" data-s="featuredNote_ar"></label>
+    </div>
+  </section>
+
+  <section class="card">
     <h2>Shop settings</h2>
     <div class="row">
       <label for="setIg">Instagram username<input id="setIg" data-s="instagram" placeholder="anneshop.bh"></label>
@@ -116,6 +136,33 @@ code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:.88em}
       <label for="setGc">Visitor statistics code (optional)<input id="setGc" data-s="goatcounter" placeholder="annecandles" autocomplete="off" spellcheck="false"></label>
     </div>
     <p class="fine">Statistics use GoatCounter, a free and privacy-friendly counter with no cookies. Sign up at <a href="https://www.goatcounter.com/signup" target="_blank" rel="noopener">goatcounter.com</a>, choose a code (for example <code>annecandles</code>), and type that code above. You then see visits and which candles people open at <code>yourcode.goatcounter.com</code>.</p>
+  </section>
+
+  <section class="card">
+    <h2>Behind the scenes</h2>
+    <p class="fine" style="margin-top:0">Photos or short videos of you pouring candles. This section appears on the shop once it has at least one item.</p>
+    <div class="row" style="margin-top:12px">
+      <label for="bhTitle">Title (English)<input id="bhTitle" data-b="title" placeholder="Behind the scenes"></label>
+      <label for="bhTitleAr">Title (Arabic)<input id="bhTitleAr" class="ar" data-b="title_ar" placeholder="خلف الكواليس"></label>
+    </div>
+    <div class="row">
+      <label for="bhText">Short intro, optional (English)<textarea id="bhText" data-b="text"></textarea></label>
+      <label for="bhTextAr">Short intro, optional (Arabic)<textarea id="bhTextAr" class="ar" data-b="text_ar"></textarea></label>
+    </div>
+    <div id="bhList"></div>
+    <div class="btnrow">
+      <button class="btn sm" type="button" data-addm="behind:image">+ Add photos</button>
+      <button class="btn sm" type="button" data-addm="behind:video">+ Add a video file</button>
+      <button class="btn ghost sm" type="button" data-addm="behind:youtube">+ Add a YouTube link</button>
+    </div>
+    <p class="fine">Video files must be under 25 MB, so a 15 to 30 second clip works best. For longer videos, upload to YouTube and paste the link.</p>
+  </section>
+
+  <section class="card">
+    <h2>Customer photos</h2>
+    <p class="fine" style="margin-top:0">Photos of your candles in customers' homes. Ask for permission before posting someone's photo. This section appears once it has a photo.</p>
+    <div id="cpList" style="margin-top:12px"></div>
+    <div class="btnrow"><button class="btn sm" type="button" data-addm="cust:image">+ Add photos</button></div>
   </section>
 
   <section>
@@ -131,14 +178,17 @@ code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:.88em}
 <div class="bar" id="saveBar" hidden><div class="wrap"><span id="status">No changes yet</span><button class="btn" id="save" disabled>Save changes</button></div></div>
 <datalist id="cats"></datalist>
 <input type="file" id="file" accept="image/*" multiple hidden>
+<input type="file" id="fileM" hidden>
 
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TYPES = {jar:"Jar", tin:"Tin", cup:"Teacup", pillar:"Pillar", trio:"Gift set"};
 const FAMS = {floral:"Floral", sweet:"Sweet & bakery", woody:"Woody & warm", fresh:"Fresh & herbal", spicy:"Spicy"};
-const DEFAULT_SETTINGS = {instagram:"anneshop.bh", whatsapp:"", currency:"BD", giftWrapFee:1, goatcounter:"", announcement:{on:false, text:"", text_ar:"", link:""}};
-const S = {repo:"", token:"", sha:null, data:{settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), products:[]}, dirty:false, open:new Set(), pendingDelete:null, imgTarget:null};
+const DEFAULT_SETTINGS = {instagram:"anneshop.bh", whatsapp:"", currency:"BD", giftWrapFee:1, goatcounter:"", announcement:{on:false, text:"", text_ar:"", link:""}, featuredOn:false, featuredId:"", featuredNote:"", featuredNote_ar:""};
+const S = {repo:"", token:"", sha:null, data:{settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), products:[], behind:{title:"", title_ar:"", text:"", text_ar:"", items:[]}, customerPhotos:[]}, dirty:false, open:new Set(), pendingDelete:null, imgTarget:null, mediaTarget:null};
+const LISTS = {behind: () => S.data.behind.items, cust: () => S.data.customerPhotos};
+const ytIdA = u => { const m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/.exec(u || ""); return m ? m[1] : ""; };
 let confirmedLeave = false;
 
 function utf8ToB64(str){ const b = new TextEncoder().encode(str); let s = ""; b.forEach(x => s += String.fromCharCode(x)); return btoa(s); }
@@ -156,6 +206,9 @@ function normalize(){
   const d = S.data;
   d.settings = Object.assign({}, DEFAULT_SETTINGS, d.settings || {});
   d.settings.announcement = Object.assign({}, DEFAULT_SETTINGS.announcement, d.settings.announcement || {});
+  d.behind = Object.assign({title:"", title_ar:"", text:"", text_ar:""}, d.behind || {});
+  d.behind.items = Array.isArray(d.behind.items) ? d.behind.items : [];
+  d.customerPhotos = Array.isArray(d.customerPhotos) ? d.customerPhotos : [];
   d.products = (d.products || []).map(p => {
     const q = Object.assign({name_ar:"", cat_ar:"", size_ar:"", notes_ar:"", tag_ar:"", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:[], added:""}, p);
     const list = (Array.isArray(q.images) && q.images.length) ? q.images : (q.image ? [q.image] : []);
@@ -296,13 +349,34 @@ function render(){
   $("cats").innerHTML = [...new Set(P.map(p => p.cat).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join("");
   $("setIg").value = st.instagram || ""; $("setWa").value = st.whatsapp || ""; $("setGift").value = st.giftWrapFee; $("setGc").value = st.goatcounter || "";
   $("annOn").checked = !!an.on; $("annText").value = an.text || ""; $("annTextAr").value = an.text_ar || ""; $("annLink").value = an.link || "";
+  $("ftOn").checked = !!st.featuredOn; $("ftNote").value = st.featuredNote || ""; $("ftNoteAr").value = st.featuredNote_ar || "";
+  $("ftPick").innerHTML = '<option value="">Choose a candle</option>' + P.map(p => `<option value="${esc(p.id)}" ${p.id === st.featuredId ? "selected" : ""}>${esc(p.name || "New candle")}</option>`).join("");
+  const b = S.data.behind;
+  $("bhTitle").value = b.title || ""; $("bhTitleAr").value = b.title_ar || ""; $("bhText").value = b.text || ""; $("bhTextAr").value = b.text_ar || "";
+  ["behind", "cust"].forEach(l => { const arr = LISTS[l](); $(l === "behind" ? "bhList" : "cpList").innerHTML = arr.map((it, i) => miHTML(it, l, i, arr.length)).join(""); });
+}
+function miHTML(it, list, i, n){
+  const yt = ytIdA(it.src);
+  const prev = it.type === "video" ? `<video src="${esc(it._url || it.src)}" muted preload="metadata"></video>`
+    : it.type === "youtube" ? (yt ? `<img src="https://img.youtube.com/vi/${yt}/mqdefault.jpg" alt="">` : "YouTube")
+    : `<img src="${esc(it._preview || it.src)}" alt="">`;
+  const kind = it.type === "video" ? "Video" : it.type === "youtube" ? "YouTube video" : "Photo";
+  return `<div class="mi" data-list="${list}" data-i="${i}"><div class="mprev">${prev}</div>
+    <div class="mfields"><span class="fine" style="margin:0"><b>${kind}</b></span>
+      ${it.type === "youtube" ? `<label>YouTube link<input data-m="src" placeholder="https://www.youtube.com/watch?v=..." value="${esc(it.src)}" spellcheck="false"></label>` : ""}
+      ${list === "cust" ? `<label>Customer name, optional<input data-m="who" value="${esc(it.who)}"></label>` : ""}
+      <label>Caption (English)<input data-m="caption" value="${esc(it.caption)}"></label>
+      <label>Caption (Arabic)<input class="ar" data-m="caption_ar" value="${esc(it.caption_ar)}"></label></div>
+    <div class="mbtn"><button class="btn ghost sm" type="button" data-ma="up" ${i === 0 ? "disabled" : ""}>Move up</button><button class="btn ghost sm" type="button" data-ma="down" ${i === n - 1 ? "disabled" : ""}>Move down</button><button class="btn danger sm" type="button" data-ma="rm">Remove</button></div></div>`;
 }
 const find = id => S.data.products.find(p => p.id === id);
 
 /* ---- Editing ---- */
 $("app").addEventListener("input", e => {
   const el = e.target;
-  if (el.dataset.s) { const k = el.dataset.s; S.data.settings[k] = k === "giftWrapFee" ? (parseFloat(el.value) || 0) : el.value.trim(); setDirty(true); return; }
+  if (el.dataset.s) { const k = el.dataset.s; S.data.settings[k] = el.type === "checkbox" ? el.checked : k === "giftWrapFee" ? (parseFloat(el.value) || 0) : el.value.trim(); setDirty(true); return; }
+  if (el.dataset.b) { S.data.behind[el.dataset.b] = el.value; setDirty(true); return; }
+  if (el.dataset.m) { const mi = el.closest(".mi"), it = LISTS[mi.dataset.list]()[+mi.dataset.i]; if (it) { it[el.dataset.m] = el.value; setDirty(true); } return; }
   if (el.dataset.a) { const k = el.dataset.a; S.data.settings.announcement[k] = el.type === "checkbox" ? el.checked : el.value.trim(); setDirty(true); return; }
   const d = el.closest("details.prod"); if (!d) return;
   const p = find(d.dataset.id); if (!p) return;
@@ -351,11 +425,12 @@ $("add").addEventListener("click", () => {
 });
 
 /* ---- Photos: resize in the browser, upload on save ---- */
-function readImage(f){
+const fileB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.onerror = rej; r.readAsDataURL(f); });
+function readImage(f, maxSide){
   return new Promise(resolve => {
     const img = new Image(), url = URL.createObjectURL(f);
     img.onload = () => {
-      const max = 1000, k = Math.min(1, max / Math.max(img.width, img.height));
+      const max = maxSide || 1000, k = Math.min(1, max / Math.max(img.width, img.height));
       const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
       c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
       const data = c.toDataURL("image/jpeg", .82); URL.revokeObjectURL(url);
@@ -371,6 +446,37 @@ $("file").addEventListener("change", async () => {
   setDirty(true); render();
 });
 
+/* ---- Behind the scenes and customer photos ---- */
+$("app").addEventListener("click", e => {
+  const a = e.target.closest("[data-addm]");
+  if (a) {
+    const [list, kind] = a.dataset.addm.split(":");
+    if (kind === "youtube") { LISTS[list]().push({type:"youtube", src:"", caption:"", caption_ar:""}); setDirty(true); render(); return; }
+    S.mediaTarget = {list, kind}; const f = $("fileM");
+    f.accept = kind === "video" ? "video/mp4,video/webm,video/quicktime" : "image/*"; f.multiple = kind === "image"; f.value = ""; f.click(); return;
+  }
+  const m = e.target.closest("[data-ma]"); if (!m) return;
+  const mi = m.closest(".mi"), arr = LISTS[mi.dataset.list](), i = +mi.dataset.i;
+  if (m.dataset.ma === "rm") arr.splice(i, 1);
+  else if (m.dataset.ma === "up" && i > 0) [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+  else if (m.dataset.ma === "down" && i < arr.length - 1) [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]];
+  setDirty(true); render();
+});
+$("fileM").addEventListener("change", async () => {
+  const t = S.mediaTarget; if (!t) return; const arr = LISTS[t.list]();
+  for (const f of Array.from($("fileM").files)) {
+    if (t.kind === "video") {
+      if (f.size > 25 * 1024 * 1024) { status("That video is " + Math.round(f.size / 1048576) + " MB. Please keep videos under 25 MB.", "bad"); continue; }
+      const ext = /webm/.test(f.type) ? "webm" : /quicktime/.test(f.type) ? "mov" : "mp4";
+      arr.push({type:"video", src:"", caption:"", caption_ar:"", _b64:await fileB64(f), _ext:ext, _url:URL.createObjectURL(f)});
+    } else {
+      const r = await readImage(f, 1200);
+      if (r) arr.push({type:"image", src:"", caption:"", caption_ar:"", who:"", _b64:r.b64, _preview:r.preview}); else status("One file could not be read as a picture.", "bad");
+    }
+  }
+  setDirty(true); render();
+});
+
 /* ---- Save ---- */
 async function save(){
   const P = S.data.products;
@@ -378,6 +484,9 @@ async function save(){
     if (!String(p.name || "").trim()) { status("Every candle needs a name.", "bad"); S.open.add(p.id); render(); return; }
     if (!isFinite(p.price) || p.price < 0) { status("Check the price of " + p.name + ".", "bad"); S.open.add(p.id); render(); return; }
     for (const g of (p.variants || [])) if (!String(g.name || "").trim() || !g.choices.length) { status("Every option on " + p.name + " needs a name and at least one choice.", "bad"); S.open.add(p.id); render(); return; }
+  }
+  for (const key of ["behind", "cust"]) for (const it of LISTS[key]()) {
+    if (it.type === "youtube" && !ytIdA(it.src)) { status("Check the YouTube link in " + (key === "behind" ? "Behind the scenes" : "Customer photos") + ".", "bad"); return; }
   }
   $("save").disabled = true; status("Saving...");
   try {
@@ -390,6 +499,15 @@ async function save(){
       if (!r.ok) throw new Error("photo upload failed (" + r.status + ")");
       im.path = path;
     }
+    for (const key of ["behind", "cust"]) for (const it of LISTS[key]()) {
+      if (!it._b64) continue;
+      n++; status("Uploading " + (it.type === "video" ? "video " : "photo ") + n + "...");
+      const path = (it.type === "video" ? "videos/" : "images/") + (key === "behind" ? "bts-" : "cust-") + Date.now().toString(36) + n + "." + (it._ext || "jpg");
+      const r = await api("/contents/" + path, {method:"PUT", body:JSON.stringify({message:"Add " + (it.type === "video" ? "video" : "photo") + " for the shop", content:it._b64})});
+      if (!r.ok) throw new Error((it.type === "video" ? "video" : "photo") + " upload failed (" + r.status + ")");
+      it.src = path; delete it._b64;
+    }
+    const cleanItem = it => { const o = {}; Object.keys(it).forEach(k => { if (k[0] !== "_") o[k] = it[k]; }); return o; };
     const products = P.map(p => {
       const o = {}; Object.keys(p).forEach(k => { if (k[0] !== "_") o[k] = p[k]; });
       o.images = p._imgs.map(im => im.path); o.image = o.images[0] || "";
@@ -397,7 +515,10 @@ async function save(){
       return o;
     });
     status("Saving...");
-    const clean = {settings:S.data.settings, products};
+    const b = S.data.behind;
+    const clean = {settings:S.data.settings, products,
+      behind:{title:b.title, title_ar:b.title_ar, text:b.text, text_ar:b.text_ar, items:b.items.filter(it => it.src).map(cleanItem)},
+      customerPhotos:S.data.customerPhotos.filter(it => it.src).map(cleanItem)};
     const r = await api("/contents/products.json", {method:"PUT", body:JSON.stringify({message:"Update shop", content:utf8ToB64(JSON.stringify(clean, null, 2) + "\n"), sha:S.sha})});
     if (r.status === 409 || r.status === 422) throw new Error("the shop file changed somewhere else. Reload this page and try again");
     if (!r.ok) throw new Error("GitHub answered " + r.status);

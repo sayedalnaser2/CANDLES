@@ -234,6 +234,46 @@ aside.on{transform:none}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;font-size:.9rem;opacity:0;transition:.25s;z-index:60;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
+/* featured candle */
+.feat{display:grid;grid-template-columns:.9fr 1.1fr;gap:32px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:6px 6px 26px 26px;padding:26px;box-shadow:0 14px 32px var(--shadow);position:relative}
+.feat>*{min-width:0}
+.feat::before{content:"";position:absolute;inset:8px;border:1.5px dashed var(--rose);border-radius:inherit;opacity:.45;pointer-events:none}
+.fart{aspect-ratio:1/.9;border-radius:14px;overflow:hidden;display:grid;place-items:center;position:relative;text-decoration:none}
+.fart svg{width:70%;height:auto}
+.fart img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.feat h2{font-size:clamp(2rem,4.5vw,3rem);margin:4px 0 8px}
+.feat .lead{color:var(--muted);margin:0 0 12px}
+.fnote{font-family:var(--f-hand);font-size:1.5rem;color:var(--sage-deep);margin:0 0 14px;line-height:1.2}
+.featrow{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+
+/* galleries */
+.lead2{color:var(--muted);max-width:60ch;margin:0 0 20px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.gi{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:6px 6px 18px 18px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.gi.vid{grid-column:span 2}
+.gb{display:block;width:100%;aspect-ratio:1/1;padding:0;border:0;background:var(--chip);cursor:zoom-in}
+.gb img{width:100%;height:100%;object-fit:cover;display:block}
+.gi video,.gi iframe{width:100%;aspect-ratio:16/10;border:0;background:#000;display:block}
+.gi figcaption{padding:10px 14px 12px;font-size:.9rem;color:var(--muted)}
+.gi figcaption b{display:block;color:var(--ink);font:600 1.1rem var(--f-display)}
+.lb{position:fixed;inset:0;z-index:55;background:rgba(30,16,18,.9);display:grid;grid-template-rows:1fr auto;padding:16px;padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.lb .stage{display:grid;place-items:center;min-height:0}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+.lb .cap{color:#f3e4de;text-align:center;padding-top:10px;min-height:1.6em}
+.lb .x{color:#fff;position:absolute;font-size:2rem}
+.lbc{top:calc(10px + env(safe-area-inset-top,0px));inset-inline-end:14px}
+.lbn{top:50%;transform:translateY(-50%);background:rgba(0,0,0,.35)!important;border-radius:50%;width:44px;height:44px}
+.lbp{inset-inline-start:10px}
+.lbnx{inset-inline-end:10px}
+.lbn span{display:inline-block;transform:scaleX(var(--dir))}
+
+/* whatsapp button, share, notify */
+.fab{position:fixed;z-index:36;bottom:calc(18px + env(safe-area-inset-bottom,0px));inset-inline-end:max(16px,env(safe-area-inset-right,0px),env(safe-area-inset-left,0px));display:flex;align-items:center;gap:8px;background:var(--sage-deep);color:var(--bg);text-decoration:none;font-weight:700;border-radius:999px;padding:12px 18px 12px 14px;box-shadow:0 8px 22px var(--shadow)}
+.fab svg{flex:none}
+.share{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 20px}
+.btn.sm{padding:7px 16px;font-size:.88rem}
+.notify{border:1px dashed var(--rose);border-radius:12px;padding:14px;margin:0 0 18px;display:flex;flex-direction:column;gap:10px}
+
 @keyframes flick{0%,100%{transform:scale(1,1) rotate(-1deg)}35%{transform:scale(.94,1.07) rotate(1.5deg)}70%{transform:scale(1.03,.96) rotate(-1.5deg)}}
 .flame{animation:flick 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
 @media (prefers-reduced-motion:reduce){.flame{animation:none}.card,aside,.scrim,.toast{transition:none}}
@@ -246,6 +286,11 @@ aside.on{transform:none}
   .logo span{display:none}
   .promise ul{flex-direction:column}
   .cform{padding:22px 18px}
+  .feat{grid-template-columns:1fr;padding:20px 18px;gap:20px}
+  .gal{grid-template-columns:repeat(2,1fr)}
+  .gi.vid{grid-column:1/-1}
+  .fab span{display:none}
+  .fab{padding:14px}
 }
 </style>
 </head>
@@ -280,6 +325,8 @@ aside.on{transform:none}
 
   <div class="scallop"></div>
   <div class="promise"><div class="gut"><ul class="wrap"><li data-t="pr1"></li><li data-t="pr2"></li><li data-t="pr3"></li></ul></div></div>
+
+  <section id="featured" class="gut" hidden style="padding-bottom:0"><div class="wrap" id="featBox"></div></section>
 
   <section id="shop" class="gut"><div class="wrap">
     <div class="head">
@@ -331,6 +378,17 @@ aside.on{transform:none}
     </div>
   </div></div></section>
 
+  <section id="behind" class="gut" hidden><div class="wrap">
+    <div class="head"><div><p class="hand" data-t="bh_eyebrow"></p><h2 id="bhTitle"></h2></div></div>
+    <p class="lead2" id="bhText"></p>
+    <div class="gal" id="bhGrid"></div>
+  </div></section>
+
+  <section id="photos" class="gut" hidden><div class="wrap">
+    <div class="head"><div><p class="hand" data-t="cp_eyebrow"></p><h2 data-t="cp_title"></h2></div></div>
+    <div class="gal" id="cpGrid"></div>
+  </div></section>
+
   <section id="story" class="gut"><div class="wrap"><div class="story">
     <div class="note"><p data-t="story_note"></p><p style="text-align:end">&mdash; Anne</p></div>
     <div>
@@ -365,6 +423,17 @@ aside.on{transform:none}
   <div class="db" id="dBody"></div>
   <div class="df" id="dFoot"></div>
 </aside>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true">
+  <button class="x lbc" id="lbClose" type="button" data-al="close">&times;</button>
+  <button class="x lbn lbp" id="lbPrev" type="button" data-al="prev"><span>&lsaquo;</span></button>
+  <div class="stage"><img id="lbImg" alt=""></div>
+  <div class="cap" id="lbCap"></div>
+  <button class="x lbn lbnx" id="lbNext" type="button" data-al="next"><span>&rsaquo;</span></button>
+</div>
+<a class="fab" id="waFab" href="#" target="_blank" rel="noopener" hidden>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16v11H10l-6 4z"/><path d="M8.5 10.5h7"/></svg>
+  <span id="fabText"></span>
+</a>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -400,7 +469,12 @@ en:{
  fam_floral:"Floral", fam_sweet:"Sweet & bakery", fam_woody:"Woody & warm", fam_fresh:"Fresh & herbal", fam_spicy:"Spicy",
  b1:"Up to BD 4", b2:"Up to BD 6", b3:"Any budget", yes:"Yes, it's a gift", no:"Just for me",
  q_result:"Your matches", q_again:"Start again", q_none:"Here are some favourites.", question:"Question",
- close:"Close", loading_err:"We couldn't load the candles. Please refresh the page.", ann_close:"Close announcement"
+ close:"Close", loading_err:"We couldn't load the candles. Please refresh the page.", ann_close:"Close announcement",
+ feat_eyebrow:"candle of the month", feat_view:"See this candle",
+ wa_chat:"Chat on WhatsApp", wa_short:"Chat",
+ notify:"Notify me when it's back", notify_short:"Notify me", notify_intro:"Send Anne a message and she will tell you when this candle is back.", notify_name:"Your name (optional)",
+ share:"Share", share_wa:"Share on WhatsApp", copy_link:"Copy link", link_copied:"Link copied",
+ bh_eyebrow:"a peek at the table", bh_title:"Behind the scenes", cp_eyebrow:"from our customers", cp_title:"Your cozy corners", prev:"Previous", next:"Next"
 },
 ar:{
  logo_sub:"شموع يدوية", nav_shop:"المتجر", nav_story:"قصتنا", nav_custom:"طلبات خاصة", cart:"السلة", lang_btn:"English",
@@ -432,7 +506,12 @@ ar:{
  fam_floral:"زهري", fam_sweet:"حلو وحلويات", fam_woody:"خشبي ودافئ", fam_fresh:"منعش وعشبي", fam_spicy:"متبّل",
  b1:"حتى 4 د.ب", b2:"حتى 6 د.ب", b3:"أي ميزانية", yes:"نعم، هدية", no:"لي أنا",
  q_result:"ترشيحاتنا لك", q_again:"ابدأ من جديد", q_none:"إليك بعض المفضلات.", question:"السؤال",
- close:"إغلاق", loading_err:"تعذّر تحميل الشموع. يرجى تحديث الصفحة.", ann_close:"إغلاق الإعلان"
+ close:"إغلاق", loading_err:"تعذّر تحميل الشموع. يرجى تحديث الصفحة.", ann_close:"إغلاق الإعلان",
+ feat_eyebrow:"شمعة الشهر", feat_view:"شاهد الشمعة",
+ wa_chat:"تحدث معنا على واتساب", wa_short:"تواصل",
+ notify:"أخبروني عند توفرها", notify_short:"أخبروني", notify_intro:"أرسل رسالة إلى آن وستخبرك عند توفر هذه الشمعة.", notify_name:"اسمك (اختياري)",
+ share:"مشاركة", share_wa:"مشاركة عبر واتساب", copy_link:"نسخ الرابط", link_copied:"تم نسخ الرابط",
+ bh_eyebrow:"نظرة على طاولة العمل", bh_title:"خلف الكواليس", cp_eyebrow:"من عملائنا", cp_title:"زواياكم الدافئة", prev:"السابق", next:"التالي"
 }};
 const FAMILIES = ["floral","sweet","woody","fresh","spicy"];
 
@@ -442,8 +521,8 @@ const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp
 let lang = "en";
 try { lang = localStorage.getItem("anneshop-lang") || ((navigator.language || "").toLowerCase().indexOf("ar") === 0 ? "ar" : "en"); } catch(e) {}
 if (lang !== "ar") lang = "en";
-let CONFIG = {instagram:"anneshop.bh", whatsapp:"", currency:"BD", giftWrapFee:0, goatcounter:"", announcement:{on:false, text:"", text_ar:"", link:""}};
-let PRODUCTS = [], loadFailed = false;
+let CONFIG = {instagram:"anneshop.bh", whatsapp:"", currency:"BD", giftWrapFee:0, goatcounter:"", announcement:{on:false, text:"", text_ar:"", link:""}, featuredOn:false, featuredId:"", featuredNote:"", featuredNote_ar:""};
+let PRODUCTS = [], loadFailed = false, BEHIND = {title:"", title_ar:"", text:"", text_ar:"", items:[]}, CUSTOMER = [];
 let cart = [];
 try { cart = JSON.parse(localStorage.getItem("anneshop-cart2") || "[]"); if (!Array.isArray(cart)) cart = []; } catch(e) { cart = []; }
 let filter = "All", q = "", sort = "featured", step = "cart", detailState = null;
@@ -574,7 +653,7 @@ function cardHTML(p){
   const opts = groups(p).length > 0 || !!p.personalize;
   const price = (hasRange(p) ? t("from") + " " : "") + fmt(minPrice(p));
   const tag = p.soldOut ? t("sold") : L(p,"tag");
-  const action = p.soldOut ? `<button class="add" type="button" disabled>${esc(t("sold"))}</button>`
+  const action = p.soldOut ? `<a class="add" href="${href}">${esc(t("notify_short"))}</a>`
     : opts ? `<a class="add" href="${href}">${esc(t("options"))}</a>`
     : `<button class="add" type="button" data-add="${esc(p.id)}">${esc(t("add"))}</button>`;
   return `<article class="card">
@@ -587,7 +666,63 @@ function renderGrid(){
   const list = visible();
   $("grid").innerHTML = list.length ? list.map(cardHTML).join("") : `<p>${esc(PRODUCTS.length ? t("no_match") : t("empty"))}</p>`;
 }
-function renderAll(){ renderAnn(); renderChips(); renderGrid(); renderCart(); }
+/* ---- Candle of the month ---- */
+function renderFeatured(){
+  const p = CONFIG.featuredOn ? byId(CONFIG.featuredId) : null;
+  $("featured").hidden = !p; if (!p) return;
+  const href = "#candle-" + encodeURIComponent(p.id), note = (lang === "ar" && CONFIG.featuredNote_ar) ? CONFIG.featuredNote_ar : (CONFIG.featuredNote || "");
+  $("featBox").innerHTML = `<div class="feat"><a class="fart" href="${href}" aria-label="${esc(L(p,"name"))}" style="background:color-mix(in srgb, ${colr(p.c1,"#f3e3df")} 22%, var(--paper))">${art(p)}</a>
+    <div><p class="hand">${esc(t("feat_eyebrow"))}</p><h2>${esc(L(p,"name"))}</h2><p class="lead">${esc(L(p,"notes"))}</p>${note ? `<p class="fnote">${esc(note)}</p>` : ""}
+    <div class="featrow"><span class="price">${esc((hasRange(p) ? t("from") + " " : "") + fmt(minPrice(p)))}</span><a class="btn" href="${href}">${esc(t("feat_view"))}</a></div></div></div>`;
+}
+
+/* ---- Behind the scenes + customer photos ---- */
+const isImg = it => !!it && (it.type || "image") === "image" && /^(images\/|https:\/\/)[^\s"'<>]+$/.test(it.src || "");
+const isVid = it => !!it && it.type === "video" && /^(videos\/|https:\/\/)[^\s"'<>]+$/.test(it.src || "");
+const ytId = u => { const m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/.exec(u || ""); return m ? m[1] : ""; };
+const isYt = it => !!it && it.type === "youtube" && !!ytId(it.src);
+const imgSet = name => (name === "behind" ? (BEHIND.items || []) : CUSTOMER).filter(isImg);
+function figHTML(it, setName, idx){
+  const cap = L(it, "caption"), who = it.who ? "— " + it.who : "";
+  const fc = (cap || who) ? `<figcaption>${cap ? `<b>${esc(cap)}</b>` : ""}${who ? esc(who) : ""}</figcaption>` : "";
+  if (isVid(it)) return `<figure class="gi vid"><video controls playsinline preload="metadata" src="${esc(it.src)}"></video>${fc}</figure>`;
+  if (isYt(it)) return `<figure class="gi vid"><iframe src="https://www.youtube-nocookie.com/embed/${ytId(it.src)}" title="${esc(cap || "Video")}" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>${fc}</figure>`;
+  return `<figure class="gi"><button class="gb" type="button" data-lb="${setName}" data-i="${idx}" aria-label="${esc(cap || "Photo")}"><img src="${esc(it.src)}" alt="${esc(cap)}" loading="lazy"></button>${fc}</figure>`;
+}
+function renderGalleries(){
+  const bi = (BEHIND.items || []).filter(it => isImg(it) || isVid(it) || isYt(it)), bImgs = imgSet("behind"), ci = imgSet("cust");
+  $("behind").hidden = !bi.length;
+  if (bi.length) {
+    $("bhTitle").textContent = L(BEHIND, "title") || t("bh_title");
+    const tx = L(BEHIND, "text"); $("bhText").textContent = tx; $("bhText").hidden = !tx;
+    $("bhGrid").innerHTML = bi.map(it => figHTML(it, "behind", bImgs.indexOf(it))).join("");
+  }
+  $("photos").hidden = !ci.length;
+  if (ci.length) $("cpGrid").innerHTML = ci.map((it, i) => figHTML(it, "cust", i)).join("");
+}
+let lb = {set:[], i:0};
+function lbShow(){
+  const it = lb.set[lb.i]; if (!it) return;
+  $("lbImg").src = it.src; $("lbImg").alt = L(it, "caption");
+  $("lbCap").textContent = [L(it, "caption"), it.who ? "— " + it.who : ""].filter(Boolean).join(" ");
+  $("lbPrev").hidden = $("lbNext").hidden = lb.set.length < 2;
+}
+function lbOpen(set, i){ lb = {set:set, i:i}; lbShow(); $("lb").hidden = false; }
+function lbClose(){ $("lb").hidden = true; }
+function lbStep(d){ lb.i = (lb.i + d + lb.set.length) % lb.set.length; lbShow(); }
+document.addEventListener("click", e => { const g = e.target.closest("[data-lb]"); if (g) lbOpen(imgSet(g.dataset.lb), +g.dataset.i); });
+$("lbClose").addEventListener("click", lbClose);
+$("lbPrev").addEventListener("click", () => lbStep(-1)); $("lbNext").addEventListener("click", () => lbStep(1));
+$("lb").addEventListener("click", e => { if (e.target === $("lb") || e.target.classList.contains("stage")) lbClose(); });
+
+/* ---- WhatsApp chat button ---- */
+function updateFab(){
+  const f = $("waFab");
+  if (!String(CONFIG.whatsapp || "").replace(/\D/g, "")) { f.hidden = true; return; }
+  const msg = detailState ? "Hi Anne, I have a question about " + detailState.p.name + "." : "Hi Anne, I have a question about your candles.";
+  f.href = waUrl(msg); f.setAttribute("aria-label", t("wa_chat")); $("fabText").textContent = t("wa_short"); f.hidden = false;
+}
+function renderAll(){ renderAnn(); renderFeatured(); renderChips(); renderGrid(); renderGalleries(); renderCart(); updateFab(); }
 
 /* ===================== Cart ===================== */
 const lineKey = l => l.id + "|" + (l.sel || []).join(".") + "|" + (l.note || "");
@@ -684,10 +819,10 @@ $("openCart").addEventListener("click", openCart); $("closeCart").addEventListen
 function openDetail(p){
   detailState = {p:p, sel:groups(p).map(() => 0), qty:1, note:""};
   $("detail").hidden = false; document.body.style.overflow = "hidden";
-  renderDetail(); $("detail").scrollTop = 0;
+  renderDetail(); $("detail").scrollTop = 0; updateFab();
   track("candle/" + p.id, p.name);
 }
-function closeDetail(){ if (!detailState && $("detail").hidden) return; detailState = null; $("detail").hidden = true; document.body.style.overflow = ""; }
+function closeDetail(){ if (!detailState && $("detail").hidden) return; detailState = null; $("detail").hidden = true; document.body.style.overflow = ""; updateFab(); }
 function renderDetail(){
   const st = detailState, p = st.p, G = groups(p), im = imgs(p);
   const main = im.length ? `<img id="dMain" src="${esc(im[0])}" alt="${esc(L(p,"name"))}">` : artSvg(p);
@@ -706,24 +841,51 @@ function renderDetail(){
       ${grp}
       ${p.personalize ? `<div class="grp"><label class="fld" for="dNote">${esc(t("personalize"))}<input id="dNote" maxlength="80" autocomplete="off"></label></div>` : ""}
       <div class="buyrow">
-        <div class="qty"><button type="button" data-act="q" data-d="-1" aria-label="−">−</button><span id="dQty">1</span><button type="button" data-act="q" data-d="1" aria-label="+">+</button></div>
-        <button class="btn" type="button" data-act="add" ${p.soldOut ? "disabled" : ""}>${esc(p.soldOut ? t("sold") : t("add"))}</button>
+        ${p.soldOut ? `<button class="btn" type="button" data-act="notify">${esc(t("notify"))}</button>` : `<div class="qty"><button type="button" data-act="q" data-d="-1" aria-label="−">−</button><span id="dQty">1</span><button type="button" data-act="q" data-d="1" aria-label="+">+</button></div>
+        <button class="btn" type="button" data-act="add">${esc(t("add"))}</button>`}
       </div>
+      ${p.soldOut ? `<div class="notify" id="notifyBox" hidden><p class="fine">${esc(t("notify_intro"))}</p>
+        <label class="fld" for="nName">${esc(t("notify_name"))}<input id="nName" autocomplete="name"></label><pre class="sum" id="nSum"></pre><div class="links" id="nLinks"></div></div>` : ""}
+      <div class="share"><span class="fine">${esc(t("share"))}</span>
+        <a class="btn ghost sm" data-act="sharewa" target="_blank" rel="noopener" href="${esc(shareWa(p))}">${esc(t("share_wa"))}</a>
+        <button class="btn ghost sm" type="button" data-act="copylink">${esc(t("copy_link"))}</button></div>
       <div class="facts">
         ${L(p,"burn") ? `<div><h4>${esc(t("burn"))}</h4><p>${esc(L(p,"burn"))}</p></div>` : ""}
         ${care.length ? `<div><h4>${esc(t("care"))}</h4><ul>${care.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>` : ""}
       </div>
     </div></div>`;
 }
+const shareUrl = p => location.origin + location.pathname + "#candle-" + encodeURIComponent(p.id);
+const shareWa = p => "https://wa.me/?text=" + encodeURIComponent(L(p, "name") + " - Anne Shop\n" + shareUrl(p));
+function copyPlain(text){
+  (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => toast(t("link_copied"))).catch(() => {
+    const ta = document.createElement("textarea"); ta.value = text; ta.style.cssText = "position:fixed;opacity:0"; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); toast(t("link_copied")); } catch(e) { toast(text); } ta.remove(); });
+}
+function notifyText(){ const n = ($("nName") && $("nName").value.trim()) || ""; return "Hi Anne, please let me know when " + detailState.p.name + " is back in stock." + (n ? " Name: " + n : ""); }
+function updateNotify(){
+  if (!detailState || !$("notifyBox")) return;
+  const txt = notifyText(); $("nSum").textContent = txt;
+  const wa = CONFIG.whatsapp ? `<a class="btn" target="_blank" rel="noopener" href="${esc(waUrl(txt))}">${esc(t("whatsapp"))}</a>` : "";
+  $("nLinks").innerHTML = `<button class="btn" type="button" id="nCopy">${esc(t("copy"))}</button>${wa}<a class="btn ghost" target="_blank" rel="noopener" href="${esc(igUrl())}">${esc(t("open_ig"))}</a>`;
+}
 $("detailBody").addEventListener("click", e => {
+  if (e.target.id === "nCopy" && detailState) { copyText(notifyText(), $("nSum")); track("notify/copy", detailState.p.name); return; }
   const b = e.target.closest("[data-act]"); if (!b || !detailState) return;
   const st = detailState, a = b.dataset.act;
-  if (a === "img") { const im = imgs(st.p); $("dMain").src = im[+b.dataset.i]; $("detailBody").querySelectorAll(".tb").forEach(x => x.setAttribute("aria-pressed", String(x === b))); }
+  if (a === "notify") { const box = $("notifyBox"); box.hidden = !box.hidden; updateNotify(); track("notify/open", st.p.name); }
+  else if (a === "copylink") { copyPlain(shareUrl(st.p)); track("share/copy", st.p.name); }
+  else if (a === "sharewa") { track("share/whatsapp", st.p.name); }
+  else if (a === "img") { const im = imgs(st.p); $("dMain").src = im[+b.dataset.i]; $("detailBody").querySelectorAll(".tb").forEach(x => x.setAttribute("aria-pressed", String(x === b))); }
   else if (a === "opt") { st.sel[+b.dataset.g] = +b.dataset.c; b.parentNode.querySelectorAll(".opt").forEach(x => x.setAttribute("aria-pressed", String(x === b))); $("dPrice").textContent = fmt(unit(st.p, st.sel)); }
   else if (a === "q") { st.qty = Math.max(1, Math.min(99, st.qty + +b.dataset.d)); $("dQty").textContent = st.qty; }
   else if (a === "add") addLine(st.p.id, st.sel.slice(), st.note.trim(), st.qty);
 });
-$("detailBody").addEventListener("input", e => { if (e.target.id === "dNote" && detailState) detailState.note = e.target.value; });
+$("detailBody").addEventListener("input", e => {
+  if (!detailState) return;
+  if (e.target.id === "dNote") detailState.note = e.target.value;
+  if (e.target.id === "nName") updateNotify();
+});
 $("dBack").addEventListener("click", () => { location.hash = "shop"; route(); });
 function route(){
   const m = /^#candle-(.+)$/.exec(location.hash);
@@ -790,6 +952,7 @@ $("sort").addEventListener("change", e => { sort = e.target.value; renderGrid();
 $("langBtn").addEventListener("click", () => setLang(lang === "ar" ? "en" : "ar"));
 $("annX").addEventListener("click", () => { try { sessionStorage.setItem("anneshop-ann", (lang === "ar" && CONFIG.announcement.text_ar) ? CONFIG.announcement.text_ar : CONFIG.announcement.text); } catch(e) {} $("annBar").hidden = true; });
 document.addEventListener("keydown", e => {
+  if (!$("lb").hidden) { if (e.key === "Escape") lbClose(); else if (e.key === "ArrowRight") lbStep(lang === "ar" ? -1 : 1); else if (e.key === "ArrowLeft") lbStep(lang === "ar" ? 1 : -1); return; }
   if (e.key !== "Escape") return;
   if (!$("quiz").hidden) closeQuiz(); else if ($("drawer").classList.contains("on")) closeCart(); else if (detailState) { location.hash = "shop"; route(); }
 });
@@ -802,6 +965,8 @@ async function loadData(){
     const d = await r.json();
     PRODUCTS = Array.isArray(d.products) ? d.products.filter(p => p && p.id) : [];
     if (d.settings) CONFIG = Object.assign({}, CONFIG, d.settings, {announcement:Object.assign({}, CONFIG.announcement, d.settings.announcement || {})});
+    if (d.behind && typeof d.behind === "object") BEHIND = Object.assign({}, BEHIND, d.behind, {items:Array.isArray(d.behind.items) ? d.behind.items : []});
+    if (Array.isArray(d.customerPhotos)) CUSTOMER = d.customerPhotos;
   } catch(e) { loadFailed = true; }
 }
 function loadStats(){

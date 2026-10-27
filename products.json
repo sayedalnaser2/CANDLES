@@ -10,7 +10,11 @@
       "text": "Eid gift sets now available",
       "text_ar": "مجموعات هدايا العيد متوفرة الآن",
       "link": ""
-    }
+    },
+    "featuredOn": false,
+    "featuredId": "oud-amber",
+    "featuredNote": "",
+    "featuredNote_ar": ""
   },
   "products": [
     {
@@ -305,5 +309,13 @@
       "care": "Trim the wick to 5 mm before each burn.\nLet the wax melt to the edges the first time.\nBurn for no more than 3 hours at a time.\nKeep away from drafts, pets and children.",
       "care_ar": "قصّ الفتيل إلى 5 مم قبل كل استخدام.\nاترك الشمع يذوب حتى الأطراف في المرة الأولى.\nلا تشعلها أكثر من 3 ساعات متواصلة.\nأبعدها عن التيارات الهوائية والحيوانات والأطفال."
     }
-  ]
+  ],
+  "behind": {
+    "title": "",
+    "title_ar": "",
+    "text": "",
+    "text_ar": "",
+    "items": []
+  },
+  "customerPhotos": []
 }
