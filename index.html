@@ -1,0 +1,393 @@
+<title>Anne Shop</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Karla:wght@400;500;700&family=Caveat:wght@500;600&display=swap">
+<style>
+/* Layout: sticky header, two-column hero with a hand-drawn candle, filterable product grid, slide-in cart that doubles as checkout. */
+:root{
+  --bg:#f5e8e2; --paper:#fbf3ee; --ink:#47302f; --muted:#85676a;
+  --rose:#c98f91; --rose-deep:#a8656b; --sage:#a9b6a0; --sage-deep:#5f7259;
+  --line:#e2cbc4; --btn:#8f525a; --btn-ink:#fff8f4; --chip:#efdcd5; --shadow:rgba(90,50,50,.14);
+  --f-display:"Cormorant Garamond","Iowan Old Style",Georgia,serif;
+  --f-body:"Karla","Trebuchet MS",system-ui,sans-serif;
+  --f-hand:"Caveat","Bradley Hand",cursive;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#271c1e; --paper:#33262a; --ink:#f3e4de; --muted:#c3a7a3;
+  --rose:#d9a1a3; --rose-deep:#e1a3a6; --sage:#7f9177; --sage-deep:#b2c4a8;
+  --line:#4a3739; --btn:#e2aaac; --btn-ink:#2a1d1f; --chip:#3d2d30; --shadow:rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#271c1e; --paper:#33262a; --ink:#f3e4de; --muted:#c3a7a3;
+  --rose:#d9a1a3; --rose-deep:#e1a3a6; --sage:#7f9177; --sage-deep:#b2c4a8;
+  --line:#4a3739; --btn:#e2aaac; --btn-ink:#2a1d1f; --chip:#3d2d30; --shadow:rgba(0,0,0,.35); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0;
+  background-image:radial-gradient(circle at 20% 0%,color-mix(in srgb,var(--rose) 14%,transparent),transparent 45%),radial-gradient(circle at 100% 40%,color-mix(in srgb,var(--sage) 16%,transparent),transparent 40%)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.08;margin:0;text-wrap:balance}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--rose-deep);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto}
+.hand{font-family:var(--f-hand);font-size:1.45rem;color:var(--rose-deep);line-height:1.1}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
+.logo{display:flex;align-items:baseline;gap:8px;text-decoration:none}
+.logo b{font:600 1.75rem var(--f-display);letter-spacing:.01em}
+.logo span{font:500 1.25rem var(--f-hand);color:var(--rose-deep)}
+nav{display:flex;align-items:center;gap:18px}
+nav a.lnk{text-decoration:none;font-size:.92rem;color:var(--muted)}
+nav a.lnk:hover{color:var(--ink)}
+.cartbtn{display:flex;align-items:center;gap:8px;background:var(--btn);color:var(--btn-ink);border:0;border-radius:999px;padding:9px 16px;font-weight:700;font-size:.9rem}
+.cartbtn i{font-style:normal;background:var(--btn-ink);color:var(--btn);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:.78rem;padding:0 6px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-block:48px 40px}
+.hero>*{min-width:0}
+.hero h1{font-size:clamp(2.6rem,6.5vw,4.6rem);margin:12px 0 18px}
+.hero h1 em{color:var(--rose-deep);font-weight:500}
+.hero p{max-width:46ch;color:var(--muted);font-size:1.08rem;margin:0 0 26px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-block;background:var(--btn);color:var(--btn-ink);border:0;border-radius:999px;padding:13px 26px;font-weight:700;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--rose-deep)}
+.plate{position:relative;aspect-ratio:1/1.05;max-width:440px;width:100%;margin-inline:auto;background:var(--paper);border-radius:46% 46% 8px 8px/38% 38% 8px 8px;
+  border:1px solid var(--line);box-shadow:0 18px 40px var(--shadow);display:grid;place-items:center}
+.plate::after{content:"";position:absolute;inset:10px;border:1.5px dashed var(--rose);border-radius:inherit;opacity:.55;pointer-events:none}
+.plate svg{width:78%;height:auto}
+.stamp{position:absolute;right:-6px;bottom:22px;transform:rotate(-9deg);background:var(--sage);color:#26301f;border-radius:50%;width:92px;height:92px;display:grid;place-items:center;text-align:center;
+  font:600 .98rem/1.05 var(--f-display);border:2px dashed #26301f55;padding:8px}
+
+/* scallop divider */
+.scallop{height:16px;margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));background:radial-gradient(circle at 10px 0,transparent 9px,var(--chip) 9.5px) 0 0/20px 16px repeat-x}
+.promise{background:var(--chip);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:18px max(16px,env(safe-area-inset-left,0px))}
+.promise ul{list-style:none;margin:0 auto;padding:0;max-width:1120px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 28px;font-family:var(--f-display);font-size:1.2rem;font-style:italic}
+.promise li::before{content:"\2766";color:var(--rose-deep);margin-right:9px;font-style:normal}
+
+/* shop */
+section{padding-block:56px 12px}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px;margin-bottom:26px}
+.head h2{font-size:clamp(2rem,4.5vw,3rem)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:transparent;border:1.5px solid var(--line);color:var(--ink);border-radius:999px;padding:7px 16px;font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--sage-deep);border-color:var(--sage-deep);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:6px 6px 22px 22px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 28px var(--shadow)}
+.art{aspect-ratio:1/.92;display:grid;place-items:center;position:relative;border-bottom:1px solid var(--line)}
+.art svg{width:74%;height:auto}
+.tag{position:absolute;top:12px;left:12px;background:var(--rose-deep);color:var(--btn-ink);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 10px;border-radius:3px}
+.info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.info h3{font-size:1.5rem}
+.notes{color:var(--muted);font-size:.92rem;margin:0}
+.size{font-family:var(--f-hand);font-size:1.2rem;color:var(--sage-deep)}
+.buy{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px}
+.price{font:600 1.4rem var(--f-display)}
+.add{background:transparent;color:var(--ink);border:1.5px solid var(--rose-deep);border-radius:999px;padding:7px 18px;font-weight:700;font-size:.88rem}
+.add:hover{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+
+/* story */
+.story{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center}
+.story>*{min-width:0}
+.note{background:var(--paper);border:1px solid var(--line);padding:30px 28px;transform:rotate(-1.6deg);box-shadow:0 10px 24px var(--shadow);
+  background-image:repeating-linear-gradient(transparent 0 31px,color-mix(in srgb,var(--rose) 28%,transparent) 31px 32px)}
+.note p{font-family:var(--f-hand);font-size:1.6rem;line-height:32px;margin:0}
+.story h2{font-size:clamp(1.9rem,4vw,2.7rem);margin-bottom:14px}
+.story p{color:var(--muted);max-width:52ch;margin:0 0 12px}
+
+footer{margin-top:64px;border-top:1px solid var(--line);padding-block:30px 40px;display:flex;flex-wrap:wrap;gap:16px 40px;justify-content:space-between;color:var(--muted);font-size:.92rem}
+footer b{font:600 1.5rem var(--f-display);color:var(--ink)}
+footer a{color:var(--rose-deep);font-weight:700}
+
+/* cart drawer */
+.scrim{position:fixed;inset:0;background:rgba(40,22,24,.5);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.on{opacity:1;pointer-events:auto}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(430px,100%);background:var(--paper);z-index:50;transform:translateX(105%);transition:transform .3s;display:flex;flex-direction:column;
+  border-left:1px solid var(--line);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+aside.on{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.dh h2{font-size:1.9rem}
+.x{background:none;border:0;color:var(--ink);font-size:1.6rem;line-height:1;padding:4px 8px}
+.db{flex:1;overflow:auto;padding:8px 20px 20px}
+.empty{text-align:center;color:var(--muted);padding:48px 12px}
+.empty .hand{display:block;font-size:1.8rem;margin-bottom:6px}
+.line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px dashed var(--line)}
+.line>*{min-width:0}
+.thumb{width:64px;height:64px;border-radius:8px;background:var(--bg);display:grid;place-items:center}
+.thumb svg{width:84%}
+.line h4{margin:0;font:600 1.15rem var(--f-display)}
+.line small{color:var(--muted)}
+.qty{display:inline-flex;align-items:center;gap:8px;margin-top:4px}
+.qty button{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--ink);line-height:1;padding:0}
+.qty span{min-width:18px;text-align:center;font-variant-numeric:tabular-nums}
+.lt{font-variant-numeric:tabular-nums;font-weight:700}
+.df{border-top:1px solid var(--line);padding:16px 20px 20px;display:flex;flex-direction:column;gap:12px}
+.tot{display:flex;justify-content:space-between;font:600 1.5rem var(--f-display)}
+.df .btn{width:100%;text-align:center}
+.fld{display:flex;flex-direction:column;gap:4px;font-size:.85rem;font-weight:700;color:var(--muted)}
+.fld input,.fld textarea{font:400 1rem var(--f-body);color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+.fld textarea{resize:vertical;min-height:72px}
+.sum{font:400 .86rem/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap;background:var(--bg);border:1px dashed var(--rose);border-radius:8px;padding:12px;max-height:200px;overflow:auto;margin:0}
+.fine{font-size:.82rem;color:var(--muted);margin:0}
+.back{background:none;border:0;color:var(--rose-deep);font-weight:700;padding:0;text-align:left}
+.links{display:flex;gap:10px;flex-wrap:wrap}
+.links .btn{flex:1;min-width:140px;width:auto;padding:12px 14px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;font-size:.9rem;opacity:0;transition:.25s;z-index:60;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@keyframes flick{0%,100%{transform:scale(1,1) rotate(-1deg)}35%{transform:scale(.94,1.07) rotate(1.5deg)}70%{transform:scale(1.03,.96) rotate(-1.5deg)}}
+.flame{animation:flick 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@media (prefers-reduced-motion:reduce){.flame{animation:none}.card,aside,.scrim,.toast{transition:none}}
+@media (max-width:760px){
+  .hero,.story{grid-template-columns:1fr;gap:28px}
+  .hero{padding-top:30px}
+  .plate{max-width:340px}
+  nav a.lnk{display:none}
+  .promise ul{flex-direction:column}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Anne Shop home"><b>Anne Shop</b><span>handmade candles</span></a>
+    <nav>
+      <a class="lnk" href="#shop">Shop</a>
+      <a class="lnk" href="#story">Our story</a>
+      <button class="cartbtn" id="openCart" aria-label="Open cart">Cart <i id="count">0</i></button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div>
+      <p class="hand">poured by hand, in Bahrain</p>
+      <h1>Candles for <em>slow evenings</em> and cozy corners</h1>
+      <p>Small-batch candles in teacups, tins and jars, with soft scents that feel like an old armchair, a pot of tea and a good book.</p>
+      <div class="cta">
+        <a class="btn" href="#shop">Shop the candles</a>
+        <a class="btn ghost" href="#story">Meet Anne</a>
+      </div>
+    </div>
+    <div class="plate" id="heroArt"><div class="stamp">small<br>batch<br>No. 1</div></div>
+  </div>
+</main>
+
+<div class="scallop"></div>
+<div class="promise"><ul>
+  <li>Hand-poured in small batches</li><li>Gift-ready packaging</li><li>Ordered and confirmed by message</li>
+</ul></div>
+
+<section id="shop">
+  <div class="head">
+    <div><p class="hand">this season's pour</p><h2>The Candle Shelf</h2></div>
+    <div class="chips" id="chips" role="group" aria-label="Filter candles"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="story">
+  <div class="story">
+    <div class="note"><p>Light one, put your phone down, and stay a while.</p><p style="text-align:right">&mdash; Anne</p></div>
+    <div>
+      <p class="eyebrow">Our story</p>
+      <h2>Made on a kitchen table, meant for yours</h2>
+      <p>Anne Shop started with one candle poured for a friend and turned into a little collection of vintage-inspired pieces. Each candle is poured, trimmed and wrapped by hand.</p>
+      <p>Follow along on Instagram to see new scents as they come off the table, and to ask for custom colors or gift sets.</p>
+      <p><a class="btn ghost" href="https://www.instagram.com/anneshop.bh/" target="_blank" rel="noopener">@anneshop.bh on Instagram</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div><b>Anne Shop</b><br>Handmade candles, Bahrain</div>
+  <div>Prices in Bahraini dinar (BD).<br>Orders are confirmed by message before payment.</div>
+  <div>Instagram <a href="https://www.instagram.com/anneshop.bh/" target="_blank" rel="noopener">@anneshop.bh</a></div>
+</footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside id="drawer" aria-label="Your cart" aria-hidden="true">
+  <div class="dh"><h2 id="dTitle">Your cart</h2><button class="x" id="closeCart" aria-label="Close cart">&times;</button></div>
+  <div class="db" id="dBody"></div>
+  <div class="df" id="dFoot"></div>
+</aside>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---- Shop settings: edit these ---- */
+const CONFIG = {
+  instagram: "anneshop.bh",
+  whatsapp: "",            // e.g. "97333123456" (country code, no + or spaces). Leave empty to hide the WhatsApp button.
+  currency: "BD"
+};
+
+/* ---- Products: sample items, replace with your real candles ---- */
+const PRODUCTS = [
+  {id:"rose-tea",  name:"Rose Tea Cup",       cat:"Teacups", type:"cup",  size:"Vintage teacup, 180 g", price:5.5, notes:"Pressed rose, black tea and a little honey.", tag:"New",  c1:"#f3e3df", c2:"#e7b9bb", c3:"#c98f91"},
+  {id:"sage-linen",name:"Sage & Linen",       cat:"Jars",    type:"jar",  size:"Amber-lidded jar, 220 g", price:6,   notes:"Fresh sage, sun-dried linen, a hint of cedar.", c1:"#cdd8c4", c2:"#e9eddc", c3:"#7d9174"},
+  {id:"biscuit",   name:"Vanilla Biscuit",    cat:"Tins",    type:"tin",  size:"Travel tin, 100 g", price:3.5, notes:"Warm vanilla, butter biscuit and toasted sugar.", c1:"#e8cfa6", c2:"#f6e6c6", c3:"#b98a54"},
+  {id:"oud-amber", name:"Oud & Amber",        cat:"Jars",    type:"jar",  size:"Amber-lidded jar, 220 g", price:7,   notes:"Soft oud, amber resin and a drop of rose.", tag:"Favourite", c1:"#a8777a", c2:"#e2bfb0", c3:"#6e4146"},
+  {id:"lavender",  name:"Dried Lavender",     cat:"Pillars", type:"pillar",size:"Hand-poured pillar, 150 g", price:4.5, notes:"Lavender buds, chamomile and clean cotton.", c1:"#d9c9d8", c2:"#d9c9d8", c3:"#9d86a0"},
+  {id:"chai",      name:"Cardamom Chai",      cat:"Teacups", type:"cup",  size:"Vintage teacup, 180 g", price:5.5, notes:"Cardamom, cinnamon and milky tea.", c1:"#efe0cf", c2:"#e8c9a0", c3:"#c3894f"},
+  {id:"peony",     name:"Peony Petal",        cat:"Tins",    type:"tin",  size:"Travel tin, 100 g", price:3.5, notes:"Blush peony, soft musk and powdery petals.", c1:"#f1cfd2", c2:"#f8e3e3", c3:"#d28f98"},
+  {id:"trio",      name:"Little Trio Gift Set",cat:"Gift sets",type:"trio",size:"Three mini tins, gift box", price:9, notes:"Rose, vanilla and sage in a ribbon-tied box.", tag:"Gift", c1:"#f1cfd2", c2:"#e8cfa6", c3:"#a9b6a0"}
+];
+
+/* ---- Candle illustrations ---- */
+function flame(x,y,s){s=s||1;
+  return `<g class="flame"><path d="M${x} ${y-30*s} C${x+10*s} ${y-16*s} ${x+10*s} ${y-4*s} ${x} ${y} C${x-10*s} ${y-4*s} ${x-10*s} ${y-16*s} ${x} ${y-30*s}Z" fill="#f2b765"/><path d="M${x} ${y-17*s} C${x+5*s} ${y-9*s} ${x+5*s} ${y-3*s} ${x} ${y} C${x-5*s} ${y-3*s} ${x-5*s} ${y-9*s} ${x} ${y-17*s}Z" fill="#fff0c7"/></g>`}
+function wick(x,y1,y2){return `<path d="M${x} ${y1} L${x} ${y2}" stroke="#4a3a35" stroke-width="2.4" stroke-linecap="round"/>`}
+function label(x,y,w,h,c){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#f9efe3" stroke="${c}" stroke-width="1.4"/><path d="M${x+8} ${y+h/2-3} H${x+w-8} M${x+14} ${y+h/2+5} H${x+w-14}" stroke="${c}" stroke-width="1.6" stroke-linecap="round"/><circle cx="${x+w/2}" cy="${y+8}" r="2.4" fill="${c}"/>`}
+function art(p){
+  let s="";
+  if(p.type==="jar"){
+    s=`<ellipse cx="100" cy="182" rx="64" ry="8" fill="#000" opacity=".12"/>
+    <rect x="50" y="92" width="100" height="88" rx="16" fill="${p.c1}"/>
+    <rect x="57" y="99" width="86" height="74" rx="11" fill="${p.c2}"/>
+    <rect x="46" y="80" width="108" height="14" rx="6" fill="${p.c3}"/>
+    ${label(72,122,56,36,p.c3)}${wick(100,99,86)}${flame(100,86)}`;
+  } else if(p.type==="tin"){
+    s=`<ellipse cx="100" cy="182" rx="74" ry="8" fill="#000" opacity=".12"/>
+    <rect x="36" y="118" width="128" height="62" rx="9" fill="${p.c3}"/>
+    <rect x="30" y="108" width="140" height="16" rx="7" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/>
+    <rect x="42" y="124" width="116" height="9" rx="3" fill="${p.c2}"/>
+    ${label(72,138,56,32,p.c3)}
+    ${wick(100,114,100)}${flame(100,100)}`;
+  } else if(p.type==="cup"){
+    s=`<ellipse cx="100" cy="184" rx="78" ry="9" fill="#000" opacity=".12"/>
+    <ellipse cx="100" cy="176" rx="76" ry="12" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/>
+    <ellipse cx="100" cy="174" rx="48" ry="6" fill="none" stroke="${p.c3}" stroke-width="1.2" opacity=".6"/>
+    <path d="M142 112 C176 106 176 150 140 150" fill="none" stroke="${p.c3}" stroke-width="9" stroke-linecap="round"/>
+    <path d="M142 112 C170 108 170 146 140 148" fill="none" stroke="${p.c1}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M52 100 H148 C148 150 130 172 100 172 C70 172 52 150 52 100Z" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/>
+    <ellipse cx="100" cy="100" rx="48" ry="9" fill="${p.c2}" stroke="${p.c3}" stroke-width="2"/>
+    <path d="M70 128 q30 14 60 0" fill="none" stroke="${p.c3}" stroke-width="2" stroke-linecap="round"/><circle cx="100" cy="146" r="4" fill="${p.c3}"/>
+    ${wick(100,100,86)}${flame(100,86)}`;
+  } else if(p.type==="pillar"){
+    s=`<ellipse cx="100" cy="184" rx="62" ry="8" fill="#000" opacity=".12"/>
+    <ellipse cx="100" cy="176" rx="58" ry="10" fill="#c9a76a" stroke="#9a7b43" stroke-width="2"/>
+    <path d="M68 70 H132 V172 H68Z" fill="${p.c1}"/>
+    <path d="M68 70 H132 V84 q-6 12 -12 2 q-6 -10 -14 4 q-6 8 -14 -4 q-8 -10 -14 4 q-5 8 -12 -6Z" fill="${p.c3}" opacity=".35"/>
+    <ellipse cx="100" cy="70" rx="32" ry="6" fill="${p.c2}"/>
+    <path d="M84 100 V140 M116 96 V150" stroke="${p.c3}" stroke-width="1.5" opacity=".45"/>
+    ${wick(100,70,56)}${flame(100,56)}`;
+  } else {
+    const one=(x,c)=>`<rect x="${x-26}" y="128" width="52" height="46" rx="7" fill="${c}"/><rect x="${x-29}" y="120" width="58" height="12" rx="5" fill="${c}" stroke="#ffffff55" stroke-width="2"/>${wick(x,118,108)}${flame(x,108,.75)}`;
+    s=`<ellipse cx="100" cy="182" rx="84" ry="8" fill="#000" opacity=".12"/>
+    <rect x="22" y="150" width="156" height="30" rx="4" fill="#d9b88e"/><path d="M96 150 H104 V180 H96Z" fill="${p.c3}"/>
+    ${one(56,p.c1)}${one(100,p.c2)}${one(144,p.c3)}
+    <path d="M100 150 C82 128 82 142 100 150 C118 142 118 128 100 150Z" fill="${p.c3}"/>`;
+  }
+  return `<svg viewBox="0 0 200 200" role="img" aria-label="${p.name} illustration" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+}
+
+/* ---- State ---- */
+const fmt = n => CONFIG.currency + " " + n.toFixed(3);
+let cart = {};
+try { cart = JSON.parse(localStorage.getItem("anneshop-cart") || "{}") || {}; } catch(e) { cart = {}; }
+const byId = id => PRODUCTS.find(p => p.id === id);
+cart = Object.fromEntries(Object.entries(cart).filter(([id,q]) => byId(id) && q > 0));
+let filter = "All", step = "cart", form = {name:"", phone:"", area:"", notes:""};
+const $ = id => document.getElementById(id);
+const save = () => { try { localStorage.setItem("anneshop-cart", JSON.stringify(cart)); } catch(e) {} };
+const total = () => Object.entries(cart).reduce((s,[id,q]) => s + byId(id).price*q, 0);
+const count = () => Object.values(cart).reduce((a,b) => a+b, 0);
+
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),1800)}
+
+/* ---- Render shop ---- */
+$("heroArt").insertAdjacentHTML("afterbegin", art(PRODUCTS[0]));
+const cats = ["All", ...new Set(PRODUCTS.map(p => p.cat))];
+function renderChips(){
+  $("chips").innerHTML = cats.map(c => `<button class="chip" aria-pressed="${c===filter}" data-c="${c}">${c}</button>`).join("");
+}
+function renderGrid(){
+  $("grid").innerHTML = PRODUCTS.filter(p => filter==="All" || p.cat===filter).map(p => `
+    <article class="card">
+      <div class="art" style="background:color-mix(in srgb, ${p.c1} 22%, var(--paper))">${p.tag?`<span class="tag">${p.tag}</span>`:""}${art(p)}</div>
+      <div class="info">
+        <span class="size">${p.size}</span>
+        <h3>${p.name}</h3>
+        <p class="notes">${p.notes}</p>
+        <div class="buy"><span class="price">${fmt(p.price)}</span><button class="add" data-add="${p.id}">Add to cart</button></div>
+      </div>
+    </article>`).join("");
+}
+$("chips").addEventListener("click", e => { const b=e.target.closest("[data-c]"); if(!b) return; filter=b.dataset.c; renderChips(); renderGrid(); });
+$("grid").addEventListener("click", e => { const b=e.target.closest("[data-add]"); if(!b) return; add(b.dataset.add, 1); toast(byId(b.dataset.add).name + " added to your cart"); });
+
+/* ---- Cart ---- */
+function add(id,d){ cart[id] = Math.max(0,(cart[id]||0)+d); if(!cart[id]) delete cart[id]; save(); renderCart(); }
+function orderText(){
+  const lines = Object.entries(cart).map(([id,q]) => `${q} x ${byId(id).name} - ${fmt(byId(id).price*q)}`);
+  return [`New order for Anne Shop`, "", ...lines, "", `Total: ${fmt(total())}`, "", `Name: ${form.name}`, `Phone: ${form.phone}`, `Area: ${form.area||"-"}`, `Notes: ${form.notes||"-"}`].join("\n");
+}
+function renderCart(){
+  $("count").textContent = count();
+  const body=$("dBody"), foot=$("dFoot");
+  if(step==="cart"){
+    $("dTitle").textContent="Your cart";
+    if(!count()){
+      body.innerHTML=`<div class="empty"><span class="hand">nothing here yet</span>Pick a candle from the shelf and it will wait for you here.</div>`;
+      foot.innerHTML=`<button class="btn" data-go="shop">Browse candles</button>`;
+      return;
+    }
+    body.innerHTML = Object.entries(cart).map(([id,q]) => { const p=byId(id); return `
+      <div class="line"><div class="thumb">${art(p)}</div>
+        <div><h4>${p.name}</h4><small>${fmt(p.price)} each</small>
+          <div class="qty"><button data-d="-1" data-id="${id}" aria-label="One less ${p.name}">&minus;</button><span>${q}</span><button data-d="1" data-id="${id}" aria-label="One more ${p.name}">+</button></div></div>
+        <div class="lt">${fmt(p.price*q)}</div></div>`; }).join("");
+    foot.innerHTML=`<div class="tot"><span>Total</span><span>${fmt(total())}</span></div><p class="fine">Delivery and payment are arranged by message after you send your order.</p><button class="btn" data-go="details">Checkout</button>`;
+  } else if(step==="details"){
+    $("dTitle").textContent="Your details";
+    body.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
+      <button class="back" data-go="cart">&larr; Back to cart</button>
+      <label class="fld" for="fName">Name<input id="fName" autocomplete="name" value=""></label>
+      <label class="fld" for="fPhone">Phone number<input id="fPhone" inputmode="tel" autocomplete="tel" value=""></label>
+      <label class="fld" for="fArea">Area in Bahrain<input id="fArea" placeholder="e.g. Hamad Town, Manama" value=""></label>
+      <label class="fld" for="fNotes">Notes or gift message<textarea id="fNotes"></textarea></label>
+      <p class="fine" id="err" style="color:var(--rose-deep)" hidden>Please add your name and phone number.</p></div>`;
+    $("fName").value=form.name; $("fPhone").value=form.phone; $("fArea").value=form.area; $("fNotes").value=form.notes;
+    foot.innerHTML=`<div class="tot"><span>Total</span><span>${fmt(total())}</span></div><button class="btn" data-go="review">Review order</button>`;
+  } else {
+    $("dTitle").textContent="Send your order";
+    body.innerHTML=`<div style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
+      <button class="back" data-go="details">&larr; Edit details</button>
+      <p class="fine">Copy this order and send it to Anne. She will confirm availability, delivery and payment with you.</p>
+      <pre class="sum" id="sum"></pre></div>`;
+    $("sum").textContent = orderText();
+    const wa = CONFIG.whatsapp ? `<a class="btn" target="_blank" rel="noopener" href="https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(orderText())}">WhatsApp</a>` : "";
+    foot.innerHTML=`<div class="links"><button class="btn" id="copy">Copy order</button>${wa}<a class="btn ghost" target="_blank" rel="noopener" href="https://www.instagram.com/${CONFIG.instagram}/">Open Instagram</a></div><p class="fine">Nothing is sent from this page. Paste your order into a message to Anne.</p>`;
+  }
+}
+$("dBody").addEventListener("input", e => { const m={fName:"name",fPhone:"phone",fArea:"area",fNotes:"notes"}[e.target.id]; if(m) form[m]=e.target.value; });
+function onDrawer(e){
+  const q=e.target.closest("[data-d]");
+  if(q){ add(q.dataset.id, +q.dataset.d); return; }
+  const g=e.target.closest("[data-go]"); if(!g) return;
+  const to=g.dataset.go;
+  if(to==="shop"){ closeCart(); location.hash="shop"; return; }
+  if(to==="review" && (!form.name.trim() || !form.phone.trim())){ $("err").hidden=false; return; }
+  step=to; renderCart();
+}
+$("dBody").addEventListener("click", onDrawer); $("dFoot").addEventListener("click", e => {
+  if(e.target.id==="copy"){
+    const t=orderText();
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(()=>toast("Order copied")).catch(()=>{ const r=document.createRange(); r.selectNodeContents($("sum")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Press copy on the selected text"); });
+    return;
+  }
+  onDrawer(e);
+});
+function openCart(){ step="cart"; renderCart(); $("drawer").classList.add("on"); $("scrim").classList.add("on"); $("drawer").setAttribute("aria-hidden","false"); }
+function closeCart(){ $("drawer").classList.remove("on"); $("scrim").classList.remove("on"); $("drawer").setAttribute("aria-hidden","true"); }
+$("openCart").addEventListener("click", openCart); $("closeCart").addEventListener("click", closeCart); $("scrim").addEventListener("click", closeCart);
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeCart(); });
+
+renderChips(); renderGrid(); renderCart();
+</script>
