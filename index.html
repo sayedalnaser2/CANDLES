@@ -278,6 +278,7 @@ aside.on{transform:none}
 .fab{position:fixed;z-index:36;bottom:calc(18px + env(safe-area-inset-bottom,0px));inset-inline-end:max(16px,env(safe-area-inset-right,0px),env(safe-area-inset-left,0px));display:flex;align-items:center;gap:8px;background:var(--sage-deep);color:var(--bg);text-decoration:none;font-weight:700;border-radius:999px;padding:12px 18px 12px 14px;box-shadow:0 8px 22px var(--shadow)}
 .fab svg{flex:none}
 .share{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 20px}
+.btn.wa{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--sage-deep);color:var(--bg);padding:15px 20px;font-size:1.05rem;min-height:52px}
 .btn.sm{padding:7px 16px;font-size:.88rem}
 .notify{border:1px dashed var(--rose);border-radius:12px;padding:14px;margin:0 0 18px;display:flex;flex-direction:column;gap:10px}
 
@@ -511,7 +512,7 @@ en:{
  d_title:"Your details", d_back:"← Back to cart", f_name:"Name", f_phone:"Phone number", f_area:"Area in Bahrain", f_area_ph:"e.g. Hamad Town, Manama", f_notes:"Notes for Anne",
  f_gift:"This is a gift", f_wrap:"gift wrap", f_giftmsg:"Gift message", f_err:"Please add your name and phone number.", review:"Review order",
  r_title:"Send your order", r_back:"← Edit details", r_intro:"Copy this and send it to Anne in a message. She will confirm availability, delivery and payment with you.",
- copy:"Copy", copied:"Copied", select_copy:"Press copy on the selected text", whatsapp:"WhatsApp", open_ig:"Open Instagram", r_fine:"Nothing is sent from this page. Paste your message to Anne.",
+ r_intro_wa:"This is your order. Tap the button below and it goes to Anne on WhatsApp. She will confirm availability, delivery and payment with you.", wa_send:"Send order on WhatsApp", r_fine_wa:"WhatsApp opens with your order already written. Just press send.", copy:"Copy", copied:"Copied", select_copy:"Press copy on the selected text", whatsapp:"WhatsApp", open_ig:"Open Instagram", r_fine:"Nothing is sent from this page. Paste your message to Anne.",
  story_eyebrow:"Our story", story_h:"Made on a kitchen table, meant for yours",
  story_p1:"Anne Shop started with one candle poured for a friend and turned into a little collection of vintage-inspired pieces. Each candle is poured, trimmed and wrapped by hand.",
  story_p2:"Follow along on Instagram to see new scents as they come off the table, and to ask for custom colors or gift sets.",
@@ -548,7 +549,7 @@ ar:{
  d_title:"بياناتك", d_back:"→ العودة إلى السلة", f_name:"الاسم", f_phone:"رقم الهاتف", f_area:"المنطقة في البحرين", f_area_ph:"مثال: مدينة حمد، المنامة", f_notes:"ملاحظات لآن",
  f_gift:"هذه هدية", f_wrap:"تغليف الهدية", f_giftmsg:"رسالة الهدية", f_err:"يرجى إدخال الاسم ورقم الهاتف.", review:"مراجعة الطلب",
  r_title:"أرسل طلبك", r_back:"→ تعديل البيانات", r_intro:"انسخ هذا النص وأرسله إلى آن في رسالة، وستؤكد لك التوفر والتوصيل والدفع.",
- copy:"نسخ", copied:"تم النسخ", select_copy:"اضغط نسخ على النص المحدد", whatsapp:"واتساب", open_ig:"فتح إنستغرام", r_fine:"لا يتم إرسال أي شيء من هذه الصفحة. الصق رسالتك إلى آن.",
+ r_intro_wa:"هذا هو طلبك. اضغط الزر أدناه ليصل إلى آن على واتساب، وستؤكد معك التوفر والتوصيل والدفع.", wa_send:"أرسل الطلب عبر واتساب", r_fine_wa:"يفتح واتساب والطلب مكتوب جاهز. فقط اضغط إرسال.", copy:"نسخ", copied:"تم النسخ", select_copy:"اضغط نسخ على النص المحدد", whatsapp:"واتساب", open_ig:"فتح إنستغرام", r_fine:"لا يتم إرسال أي شيء من هذه الصفحة. الصق رسالتك إلى آن.",
  story_eyebrow:"قصتنا", story_h:"صُنعت على طاولة مطبخ، لتصل إلى طاولتك",
  story_p1:"بدأ متجر آن بشمعة واحدة صُبّت لصديقة، ثم أصبح مجموعة صغيرة من القطع المستوحاة من الطراز القديم. كل شمعة تُصبّ وتُقصّ وتُغلّف يدويًا.",
  story_p2:"تابعونا على إنستغرام لرؤية العطور الجديدة فور خروجها من الطاولة، ولطلب ألوان خاصة أو علب هدايا.",
@@ -850,10 +851,11 @@ function renderCart(){
     $("dTitle").textContent = t("r_title");
     body.innerHTML = `<div style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
       <button class="back" type="button" data-go="details">${esc(t("r_back"))}</button>
-      <p class="fine">${esc(t("r_intro"))}</p><pre class="sum" id="sum"></pre></div>`;
+      <p class="fine">${esc(t(String(CONFIG.whatsapp || "").replace(/\D/g, "") ? "r_intro_wa" : "r_intro"))}</p><pre class="sum" id="sum"></pre></div>`;
     $("sum").textContent = orderText();
-    const wa = CONFIG.whatsapp ? `<a class="btn" target="_blank" rel="noopener" href="${esc(waUrl(orderText()))}">${esc(t("whatsapp"))}</a>` : "";
-    foot.innerHTML = `<div class="links"><button class="btn" type="button" id="copy">${esc(t("copy"))}</button>${wa}<a class="btn ghost" target="_blank" rel="noopener" href="${esc(igUrl())}">${esc(t("open_ig"))}</a></div><p class="fine">${esc(t("r_fine"))}</p>`;
+    const hasWa = !!String(CONFIG.whatsapp || "").replace(/\D/g, "");
+    const waBtn = hasWa ? `<a class="btn wa" id="sendWa" target="_blank" rel="noopener" href="${esc(waUrl(orderText()))}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16v11H10l-6 4z"/><path d="M8.5 10.5h7"/></svg> ${esc(t("wa_send"))}</a>` : "";
+    foot.innerHTML = `${waBtn}<div class="links"><button class="btn ${hasWa ? "ghost" : ""}" type="button" id="copy">${esc(t("copy"))}</button><a class="btn ghost" target="_blank" rel="noopener" href="${esc(igUrl())}">${esc(t("open_ig"))}</a></div><p class="fine">${esc(t(hasWa ? "r_fine_wa" : "r_fine"))}</p>`;
   }
 }
 function copyText(text, pre){
