@@ -281,6 +281,11 @@ aside.on{transform:none}
 .btn.wa{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--sage-deep);color:var(--bg);padding:15px 20px;font-size:1.05rem;min-height:52px}
 .ighint{background:var(--ann);color:var(--ann-ink);border-radius:10px;padding:10px 12px;font-weight:700;margin:0}
 .btn.wa.ig{background:var(--rose-deep);color:var(--btn-ink);margin-top:10px}
+.welcome{background:var(--chip);border-bottom:1px solid var(--line);font-size:.95rem}
+.wbar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 14px;padding-block:6px;text-align:center}
+.wbar b{font-family:var(--f-display);font-size:1.15rem}
+.wlink{background:none;border:0;color:var(--rose-deep);font-weight:700;text-decoration:underline;min-height:36px;padding:0 6px}
+.evlink{color:var(--rose-deep);font-weight:700}
 .btn.sm{padding:7px 16px;font-size:.88rem}
 .notify{border:1px dashed var(--rose);border-radius:12px;padding:14px;margin:0 0 18px;display:flex;flex-direction:column;gap:10px}
 
@@ -367,12 +372,15 @@ aside.on{transform:none}
 
 <div class="ann" id="annBar" hidden><div class="gut"><div class="wrap annin"><span id="annText"></span><button id="annX" data-al="ann_close">&times;</button></div></div></div>
 
+<div class="welcome" id="welcome" hidden><div class="gut"><div class="wrap wbar"><span id="welcomeText"></span><button type="button" id="notYou" class="wlink"></button></div></div></div>
+
 <header><div class="gut"><div class="wrap bar">
   <a class="logo" href="#top" aria-label="Anne Shop"><b>Anne Shop</b><span data-t="logo_sub"></span></a>
   <nav>
     <a class="lnk" href="#shop" data-t="nav_shop"></a>
     <a class="lnk" href="about.html" data-t="nav_story"></a>
     <a class="lnk" href="#custom" data-t="nav_custom"></a>
+    <a class="lnk" href="events.html" data-t="nav_events"></a>
     <button class="langbtn" id="langBtn" type="button"></button>
     <button class="cartbtn" id="openCart" type="button" data-al="cart"><span data-t="cart"></span> <i id="count">0</i></button>
   </nav>
@@ -419,6 +427,7 @@ aside.on{transform:none}
     <p class="hand" data-t="c_eyebrow"></p>
     <h2 data-t="c_title"></h2>
     <p class="lead" data-t="c_intro"></p>
+    <p style="margin:-6px 0 18px"><a class="evlink" href="events.html" data-t="c_events_link"></a></p>
     <div class="frow">
       <label class="fld" for="cOcc"><span data-t="c_occasion"></span>
         <select id="cOcc">
@@ -462,7 +471,7 @@ aside.on{transform:none}
   <div class="gut"><footer class="wrap">
     <div><b>Anne Shop</b><br><span data-t="foot_tag"></span></div>
     <div><span data-t="foot_prices"></span><br><span data-t="foot_conf"></span></div>
-    <div><a href="about.html" data-t="nav_story" style="margin-inline-end:14px"></a><span data-t="foot_ig"></span> <a id="igLink" href="https://www.instagram.com/anneshop.bh/" target="_blank" rel="noopener">@anneshop.bh</a></div>
+    <div><a href="about.html" data-t="nav_story" style="margin-inline-end:14px"></a><a href="events.html" data-t="nav_events" style="margin-inline-end:14px"></a><span data-t="foot_ig"></span> <a id="igLink" href="https://www.instagram.com/anneshop.bh/" target="_blank" rel="noopener">@anneshop.bh</a></div>
   </footer></div>
 </main>
 
@@ -499,7 +508,7 @@ aside.on{transform:none}
 /* ===================== Text in both languages ===================== */
 const T = {
 en:{
- logo_sub:"handmade candles", nav_shop:"Shop", nav_story:"Our story", nav_custom:"Custom orders", cart:"Cart", lang_btn:"العربية",
+ logo_sub:"handmade candles", nav_shop:"Shop", nav_story:"Our story", nav_custom:"Custom orders", nav_events:"Weddings & events", welcome:"Welcome back, ", not_you:"Not you?", c_events_link:"Planning a wedding, corporate gift or market stall? See our events page →", cart:"Cart", lang_btn:"العربية",
  hero_eyebrow:"poured by hand, in Bahrain", hero_h1:"Candles for <em>slow evenings</em> and cozy corners",
  hero_p:"Small-batch candles in teacups, tins and jars, with soft scents that feel like an old armchair, a pot of tea and a good book.",
  hero_cta:"Shop the candles", hero_cta2:"Meet Anne", stamp:"small<br>batch<br>No. 1",
@@ -536,7 +545,7 @@ en:{
  bh_eyebrow:"a peek at the table", bh_title:"Behind the scenes", cp_eyebrow:"from our customers", cp_title:"Your cozy corners", prev:"Previous", next:"Next"
 },
 ar:{
- logo_sub:"شموع يدوية", nav_shop:"المتجر", nav_story:"قصتنا", nav_custom:"طلبات خاصة", cart:"السلة", lang_btn:"English",
+ logo_sub:"شموع يدوية", nav_shop:"المتجر", nav_story:"قصتنا", nav_custom:"طلبات خاصة", nav_events:"الأعراس والمناسبات", welcome:"أهلًا بعودتك، ", not_you:"لست أنت؟", c_events_link:"تخطط لزفاف أو هدايا شركات أو بسطة في سوق؟ شاهد صفحة المناسبات ←", cart:"السلة", lang_btn:"English",
  hero_eyebrow:"مصبوبة يدويًا في البحرين", hero_h1:"شموع لـ<em>أمسيات هادئة</em> وزوايا دافئة",
  hero_p:"شموع بدفعات صغيرة في فناجين وعلب وأوانٍ زجاجية، بعطور ناعمة تشبه كرسيًّا قديمًا وكوب شاي وكتابًا جميلًا.",
  hero_cta:"تسوّق الشموع", hero_cta2:"تعرّف على آن", stamp:"دفعة<br>صغيرة<br>رقم ١",
@@ -617,6 +626,15 @@ const waUrl = text => "https://wa.me/" + String(CONFIG.whatsapp).replace(/\D/g, 
 
 function toast(msg){ const e = $("toast"); e.textContent = msg; e.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => e.classList.remove("on"), 1900); }
 function track(path, title){ try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({path:path, title:title || path, event:true}); } catch(e) {} }
+const NAME_KEY = "anneshop-name";
+const savedName = () => { try { return (localStorage.getItem(NAME_KEY) || "").trim(); } catch(e) { return ""; } };
+function rememberName(v){ v = String(v || "").trim(); if (!v) return; try { localStorage.setItem(NAME_KEY, v.slice(0, 40)); } catch(e) {} }
+function renderWelcome(){
+  const n = savedName().split(/\s+/)[0], w = $("welcome");
+  if (!n) { w.hidden = true; return; }
+  $("welcomeText").innerHTML = esc(t("welcome")) + "<b>" + esc(n) + "</b> \u273f";
+  $("notYou").textContent = t("not_you"); w.hidden = false;
+}
 const saveCart = () => { try { localStorage.setItem("anneshop-cart2", JSON.stringify(cart)); } catch(e) {} };
 
 /* ===================== Candle drawings ===================== */
@@ -803,7 +821,7 @@ function updateFab(){
   f.classList.toggle("up", !!detailState && !detailState.p.soldOut);
   f.href = waUrl(msg); f.setAttribute("aria-label", t("wa_chat")); $("fabText").textContent = t("wa_short"); f.hidden = false;
 }
-function renderAll(){ renderAnn(); renderFeatured(); renderChips(); renderGrid(); renderGalleries(); renderCart(); updateFab(); }
+function renderAll(){ renderAnn(); renderFeatured(); renderChips(); renderGrid(); renderGalleries(); renderCart(); updateFab(); renderWelcome(); }
 
 /* ===================== Cart ===================== */
 const lineKey = l => l.id + "|" + (l.sel || []).join(".") + "|" + (l.note || "");
@@ -878,7 +896,7 @@ function copyText(text, pre){
     const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast(t("select_copy")); });
 }
 $("dBody").addEventListener("input", e => {
-  const m = {fName:"name", fPhone:"phone", fArea:"area", fNotes:"notes", fGiftMsg:"giftMsg"}[e.target.id]; if (m) form[m] = e.target.value;
+  const m = {fName:"name", fPhone:"phone", fArea:"area", fNotes:"notes", fGiftMsg:"giftMsg"}[e.target.id]; if (m) { form[m] = e.target.value; if (m === "name") rememberName(e.target.value); }
 });
 $("dBody").addEventListener("change", e => {
   if (e.target.id === "fGift") { form.gift = e.target.checked; $("giftWrap").hidden = !form.gift; $("dTot").textContent = fmt(grand()); }
@@ -1026,7 +1044,9 @@ function buildCustomOut(){
   const wa = CONFIG.whatsapp ? `<a class="btn" target="_blank" rel="noopener" href="${esc(waUrl(txt))}">${esc(t("whatsapp"))}</a>` : "";
   $("cLinks").innerHTML = `<button class="btn" type="button" id="cCopy">${esc(t("copy"))}</button>${wa}<a class="btn ghost igdm" data-src="cSum" target="_blank" rel="noopener" href="${esc(igDm())}">${esc(t("open_ig"))}</a>`;
 }
+$("notYou").addEventListener("click", () => { try { localStorage.removeItem(NAME_KEY); } catch(e) {} form.name = ""; $("cName").value = ""; renderWelcome(); });
 $("cGo").addEventListener("click", () => {
+  rememberName($("cName").value); renderWelcome();
   const bad = !$("cName").value.trim() || !$("cPhone").value.trim();
   $("cErr").hidden = !bad; if (bad) return;
   buildCustomOut(); $("cOut").hidden = false; track("custom/prepare", "Custom order prepared");
@@ -1071,10 +1091,11 @@ function init(){
       return {id:l.id, qty:Math.min(99, l.qty|0), note:String(l.note || ""), sel:G.map((g,i) => (l.sel && l.sel[i] >= 0 && l.sel[i] < g.choices.length) ? l.sel[i] : 0)}; });
     saveCart();
   } else cart = [];
+  if (savedName()) { form.name = savedName(); $("cName").value = savedName(); }
   applyStatic();
   $("heroArt").insertAdjacentHTML("afterbegin", artSvg(PRODUCTS[0] || {type:"cup", c1:"#f3e3df", c2:"#e7b9bb", c3:"#c98f91"}));
   $("igLink").href = igUrl(); $("igLink").textContent = "@" + (CONFIG.instagram || "anneshop.bh");
-  renderAll(); loadStats(); route(); quiet();
+  renderAll(); renderWelcome(); loadStats(); route(); quiet();
 }
 loadData().then(init);
 </script>
