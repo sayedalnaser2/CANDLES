@@ -47,12 +47,9 @@ html.motion:not(.rv-off) .rv:not(.in),html.motion:not(.rv-off) .rvs:not(.in)>*{o
 html.motion .rv.in,html.motion .rvs.in>*{animation:rvIn 1.3s cubic-bezier(.22,.61,.36,1) var(--dl,0s) backwards}
 @keyframes rvIn{from{opacity:0;transform:translateY(22px)}}
 
-/* header settles when scrolling */
+/* header gets a soft shadow when scrolling */
 html.motion header{transition:box-shadow .6s ease}
-html.motion .logo{transition:scale .6s ease;transform-origin:left center}
-html.motion[dir="rtl"] .logo{transform-origin:right center}
 html.scrolled header{box-shadow:0 8px 24px var(--shadow)}
-html.motion.scrolled .logo{scale:.9}
 
 /* candle page, scent finder and photo viewer open slowly and softly */
 html.motion .detail{animation:dIn .65s cubic-bezier(.22,.61,.36,1);transform-origin:var(--ox,50%) var(--oy,35%)}

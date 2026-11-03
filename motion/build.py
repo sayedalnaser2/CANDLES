@@ -9,6 +9,7 @@ M = ROOT / "motion"
 css = (M / "motion.css").read_text(encoding="utf-8").strip()
 js = (M / "motion.js").read_text(encoding="utf-8").strip()
 intro = (M / "intro.html").read_text(encoding="utf-8").strip()
+shared = (M / "shared.css").read_text(encoding="utf-8").strip()
 
 HEAD = ('/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}'
         'if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");c+=" intro-on"}'
@@ -33,6 +34,7 @@ for name in ("index.html", "about.html", "events.html"):
     s = put(s, "/*motion-head*/", "/*/motion-head*/", HEAD[len("/*motion-head*/"):-len("/*/motion-head*/")],
             'h.className="boot";', "@@")
     s = put(s, "/*motion-css*/\n", "\n/*/motion-css*/", css, "\n</style>", "\n@@\n</style>")
+    s = put(s, "/*shared-css*/\n", "\n/*/shared-css*/", shared, "\n/*/motion-css*/", "\n/*/motion-css*/\n@@")
     s = put(s, "<!--motion-intro-->\n", "\n<!--/motion-intro-->", intro, "<body>\n", "<body>\n@@\n")
     s = put(s, "<!--motion-js--><script>\n", "\n</script><!--/motion-js-->", js, "\n</body>", "\n@@\n</body>")
     p.write_text(s, encoding="utf-8")
