@@ -24,7 +24,7 @@
 /* Set language and direction before first paint so nothing slides around on load. Arabic fonts load only for Arabic. */
 window.__arFonts=function(){if(document.getElementById("arFonts"))return;var k=document.createElement("link");k.id="arFonts";k.rel="stylesheet";k.href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap";document.head.appendChild(k);};
 (function(){var l="en";try{l=localStorage.getItem("anneshop-lang")||((navigator.language||"").toLowerCase().indexOf("ar")===0?"ar":"en")}catch(e){}
-if(l!=="ar")l="en";var h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";h.className="boot";if(l==="ar")window.__arFonts();})();
+if(l!=="ar")l="en";var h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");c+=" intro-on"}if(sessionStorage.getItem("anneshop-arrive")){sessionStorage.removeItem("anneshop-arrive");c+=" arrive"}}catch(e){}setTimeout(function(){if(!window.__mo)h.classList.add("rv-off")},4000)}h.className=c;/*/motion-head*/if(l==="ar")window.__arFonts();})();
 </script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
@@ -382,9 +382,91 @@ aside.on{transform:none}
   .ctas .btn{flex:1 1 100%;min-height:48px;display:flex;align-items:center;justify-content:center}
 }
 
+/*motion-css*/
+/* ===== Motion (shared by index, about, events; built in from motion/) ===== */
+/* candle-lighting intro: first page of a visit only */
+.intro{display:none}
+html.intro-on .intro{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:var(--bg);cursor:pointer;
+  background-image:radial-gradient(circle at 50% 44%,color-mix(in srgb,#f6c38a 22%,transparent),transparent 58%);
+  animation:iOut .55s cubic-bezier(.4,0,.2,1) 1.7s forwards}
+html.intro-on.intro-skip .intro{animation:iSkip .28s ease forwards}
+.i-in{display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px;animation:iUp .7s cubic-bezier(.2,.7,.2,1) both}
+.i-cup{width:138px;height:138px;overflow:visible}
+.i-glow{transform-box:fill-box;transform-origin:center;opacity:0;animation:iGlow 1.3s ease-out .62s forwards}
+.i-flame{transform-box:fill-box;transform-origin:50% 100%;transform:scale(0);animation:iFlame .55s cubic-bezier(.3,1.5,.5,1) .62s forwards,iFlick 2.4s ease-in-out 1.2s infinite}
+.i-spark{transform-box:fill-box;transform-origin:center;opacity:0;animation:iSpark .5s ease-out .4s}
+.i-name{font:600 2.2rem/1.1 var(--f-display);color:var(--ink);letter-spacing:.03em;margin:10px 0 0;opacity:0;animation:iText .8s cubic-bezier(.2,.7,.2,1) .95s forwards}
+.i-sub{font:500 1.3rem/1.2 var(--f-hand);color:var(--rose-deep);margin:4px 0 0;opacity:0;animation:iText .8s cubic-bezier(.2,.7,.2,1) 1.1s forwards}
+html[lang="ar"] .i-sub [lang="en"],html:not([lang="ar"]) .i-sub [lang="ar"]{display:none}
+@keyframes iUp{from{opacity:0;transform:translateY(12px)}}
+@keyframes iSpark{0%{opacity:0;transform:scale(.2)}35%{opacity:1;transform:scale(1.6)}100%{opacity:0;transform:scale(.3)}}
+@keyframes iFlame{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes iFlick{0%,100%{transform:scale(1,1) rotate(-1deg)}35%{transform:scale(.94,1.07) rotate(1.5deg)}70%{transform:scale(1.03,.96) rotate(-1.5deg)}}
+@keyframes iGlow{from{opacity:0;transform:scale(.25)}to{opacity:1;transform:scale(1)}}
+@keyframes iText{from{opacity:0;transform:translateY(8px);letter-spacing:.18em}to{opacity:1;transform:none}}
+@keyframes iOut{to{opacity:0;visibility:hidden;transform:scale(1.05)}}
+@keyframes iSkip{to{opacity:0;visibility:hidden}}
+
+/* sections fade up as they come into view (.rv = one block, .rvs = its children one after another) */
+html.motion:not(.rv-off) .rv:not(.in),html.motion:not(.rv-off) .rvs:not(.in)>*{opacity:0;transform:translateY(28px)}
+html.motion .rv.in,html.motion .rvs.in>*{animation:rvIn .95s cubic-bezier(.2,.7,.2,1) var(--dl,0s) backwards}
+@keyframes rvIn{from{opacity:0;transform:translateY(28px)}}
+
+/* header settles when scrolling */
+html.motion header{transition:box-shadow .35s ease}
+html.motion .logo{transition:scale .35s ease;transform-origin:left center}
+html.motion[dir="rtl"] .logo{transform-origin:right center}
+html.scrolled header{box-shadow:0 8px 24px var(--shadow)}
+html.motion.scrolled .logo{scale:.9}
+
+/* candle page, scent finder and photo viewer open smoothly */
+html.motion .detail{animation:dIn .45s cubic-bezier(.2,.75,.2,1);transform-origin:var(--ox,50%) var(--oy,35%)}
+html.motion .detail.closing{animation:dOut .26s cubic-bezier(.4,0,.6,1) forwards;pointer-events:none}
+html.motion .modal:not([hidden]){animation:fIn .3s ease}
+html.motion .modal:not([hidden]) .panel{animation:pIn .38s cubic-bezier(.2,.75,.2,1)}
+html.motion .lb:not([hidden]){animation:fIn .28s ease}
+@keyframes dIn{from{opacity:0;transform:scale(.9)}}
+@keyframes dOut{to{opacity:0;transform:scale(.96)}}
+@keyframes pIn{from{opacity:0;transform:translateY(16px) scale(.97)}}
+@keyframes fIn{from{opacity:0}}
+
+/* page to page: View Transitions where supported, a short fade everywhere else */
+@media (prefers-reduced-motion:no-preference){
+  @view-transition{navigation:auto}
+  header{view-transition-name:site-head}
+  ::view-transition-old(root){animation:vtOut .3s ease both}
+  ::view-transition-new(root){animation:vtIn .55s cubic-bezier(.2,.7,.2,1) both}
+}
+@keyframes vtOut{to{opacity:0;transform:translateY(-10px)}}
+@keyframes vtIn{from{opacity:0;transform:translateY(14px)}}
+html.leaving main{opacity:0;transform:translateY(-10px);transition:opacity .2s ease,transform .2s ease}
+html.arrive main{animation:pgIn .55s cubic-bezier(.2,.7,.2,1)}
+@keyframes pgIn{from{opacity:0;transform:translateY(14px)}}
+/*/motion-css*/
 </style>
 </head>
 <body>
+<!--motion-intro-->
+<div class="intro" id="intro" aria-hidden="true"><div class="i-in">
+  <svg class="i-cup" viewBox="0 0 200 200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="iGlowG"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".95"/><stop offset=".45" stop-color="#f6c38a" stop-opacity=".35"/><stop offset="1" stop-color="#f6c38a" stop-opacity="0"/></radialGradient></defs>
+    <circle class="i-glow" cx="100" cy="70" r="80" fill="url(#iGlowG)"/>
+    <ellipse cx="100" cy="184" rx="78" ry="9" fill="#000" opacity=".1"/>
+    <ellipse cx="100" cy="176" rx="76" ry="12" fill="#f3e3df" stroke="#c98f91" stroke-width="2"/>
+    <ellipse cx="100" cy="174" rx="48" ry="6" fill="none" stroke="#c98f91" stroke-width="1.2" opacity=".6"/>
+    <path d="M142 112 C176 106 176 150 140 150" fill="none" stroke="#c98f91" stroke-width="9" stroke-linecap="round"/>
+    <path d="M142 112 C170 108 170 146 140 148" fill="none" stroke="#f3e3df" stroke-width="5" stroke-linecap="round"/>
+    <path d="M52 100 H148 C148 150 130 172 100 172 C70 172 52 150 52 100Z" fill="#f3e3df" stroke="#c98f91" stroke-width="2"/>
+    <ellipse cx="100" cy="100" rx="48" ry="9" fill="#e7b9bb" stroke="#c98f91" stroke-width="2"/>
+    <path d="M70 128 q30 14 60 0" fill="none" stroke="#c98f91" stroke-width="2" stroke-linecap="round"/><circle cx="100" cy="146" r="4" fill="#c98f91"/>
+    <path d="M100 100 L100 86" stroke="#4a3a35" stroke-width="2.4" stroke-linecap="round"/>
+    <g class="i-flame"><path d="M100 56 C110 70 110 82 100 86 C90 82 90 70 100 56Z" fill="#f2b765"/><path d="M100 69 C105 77 105 83 100 86 C95 83 95 77 100 69Z" fill="#fff0c7"/></g>
+    <circle class="i-spark" cx="100" cy="85" r="5" fill="#fff6dc"/>
+  </svg>
+  <p class="i-name">Anne Shop</p>
+  <p class="i-sub"><span lang="en">handmade candles</span><span lang="ar">شموع يدوية</span></p>
+</div></div>
+<!--/motion-intro-->
 <header><div class="gut"><div class="wrap bar">
   <a class="logo" href="index.html" aria-label="Anne Shop"><b>Anne Shop</b><span data-t="logo_sub"></span></a>
   <nav>
@@ -398,8 +480,8 @@ aside.on{transform:none}
 
 <main>
   <div class="gut"><div class="wrap ahero">
-    <div class="note"><p data-t="story_note"></p><p style="text-align:end">&mdash; Anne</p></div>
-    <div>
+    <div class="note rv"><p data-t="story_note"></p><p style="text-align:end">&mdash; Anne</p></div>
+    <div class="rvs">
       <p class="hand" data-t="a_eyebrow"></p>
       <h1 data-t="story_h"></h1>
       <p data-t="story_p1"></p>
@@ -409,18 +491,18 @@ aside.on{transform:none}
   </div></div>
 
   <div class="scallop"></div>
-  <div class="promise"><div class="gut"><ul class="wrap"><li data-t="pr1"></li><li data-t="pr2"></li><li data-t="pr3"></li></ul></div></div>
+  <div class="promise"><div class="gut"><ul class="wrap rvs"><li data-t="pr1"></li><li data-t="pr2"></li><li data-t="pr3"></li></ul></div></div>
 
   <section class="gut"><div class="wrap">
-    <div class="head"><div><p class="hand" data-t="a_how_eyebrow"></p><h2 data-t="a_how"></h2></div></div>
+    <div class="head rv"><div><p class="hand" data-t="a_how_eyebrow"></p><h2 data-t="a_how"></h2></div></div>
     <div class="steps">
-      <div class="stp"><p class="hand">1</p><h3 data-t="a_s1h"></h3><p data-t="a_s1p"></p></div>
-      <div class="stp"><p class="hand">2</p><h3 data-t="a_s2h"></h3><p data-t="a_s2p"></p></div>
-      <div class="stp"><p class="hand">3</p><h3 data-t="a_s3h"></h3><p data-t="a_s3p"></p></div>
+      <div class="stp sz" data-sz=".9"><p class="hand">1</p><h3 data-t="a_s1h"></h3><p data-t="a_s1p"></p></div>
+      <div class="stp sz" data-sz=".9"><p class="hand">2</p><h3 data-t="a_s2h"></h3><p data-t="a_s2p"></p></div>
+      <div class="stp sz" data-sz=".9"><p class="hand">3</p><h3 data-t="a_s3h"></h3><p data-t="a_s3p"></p></div>
     </div>
   </div></section>
 
-  <section class="gut"><div class="wrap"><div class="ctas">
+  <section class="gut"><div class="wrap"><div class="ctas rv">
     <h2 data-t="a_cta_h"></h2>
     <p data-t="a_cta_p"></p>
     <div class="cta">
@@ -430,7 +512,7 @@ aside.on{transform:none}
     </div>
   </div></div></section>
 
-  <div class="gut"><footer class="wrap">
+  <div class="gut"><footer class="wrap rv">
     <div><b>Anne Shop</b><br><span data-t="foot_tag"></span></div>
     <div><span data-t="foot_prices"></span><br><span data-t="foot_conf"></span></div>
     <div><a href="index.html" data-t="a_back" style="margin-inline-end:14px"></a><span data-t="foot_ig"></span> <a id="igLink" href="https://www.instagram.com/anneshop.bh/" target="_blank" rel="noopener">@anneshop.bh</a></div>
@@ -494,14 +576,91 @@ function links(){
   if (n) { $("waFab").href = "https://wa.me/" + n + "?text=" + encodeURIComponent("Hi Anne, I have a question about your candles."); $("waFab").hidden = false; }
 }
 $("langBtn").addEventListener("click", () => {
-  document.documentElement.className = "boot";
+  document.documentElement.classList.add("boot");
   lang = lang === "ar" ? "en" : "ar"; try { localStorage.setItem("anneshop-lang", lang); } catch(e) {}
   if (lang === "ar" && window.__arFonts) window.__arFonts();
-  apply(); requestAnimationFrame(() => requestAnimationFrame(() => { document.documentElement.className = ""; }));
+  apply(); requestAnimationFrame(() => requestAnimationFrame(() => { document.documentElement.classList.remove("boot"); }));
 });
 apply();
 fetch("products.json?v=" + Date.now()).then(r => r.ok ? r.json() : null).then(d => { if (d && d.settings) { CONFIG = d.settings; links(); } }).catch(() => {});
-requestAnimationFrame(() => requestAnimationFrame(() => { document.documentElement.className = ""; }));
+requestAnimationFrame(() => requestAnimationFrame(() => { document.documentElement.classList.remove("boot"); }));
 </script>
+<!--motion-js--><script>
+(function(){
+  "use strict";
+  /* Motion: candle intro, fade-ins, size-on-scroll, page fades. Does nothing for reduced-motion visitors. */
+  var h = document.documentElement, intro = document.getElementById("intro"), each = function(list, fn){ Array.prototype.forEach.call(list, fn); };
+  window.__mo = 1;
+  if (!h.classList.contains("motion")) { if (intro) intro.remove(); return; }
+
+  /* ---- sections fade up as they come into view ---- */
+  var started = false;
+  function startReveal(){
+    if (started) return; started = true;
+    each(document.querySelectorAll(".rvs"), function(g){ each(g.children, function(c, i){ c.style.setProperty("--dl", (i * .09).toFixed(2) + "s"); }); });
+    var els = document.querySelectorAll(".rv,.rvs");
+    if (!("IntersectionObserver" in window)) { each(els, function(e){ e.classList.add("in"); }); return; }
+    var io = new IntersectionObserver(function(list){
+      list.forEach(function(en){ if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, {rootMargin:"0px 0px -6% 0px", threshold:.06});
+    each(els, function(e){ io.observe(e); });
+  }
+
+  /* ---- candle-lighting intro (first page of a visit), tap or key to skip ---- */
+  if (intro && h.classList.contains("intro-on")) {
+    var ended = false, evs = ["pointerdown", "keydown", "wheel", "touchstart"];
+    var end = function(){ if (ended) return; ended = true; h.classList.remove("intro-on", "intro-skip"); intro.remove(); evs.forEach(function(ev){ removeEventListener(ev, skip, true); }); };
+    var skip = function(){ if (ended || h.classList.contains("intro-skip")) return; h.classList.add("intro-skip"); startReveal(); setTimeout(end, 300); };
+    evs.forEach(function(ev){ addEventListener(ev, skip, {capture:true, passive:true}); });
+    setTimeout(startReveal, 1650);
+    setTimeout(end, 2300);
+  } else {
+    if (intro) intro.remove();
+    startReveal();
+  }
+
+  /* ---- items grow toward the middle of the screen and shrink toward the edges ---- */
+  var items = [], dirty = true, raf = 0;
+  function req(){ if (!raf) raf = requestAnimationFrame(frame); }
+  function frame(){
+    raf = 0;
+    if (dirty) { items = Array.prototype.slice.call(document.querySelectorAll(".sz")); dirty = false; }
+    var vh = innerHeight || 1;
+    h.classList.toggle("scrolled", (window.scrollY || window.pageYOffset || 0) > 12);
+    var rs = items.map(function(el){ var r = el.getBoundingClientRect(); return (!r.width || r.bottom < -vh * .3 || r.top > vh * 1.3) ? null : r; });
+    items.forEach(function(el, i){
+      var r = rs[i]; if (!r) return;
+      var min = parseFloat(el.getAttribute("data-sz")) || .88, outOnly = el.hasAttribute("data-sz-out");
+      var d = (r.top + r.height / 2 - vh / 2) / (vh / 2);
+      var k = Math.min(1, Math.max(0, (Math.abs(d) - .38) / .62)); k = k * k * (3 - 2 * k);
+      if (d < 0) { if (!outOnly) k *= .6; } else if (outOnly) k = 0;
+      el.style.scale = (1 - k * (1 - min)).toFixed(4);
+      el.style.opacity = Math.max(.3, 1 - k * (1 - min) * 4.5).toFixed(3);
+    });
+  }
+  addEventListener("scroll", req, {passive:true});
+  addEventListener("resize", function(){ dirty = true; req(); });
+  addEventListener("load", req);
+  new MutationObserver(function(){ dirty = true; req(); }).observe(document.body, {childList:true, subtree:true});
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(req);
+  req();
+
+  /* ---- page to page: a short fade where the browser has no View Transitions ---- */
+  if (!("onpagereveal" in window)) {
+    document.addEventListener("click", function(e){
+      if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest ? e.target.closest("a[href]") : null;
+      if (!a || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
+      var u; try { u = new URL(a.getAttribute("href"), location.href); } catch(x) { return; }
+      if (u.origin !== location.origin || u.pathname === location.pathname) return;
+      e.preventDefault();
+      try { sessionStorage.setItem("anneshop-arrive", "1"); } catch(x) {}
+      h.classList.add("leaving");
+      setTimeout(function(){ location.href = u.href; }, 210);
+    });
+    addEventListener("pageshow", function(e){ if (e.persisted) h.classList.remove("leaving"); });
+  }
+})();
+</script><!--/motion-js-->
 </body>
 </html>
