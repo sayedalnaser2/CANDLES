@@ -8,7 +8,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Karla:wght@400;500;700&display=swap">
 <style>
-:root{--bg:#f5e8e2;--paper:#fbf3ee;--ink:#47302f;--muted:#85676a;--rose:#c98f91;--deep:#8f525a;--sage:#5f7259;--line:#e2cbc4;--chip:#efdcd5;color-scheme:light}
+:root{--bg:#f5e8e2;--paper:#fbf3ee;--ink:#47302f;--muted:#7e6164;--rose:#c98f91;--deep:#8f525a;--sage:#5f7259;--line:#e2cbc4;--chip:#efdcd5;color-scheme:light}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Karla,system-ui,sans-serif;padding:0 max(16px,env(safe-area-inset-left)) 110px}
@@ -177,8 +177,8 @@ code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:.88em}
 
 <div class="bar" id="saveBar" hidden><div class="wrap"><span id="status">No changes yet</span><button class="btn" id="save" disabled>Save changes</button></div></div>
 <datalist id="cats"></datalist>
-<input type="file" id="file" accept="image/*" multiple hidden>
-<input type="file" id="fileM" hidden>
+<input type="file" id="file" accept="image/*" multiple hidden aria-label="Choose candle photos">
+<input type="file" id="fileM" hidden aria-label="Choose a photo or video">
 
 <script>
 const $ = id => document.getElementById(id);

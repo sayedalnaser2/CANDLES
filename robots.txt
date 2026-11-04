@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /CANDLES/admin.html
+Disallow: /admin.html
+Allow: /
+
+Sitemap: https://sayedalnaser2.github.io/CANDLES/sitemap.xml

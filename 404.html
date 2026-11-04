@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Page not found | Anne Shop</title>
+<meta name="theme-color" content="#f5e8e2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#271c1e" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/CANDLES/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/CANDLES/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Cormorant+Garamond:wght@600&family=Karla:wght@400;700&family=Tajawal:wght@500&display=swap">
+<style>
+:root{--bg:#f5e8e2;--paper:#fbf3ee;--ink:#47302f;--muted:#7e6164;--rose-deep:#97565b;--line:#e2cbc4;--btn:#8f525a;--btn-ink:#fff8f4;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#271c1e;--paper:#33262a;--ink:#f3e4de;--muted:#c3a7a3;--rose-deep:#e1a3a6;--line:#4a3739;--btn:#e2aaac;--btn-ink:#2a1d1f;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center;background:var(--bg);color:var(--ink);font:400 16px/1.6 "Karla","Trebuchet MS",system-ui,sans-serif;padding:24px 16px;text-align:center;
+  background-image:radial-gradient(circle at 50% 30%,color-mix(in srgb,#f6c38a 18%,transparent),transparent 55%)}
+main{max-width:460px}
+svg{width:150px;height:150px;overflow:visible}
+.smoke{fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;opacity:.55;animation:rise 3.2s ease-in-out infinite}
+@keyframes rise{0%{transform:translateY(6px);opacity:0}30%{opacity:.6}100%{transform:translateY(-14px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.smoke{animation:none}}
+.hand{font:500 1.6rem/1.2 "Caveat","Bradley Hand",cursive;color:var(--rose-deep);margin:10px 0 0}
+h1{font:600 clamp(2rem,7vw,2.6rem)/1.15 "Cormorant Garamond",Georgia,serif;margin:6px 0 10px}
+p{color:var(--muted);margin:0 0 6px}
+p[lang="ar"],h1 [lang="ar"]{font-family:"Tajawal","Karla",system-ui,sans-serif}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:20px;padding:12px 28px;border-radius:999px;background:var(--btn);color:var(--btn-ink);text-decoration:none;font-weight:700}
+.btn:focus-visible{outline:2px solid var(--rose-deep);outline-offset:3px}
+.ar{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+</style>
+</head>
+<body>
+<main>
+  <svg viewBox="0 0 200 200" aria-hidden="true">
+    <path class="smoke" d="M100 76 C92 66 108 58 100 48 C94 40 104 34 100 26"/>
+    <ellipse cx="100" cy="184" rx="78" ry="9" fill="#000" opacity=".1"/>
+    <ellipse cx="100" cy="176" rx="76" ry="12" fill="#f3e3df" stroke="#c98f91" stroke-width="2"/>
+    <path d="M142 112 C176 106 176 150 140 150" fill="none" stroke="#c98f91" stroke-width="9" stroke-linecap="round"/>
+    <path d="M142 112 C170 108 170 146 140 148" fill="none" stroke="#f3e3df" stroke-width="5" stroke-linecap="round"/>
+    <path d="M52 100 H148 C148 150 130 172 100 172 C70 172 52 150 52 100Z" fill="#f3e3df" stroke="#c98f91" stroke-width="2"/>
+    <ellipse cx="100" cy="100" rx="48" ry="9" fill="#e7b9bb" stroke="#c98f91" stroke-width="2"/>
+    <path d="M70 128 q30 14 60 0" fill="none" stroke="#c98f91" stroke-width="2" stroke-linecap="round"/><circle cx="100" cy="146" r="4" fill="#c98f91"/>
+    <path d="M100 100 L100 86" stroke="#4a3a35" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>
+  <p class="hand">oh dear</p>
+  <h1>This page has burned out</h1>
+  <p>The link may be old or mistyped. Everything else is still on the shelf.</p>
+  <div class="ar" dir="rtl">
+    <p lang="ar">يبدو أن هذه الصفحة انطفأت. ربما الرابط قديم أو فيه خطأ، لكن كل الشموع ما زالت على الرف.</p>
+  </div>
+  <a class="btn" href="/CANDLES/">Back to the shop · العودة إلى المتجر</a>
+</main>
+</body>
+</html>

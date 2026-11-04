@@ -5,18 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Our story | Anne Shop</title>
 <meta name="description" content="Meet Anne: the story behind Anne Shop, handmade vintage-inspired candles poured in Bahrain.">
-<meta name="theme-color" content="#f5e8e2">
+<meta name="theme-color" content="#f5e8e2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#271c1e" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Anne Shop">
 <meta property="og:title" content="Our story | Anne Shop">
-<meta property="og:description" content="Cozy, vintage-inspired candles poured by hand. Teacups, tins and jars. Order by message.">
+<meta property="og:description" content="Meet Anne: the story behind Anne Shop, handmade vintage-inspired candles poured in Bahrain.">
 <meta property="og:url" content="https://sayedalnaser2.github.io/CANDLES/about.html">
 <meta property="og:image" content="https://sayedalnaser2.github.io/CANDLES/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Anne Shop | Handmade candles, Bahrain">
-<meta name="twitter:description" content="Cozy, vintage-inspired candles poured by hand. Order by message.">
+<meta name="twitter:title" content="Our story | Anne Shop">
+<meta name="twitter:description" content="Meet Anne: the story behind Anne Shop, handmade vintage-inspired candles poured in Bahrain.">
 <meta name="twitter:image" content="https://sayedalnaser2.github.io/CANDLES/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,16 +25,17 @@
 /* Set language and direction before first paint so nothing slides around on load. Arabic fonts load only for Arabic. */
 window.__arFonts=function(){if(document.getElementById("arFonts"))return;var k=document.createElement("link");k.id="arFonts";k.rel="stylesheet";k.href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap";document.head.appendChild(k);};
 (function(){var l="en";try{l=localStorage.getItem("anneshop-lang")||((navigator.language||"").toLowerCase().indexOf("ar")===0?"ar":"en")}catch(e){}
-if(l!=="ar")l="en";var h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");c+=" intro-on"}if(sessionStorage.getItem("anneshop-arrive")){sessionStorage.removeItem("anneshop-arrive");c+=" arrive"}}catch(e){}try{if(window.CSS&&CSS.registerProperty){CSS.registerProperty({name:"--hole",syntax:"<length>",inherits:false,initialValue:"-240px"});c+=" hole"}}catch(e){}setTimeout(function(){if(!window.__mo)h.classList.add("rv-off")},4000)}h.className=c;/*/motion-head*/if(l==="ar")window.__arFonts();})();
+if(l!=="ar")l="en";var h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");if(!/^#candle-/.test(location.hash))c+=" intro-on"}if(sessionStorage.getItem("anneshop-arrive")){sessionStorage.removeItem("anneshop-arrive");c+=" arrive"}}catch(e){}try{if(window.CSS&&CSS.registerProperty){CSS.registerProperty({name:"--hole",syntax:"<length>",inherits:false,initialValue:"-240px"});c+=" hole"}}catch(e){}setTimeout(function(){if(!window.__mo)h.classList.add("rv-off")},4000)}h.className=c;/*/motion-head*/if(l==="ar")window.__arFonts();})();
 </script>
+<link rel="canonical" href="https://sayedalnaser2.github.io/CANDLES/about.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Karla:wght@400;700&display=swap">
 <style>
 :root{
-  --bg:#f5e8e2; --paper:#fbf3ee; --ink:#47302f; --muted:#85676a;
-  --rose:#c98f91; --rose-deep:#a8656b; --sage:#a9b6a0; --sage-deep:#5f7259;
+  --bg:#f5e8e2; --paper:#fbf3ee; --ink:#47302f; --muted:#7e6164;
+  --rose:#c98f91; --rose-deep:#97565b; --sage:#a9b6a0; --sage-deep:#5b6d55;
   --line:#e2cbc4; --btn:#8f525a; --btn-ink:#fff8f4; --chip:#efdcd5; --shadow:rgba(90,50,50,.14); --ann:#dfe5d8; --ann-ink:#34402f;
   --f-display:"Cormorant Garamond","Iowan Old Style",Georgia,serif;
   --f-body:"Karla","Trebuchet MS",system-ui,sans-serif;
@@ -103,7 +105,7 @@ nav a.lnk:hover{color:var(--ink)}
   border:1px solid var(--line);box-shadow:0 18px 40px var(--shadow);display:grid;place-items:center}
 .plate::after{content:"";position:absolute;inset:10px;border:1.5px dashed var(--rose);border-radius:inherit;opacity:.55;pointer-events:none}
 .plate svg{width:78%;height:auto}
-.stamp{position:absolute;inset-inline-end:-6px;bottom:22px;transform:rotate(-9deg);background:var(--sage);color:#26301f;border-radius:50%;width:92px;height:92px;display:grid;place-items:center;text-align:center;
+.stamp{position:absolute;inset-inline-end:-6px;bottom:22px;transform:rotate(-9deg);background:var(--sage);color:#161d12;border-radius:50%;width:92px;height:92px;display:grid;place-items:center;text-align:center;
   font:600 .98rem/1.05 var(--f-display);border:2px dashed #26301f55;padding:8px}
 
 .scallop{height:16px;background:radial-gradient(circle at 10px 0,transparent 9px,var(--chip) 9.5px) 0 0/20px 16px repeat-x}
@@ -187,7 +189,7 @@ footer a{color:var(--rose-deep);font-weight:700}
 .dprice{font:600 1.8rem var(--f-display);margin:8px 0 12px}
 .dinfo .lead{color:var(--muted);margin:0 0 16px}
 .grp{margin-bottom:16px}
-.grp h4{margin:0 0 8px;font-size:.85rem;font-weight:700;color:var(--muted)}
+.grp h3{margin:0 0 8px;font-size:.85rem;font-weight:700;color:var(--muted)}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
 .opt{background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;font-size:.92rem}
 .opt[aria-pressed="true"]{background:var(--sage-deep);border-color:var(--sage-deep);color:var(--bg)}
@@ -196,7 +198,7 @@ footer a{color:var(--rose-deep);font-weight:700}
 .qty button{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--ink);line-height:1;padding:0}
 .qty span{min-width:20px;text-align:center;font-variant-numeric:tabular-nums}
 .facts{border-top:1px dashed var(--line);padding-top:16px;display:grid;gap:16px}
-.facts h4{margin:0 0 6px;font:600 1.3rem var(--f-display)}
+.facts h3{margin:0 0 6px;font:600 1.3rem var(--f-display)}
 .facts p{margin:0;color:var(--muted)}
 .facts ul{margin:0;padding-inline-start:20px;color:var(--muted)}
 
@@ -230,7 +232,7 @@ aside.on{transform:none}
 .thumb{width:64px;height:64px;border-radius:8px;background:var(--bg);display:grid;place-items:center;overflow:hidden;position:relative}
 .thumb svg{width:84%}
 .thumb img{width:100%;height:100%;object-fit:cover}
-.line h4{margin:0;font:600 1.15rem var(--f-display)}
+.line h3{margin:0;font:600 1.15rem var(--f-display)}
 .line small{color:var(--muted);display:block}
 .line .qty{margin-top:4px}
 .lt{font-variant-numeric:tabular-nums;font-weight:700}
