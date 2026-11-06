@@ -248,6 +248,14 @@ aside.on{transform:none}
 .df .links .btn{width:auto}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;font-size:.9rem;opacity:0;transition:.25s;z-index:60;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+.cartbar{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,24px);width:min(540px,calc(100% - 32px));display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bg);padding:10px 10px 10px 16px;padding-inline:16px 10px;border-radius:18px;box-shadow:0 12px 30px var(--shadow);opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility .25s;z-index:46}
+.cartbar.on{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.cb-ico{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--sage-deep);color:#fff;font-weight:700;font-size:.9rem}
+.cb-txt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.cb-txt b{font-weight:700;font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cb-txt small{font-size:.82rem;opacity:.85}
+.cb-btn{flex:none;min-height:44px;padding:0 20px;border:0;border-radius:999px;background:var(--bg);color:var(--ink);font:700 .95rem "Karla",system-ui,sans-serif;cursor:pointer}
+.cb-btn:focus-visible{outline:2px solid var(--bg);outline-offset:3px}
 
 /* featured candle */
 .feat{display:grid;grid-template-columns:.9fr 1.1fr;gap:32px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:6px 6px 26px 26px;padding:26px;box-shadow:0 14px 32px var(--shadow);position:relative}
@@ -299,7 +307,7 @@ aside.on{transform:none}
 
 @keyframes flick{0%,100%{transform:scale(1,1) rotate(-1deg)}35%{transform:scale(.94,1.07) rotate(1.5deg)}70%{transform:scale(1.03,.96) rotate(-1.5deg)}}
 .flame{animation:flick 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
-@media (prefers-reduced-motion:reduce){.flame{animation:none}.card,aside,.scrim,.toast{transition:none}}
+@media (prefers-reduced-motion:reduce){.flame{animation:none}.card,aside,.scrim,.toast,.cartbar{transition:none}}
 @media (max-width:760px){
   .hero,.story,.dgrid{grid-template-columns:1fr;gap:28px}
   .hero{padding-top:30px}
@@ -316,6 +324,7 @@ aside.on{transform:none}
   .fab{padding:14px;min-width:48px;min-height:48px;justify-content:center;transition:bottom .2s}
   .fab.up{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+  .cartbar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
   /* comfortable tap targets and no iOS focus-zoom */
   .logo{min-height:44px;align-items:center}
   .langbtn{min-height:44px;padding-inline:16px}
@@ -671,6 +680,7 @@ nav a.lnk{white-space:nowrap}
   <span id="fabText"></span>
 </a>
 <div class="toast" id="toast" role="status"></div>
+<div class="cartbar" id="cartBar" role="status" inert><span class="cb-ico" aria-hidden="true">✓</span><span class="cb-txt"><b id="cbName"></b><small id="cbSum"></small></span><button class="cb-btn" id="cbGo" type="button"></button></div>
 
 <script>
 /* ===================== Text in both languages ===================== */
@@ -685,7 +695,7 @@ en:{
  search_ph:"Search candles or scents", sort_label:"Sort", sort_featured:"Featured", sort_low:"Price: low to high", sort_high:"Price: high to low", sort_new:"Newest", find_scent:"Find my scent",
  all:"All", empty:"New candles are on the way. Follow along on Instagram.", no_match:"No candles match your search. Try another word or clear the filters.",
  add:"Add to cart", options:"Choose options", sold:"Sold out", from:"From",
- back_shelf:"← Back to the shelf", burn:"Burn time", care:"Care tips", notes_h:"Scent notes", qty:"Quantity", personalize:"Add a name or note (optional)", added:"added to your cart",
+ back_shelf:"← Back to the shelf", burn:"Burn time", care:"Care tips", notes_h:"Scent notes", qty:"Quantity", personalize:"Add a name or note (optional)", added:"added to your cart", view_cart:"View cart", added_s:"Added", item1:"1 item", itemsN:"{n} items",
  cart_title:"Your cart", cart_empty_h:"nothing here yet", cart_empty:"Pick a candle from the shelf and it will wait for you here.", browse:"Browse candles", each:"each", total:"Total",
  cart_fine:"Delivery and payment are arranged by message after you send your order.", checkout:"Checkout",
  d_title:"Your details", d_back:"← Back to cart", f_name:"Name", f_phone:"Phone number", f_area:"Area in Bahrain", f_area_ph:"e.g. Hamad Town, Manama", f_notes:"Notes for Anne",
@@ -722,7 +732,7 @@ ar:{
  search_ph:"ابحث عن شمعة أو عطر", sort_label:"الترتيب", sort_featured:"المميزة", sort_low:"السعر: من الأقل إلى الأعلى", sort_high:"السعر: من الأعلى إلى الأقل", sort_new:"الأحدث", find_scent:"اكتشف عطرك",
  all:"الكل", empty:"شموع جديدة في الطريق. تابعونا على إنستغرام.", no_match:"لا توجد شموع مطابقة لبحثك. جرّب كلمة أخرى أو امسح التصفية.",
  add:"أضف إلى السلة", options:"اختر الخيارات", sold:"نفدت الكمية", from:"ابتداءً من",
- back_shelf:"→ العودة إلى الرف", burn:"مدة الاحتراق", care:"نصائح العناية", notes_h:"ملاحظات العطر", qty:"الكمية", personalize:"أضف اسمًا أو ملاحظة (اختياري)", added:"أُضيفت إلى السلة",
+ back_shelf:"→ العودة إلى الرف", burn:"مدة الاحتراق", care:"نصائح العناية", notes_h:"ملاحظات العطر", qty:"الكمية", personalize:"أضف اسمًا أو ملاحظة (اختياري)", added:"أُضيفت إلى السلة", view_cart:"عرض السلة", added_s:"أُضيفت", item1:"قطعة واحدة", itemsN:"{n} قطع",
  cart_title:"سلتك", cart_empty_h:"لا شيء هنا بعد", cart_empty:"اختر شمعة من الرف وستنتظرك هنا.", browse:"تصفّح الشموع", each:"للقطعة", total:"المجموع",
  cart_fine:"يتم الاتفاق على التوصيل والدفع عبر الرسائل بعد إرسال طلبك.", checkout:"إتمام الطلب",
  d_title:"بياناتك", d_back:"→ العودة إلى السلة", f_name:"الاسم", f_phone:"رقم الهاتف", f_area:"المنطقة في البحرين", f_area_ph:"مثال: مدينة حمد، المنامة", f_notes:"ملاحظات لآن",
@@ -1010,8 +1020,19 @@ function addLine(id, sel, note, qty){
   const k = lineKey({id:id, sel:sel, note:note}), ex = cart.find(l => lineKey(l) === k);
   if (ex) ex.qty = Math.min(99, ex.qty + qty); else cart.push({id:id, sel:sel, note:note, qty:qty});
   saveCart(); renderCart(); track("add/" + id, p.name);
-  toast(L(p,"name") + " – " + t("added"));
+  showCartBar(L(p,"name"));
 }
+function showCartBar(msg){
+  const b = $("cartBar"), n = count();
+  $("cbName").textContent = msg;
+  $("cbSum").textContent = t("added_s") + " · " + t("cart") + ": " + (n === 1 ? t("item1") : t("itemsN").replace("{n}", n)) + " · " + fmt(subtotal());
+  $("cbGo").textContent = t("view_cart");
+  b.inert = false; b.classList.add("on"); clearTimeout(showCartBar.h);
+  if (!b.matches(":hover, :focus-within")) showCartBar.h = setTimeout(hideCartBar, 6000);
+}
+function hideCartBar(){ const b = $("cartBar"); b.classList.remove("on"); b.inert = true; clearTimeout(showCartBar.h); }
+$("cartBar").addEventListener("mouseleave", () => { clearTimeout(showCartBar.h); showCartBar.h = setTimeout(hideCartBar, 3000); });
+$("cbGo").addEventListener("click", () => { hideCartBar(); openCart(); });
 const count = () => cart.reduce((a,l) => a + l.qty, 0);
 const subtotal = () => cart.reduce((s,l) => { const p = byId(l.id); return s + (p ? unit(p, l.sel) * l.qty : 0); }, 0);
 const giftFee = () => form.gift ? (+CONFIG.giftWrapFee || 0) : 0;
@@ -1102,7 +1123,7 @@ function layer(name, on, focusEl){
   if (!on && back && back.isConnected && back !== document.body) { try { back.focus({preventScroll:true}); } catch(e) {} }
 }
 $("drawer").inert = true;
-function openCart(){ step = "cart"; renderCart(); $("drawer").inert = false; $("drawer").classList.add("on"); $("scrim").classList.add("on"); $("drawer").setAttribute("aria-hidden","false"); layer("cart", true, $("closeCart")); }
+function openCart(){ hideCartBar(); step = "cart"; renderCart(); $("drawer").inert = false; $("drawer").classList.add("on"); $("scrim").classList.add("on"); $("drawer").setAttribute("aria-hidden","false"); layer("cart", true, $("closeCart")); }
 function closeCart(){ if (!$("drawer").classList.contains("on")) return; $("drawer").classList.remove("on"); $("scrim").classList.remove("on"); $("drawer").setAttribute("aria-hidden","true"); $("drawer").inert = true; layer("cart", false); }
 $("openCart").addEventListener("click", openCart); $("closeCart").addEventListener("click", closeCart); $("scrim").addEventListener("click", closeCart);
 
