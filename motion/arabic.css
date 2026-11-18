@@ -1,8 +1,7 @@
 /* ===== Arabic edition (shared by index, about, events; built in from motion/) =====
    "Anne's handwriting": Ruqaa (Aref Ruqaa) for everything Anne would write by hand - the shop name, headings,
    candle names, labels, her note - and a calm Naskh (Amiri) for everything you read or tap.
-   One ornament only: the calligrapher's dot (nuqta). The logo's flame sits where the noon's dot goes,
-   and the same rhombic dot marks the promise list. Arabic never gets letter-spacing or slanting (both break the joins). */
+   One ornament only: the calligrapher's rhombic pen dot (nuqta), which marks the promise list. Arabic never gets letter-spacing or slanting (both break the joins). */
 html[lang="ar"]{font-size:112.5%;
   --f-display:"Aref Ruqaa","Amiri","Geeza Pro",serif;
   --f-hand:"Aref Ruqaa","Amiri","Geeza Pro",serif;
@@ -14,7 +13,7 @@ html[lang="ar"] [lang="en"]{font-family:"Karla","Trebuchet MS",system-ui,sans-se
 html[lang="ar"] :is(h1,h2,h3){font-weight:700;line-height:1.42}
 html[lang="ar"] :is(.hero,.ahero) h1 em{color:inherit;font-weight:inherit}
 
-/* the logotype: متجر آن, with a flame for the dot of the noon */
+/* the logotype: متجر آن, lettered in Ruqaa */
 .lg{display:none;fill:currentColor;overflow:visible}
 html[lang="ar"] .logo .lg{display:block;height:50px;width:auto;aspect-ratio:336/167;margin-block:-4px}
 html[lang="ar"] .logo>b,html[lang="ar"] .logo>span{display:none}
@@ -80,10 +79,9 @@ html[lang="ar"] .fld textarea{line-height:1.8}
   html[lang="ar"] .stamp{font-size:.72rem}
 }
 
-/* intro in Arabic: the name arrives softly (no letter-spacing), then its own flame catches from the candle */
+/* intro in Arabic: the name arrives softly (no letter-spacing) */
 html[lang="ar"] .i-name [lang="en"],html:not([lang="ar"]) .i-name .lg{display:none}
 html[lang="ar"] .i-name{animation-name:iNameAr;margin-top:18px}
 html[lang="ar"] .i-name .lg{display:block;height:clamp(64px,11vmin,92px);width:auto;aspect-ratio:336/167;color:#f6e6dc;filter:drop-shadow(0 0 18px rgba(255,190,120,.3))}
-html[lang="ar"] .i-name .lgf{transform-box:fill-box;transform-origin:50% 100%;transform:scale(0);animation:iFlame 1.1s cubic-bezier(.25,.8,.3,1) 2.15s forwards,iFlick 3.2s ease-in-out 3.25s infinite}
 html[lang="ar"] .i-sub{font-size:1.4rem;line-height:1.6;margin-top:2px}
 @keyframes iNameAr{from{opacity:0;transform:translateY(8px);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
