@@ -1,4 +1,4 @@
-"""Build the shared motion code into index.html, about.html and events.html.
+"""Build the shared motion, tablet and Arabic code into index.html, about.html and events.html.
 
 Run after editing anything in motion/. Safe to run again: it replaces the marked blocks.
 """
@@ -10,6 +10,8 @@ css = (M / "motion.css").read_text(encoding="utf-8").strip()
 js = (M / "motion.js").read_text(encoding="utf-8").strip()
 intro = (M / "intro.html").read_text(encoding="utf-8").strip()
 shared = (M / "shared.css").read_text(encoding="utf-8").strip()
+arabic = (M / "arabic.css").read_text(encoding="utf-8").strip()
+ardefs = (M / "arabic-defs.html").read_text(encoding="utf-8").strip()
 
 HEAD = ('/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}'
         'if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");if(!/^#candle-/.test(location.hash))c+=" intro-on"}'
@@ -35,7 +37,9 @@ for name in ("index.html", "about.html", "events.html"):
             'h.className="boot";', "@@")
     s = put(s, "/*motion-css*/\n", "\n/*/motion-css*/", css, "\n</style>", "\n@@\n</style>")
     s = put(s, "/*shared-css*/\n", "\n/*/shared-css*/", shared, "\n/*/motion-css*/", "\n/*/motion-css*/\n@@")
+    s = put(s, "/*arabic-css*/\n", "\n/*/arabic-css*/", arabic, "\n/*/shared-css*/", "\n/*/shared-css*/\n@@")
     s = put(s, "<!--motion-intro-->\n", "\n<!--/motion-intro-->", intro, "<body>\n", "<body>\n@@\n")
+    s = put(s, "<!--arabic-defs-->\n", "\n<!--/arabic-defs-->", ardefs, "<!--/motion-intro-->\n", "<!--/motion-intro-->\n@@\n")
     s = put(s, "<!--motion-js--><script>\n", "\n</script><!--/motion-js-->", js, "\n</body>", "\n@@\n</body>")
     p.write_text(s, encoding="utf-8")
     print("built", name, len(s), "bytes")

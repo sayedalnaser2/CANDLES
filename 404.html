@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="/CANDLES/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Cormorant+Garamond:wght@600&family=Karla:wght@400;700&family=Tajawal:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Cormorant+Garamond:wght@600&family=Karla:wght@400;700&family=Amiri&family=Aref+Ruqaa:wght@700&display=swap">
 <style>
 :root{--bg:#f5e8e2;--paper:#fbf3ee;--ink:#47302f;--muted:#7e6164;--rose-deep:#97565b;--line:#e2cbc4;--btn:#8f525a;--btn-ink:#fff8f4;color-scheme:light}
 @media (prefers-color-scheme:dark){:root{--bg:#271c1e;--paper:#33262a;--ink:#f3e4de;--muted:#c3a7a3;--rose-deep:#e1a3a6;--line:#4a3739;--btn:#e2aaac;--btn-ink:#2a1d1f;color-scheme:dark}}
@@ -26,7 +26,8 @@ svg{width:150px;height:150px;overflow:visible}
 .hand{font:500 1.6rem/1.2 "Caveat","Bradley Hand",cursive;color:var(--rose-deep);margin:10px 0 0}
 h1{font:600 clamp(2rem,7vw,2.6rem)/1.15 "Cormorant Garamond",Georgia,serif;margin:6px 0 10px}
 p{color:var(--muted);margin:0 0 6px}
-p[lang="ar"],h1 [lang="ar"]{font-family:"Tajawal","Karla",system-ui,sans-serif}
+p[lang="ar"]{font:400 1.08rem/1.9 "Amiri","Geeza Pro",serif}
+.arh{font:700 1.7rem/1.5 "Aref Ruqaa","Amiri",serif!important;color:var(--ink);margin:0 0 2px}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:20px;padding:12px 28px;border-radius:999px;background:var(--btn);color:var(--btn-ink);text-decoration:none;font-weight:700}
 .btn:focus-visible{outline:2px solid var(--rose-deep);outline-offset:3px}
 .ar{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
@@ -49,9 +50,10 @@ p[lang="ar"],h1 [lang="ar"]{font-family:"Tajawal","Karla",system-ui,sans-serif}
   <h1>This page has burned out</h1>
   <p>The link may be old or mistyped. Everything else is still on the shelf.</p>
   <div class="ar" dir="rtl">
-    <p lang="ar">يبدو أن هذه الصفحة انطفأت. ربما الرابط قديم أو فيه خطأ، لكن كل الشموع ما زالت على الرف.</p>
+    <p class="arh" lang="ar">انطفأت هذه الصفحة</p>
+    <p lang="ar">ربما الرابط قديم أو فيه خطأ، لكن كل الشموع ما زالت على الرف.</p>
   </div>
-  <a class="btn" href="/CANDLES/">Back to the shop · العودة إلى المتجر</a>
+  <a class="btn" href="/CANDLES/">Back to the shop&nbsp;·&nbsp;<span lang="ar" dir="rtl" style="font-family:Amiri,serif">العودة إلى المتجر</span></a>
 </main>
 </body>
 </html>
