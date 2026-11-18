@@ -515,6 +515,13 @@ nav a.lnk{white-space:nowrap}
   .promise ul{justify-content:center;gap:10px 34px}
   .grid{gap:18px}
 }
+
+/* iPads and desktop: the shelf's search, sort and "Find my scent" stay on one tidy row,
+   beside the title when there is room, otherwise together on the line under it */
+@media (min-width:761px){
+  .tools{flex-wrap:nowrap;flex:0 1 auto;min-width:0}
+  .tools input{flex:1 1 auto;width:240px;min-width:150px}
+}
 /*/shared-css*/
 /*arabic-css*/
 /* ===== Arabic edition (shared by index, about, events; built in from motion/) =====
