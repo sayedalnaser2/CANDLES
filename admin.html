@@ -9,8 +9,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Karla:wght@400;500;700&family=Caveat:wght@500&family=Amiri&family=Aref+Ruqaa:wght@700&display=swap">
+<script>try{var t=localStorage.getItem("anne-admin-theme");if(!t)t=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
 :root{--bg:#f5e8e2;--paper:#fbf3ee;--field:#fffaf7;--ink:#47302f;--muted:#7e6164;--rose:#c98f91;--rose-soft:#efdcd5;--deep:#8f525a;--sage:#5b6d55;--sage-soft:#dfe5d6;--line:#e2cbc4;--bad:#a23b3b;--top:64px;color-scheme:light}
+:root[data-theme="dark"]{--bg:#201816;--paper:#2a201e;--field:#33282a;--ink:#f1e2dc;--muted:#bfa39f;--rose:#b5767c;--rose-soft:#3b2b2c;--deep:#d9959a;--sage:#6f8667;--sage-soft:#2c3528;--line:#493a3a;--bad:#ef8a85;color-scheme:dark}
+:root[data-theme="dark"] .btn:not(.ghost):not(.danger){background:#b5636e;color:#fff8f4}
+:root[data-theme="dark"] .btn.danger.armed{background:#b3443f;color:#fff}
+:root[data-theme="dark"] .tabs button[aria-selected="true"]{box-shadow:0 1px 3px #0006}
+:root[data-theme="dark"] .bar{box-shadow:0 -6px 20px #0005}
+:root[data-theme="dark"] .pill.out{background:#ef8a8526}
+.theme{border:1.5px solid var(--rose);background:transparent;border-radius:999px;min-height:40px;min-width:40px;padding:0 12px;font-weight:700;font-size:.92rem;color:var(--ink)}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
@@ -68,6 +76,10 @@ code{background:var(--rose-soft);padding:1px 6px;border-radius:4px;font-size:.88
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
 .chip{border:1.5px solid var(--line);background:var(--field);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.88rem;min-height:38px}
 .chip[aria-pressed="true"]{background:var(--sage);border-color:var(--sage);color:#fff}
+.chip.add{background:transparent;border-style:dashed;border-color:var(--rose);color:var(--deep)}
+.addscent{border:1.5px dashed var(--rose);border-radius:12px;padding:12px 14px 2px;margin:0 0 12px}
+.sc{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:end;padding-bottom:12px;margin-bottom:12px;border-bottom:1px dashed var(--line)}
+.sc .bi{margin:0}
 
 /* cards */
 .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:18px}
@@ -196,6 +208,8 @@ input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:p
   .bi .lt{display:block;font-size:.74rem;font-weight:700;color:var(--muted);margin-bottom:-2px}
   .bi .lt[lang="ar"]{font-family:Amiri,serif;font-size:.9rem;font-weight:400;text-align:right}
   .choice{grid-template-columns:1fr 1fr}
+  .sc{grid-template-columns:1fr}
+  .sc .btn{justify-self:start}
   .choice .money{grid-column:1}
   .choice .x{justify-self:end}
 }
@@ -210,6 +224,7 @@ input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:p
       <button type="button" role="tab" id="t-home" data-tab="home" aria-controls="p-home" aria-selected="false" tabindex="-1">Homepage</button>
       <button type="button" role="tab" id="t-settings" data-tab="settings" aria-controls="p-settings" aria-selected="false" tabindex="-1">Settings</button>
     </nav>
+    <button class="theme" id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button>
     <a class="shoplink" href="./" target="_blank" rel="noopener">Open shop</a>
   </div>
 </header>
@@ -263,6 +278,13 @@ input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:p
         <label class="chk" for="ftOn"><input id="ftOn" type="checkbox" data-s="featuredOn"> Show a candle of the month</label>
         <div class="f" style="margin-top:8px"><label for="ftPick">Which candle</label><select id="ftPick" data-s="featuredId"></select></div>
         <div class="bi"><label class="lab" for="ftNote">Your note <span class="hint">(optional)</span></label><span class="lt">English</span><input id="ftNote" data-s="featuredNote" placeholder="Our October favourite"><span class="lt" lang="ar">عربي</span><input id="ftNoteAr" class="ar" data-s="featuredNote_ar" aria-label="Your note in Arabic" placeholder="مفضلتنا لهذا الشهر"></div>
+      </section>
+
+      <section class="card">
+        <h2>Scent finder</h2>
+        <p class="lede">The scents customers choose from in the shop's "Find my scent" quiz. A scent shows in the quiz once at least one candle has it.</p>
+        <div id="scList"></div>
+        <div class="btnrow"><button class="btn sm" type="button" id="addScentHome">+ Add a scent</button></div>
       </section>
 
       <section class="card">
@@ -328,10 +350,11 @@ const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp
 const colr = (c, d) => /^#[0-9a-f]{6}$/i.test(String(c || "")) ? c : d;
 const money = n => "BD " + (+n || 0).toFixed(3);
 const TYPES = {jar:"Jar", tin:"Tin", cup:"Teacup", pillar:"Pillar", trio:"Gift set"};
-const FAMS = {floral:"Floral", sweet:"Sweet & bakery", woody:"Woody & warm", fresh:"Fresh & herbal", spicy:"Spicy"};
+const DEFAULT_SCENTS = [{id:"floral", name:"Floral", name_ar:"زهري"}, {id:"sweet", name:"Sweet & bakery", name_ar:"حلو وحلويات"}, {id:"woody", name:"Woody & warm", name_ar:"خشبي ودافئ"}, {id:"fresh", name:"Fresh & herbal", name_ar:"منعش وعشبي"}, {id:"spicy", name:"Spicy", name_ar:"متبّل"}];
+const scentId = () => "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
 const LABELS = [["", "", "No label"], ["New", "جديد"], ["Favourite", "المفضلة"], ["Gift", "هدية"], ["Limited", "كمية محدودة"]];
 const DEFAULT_SETTINGS = {instagram:"anneshop.bh", whatsapp:"", currency:"BD", giftWrapFee:1, goatcounter:"", announcement:{on:false, text:"", text_ar:"", link:""}, featuredOn:false, featuredId:"", featuredNote:"", featuredNote_ar:""};
-const S = {repo:"", token:"", sha:null, data:{settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), products:[], behind:{title:"", title_ar:"", text:"", text_ar:"", items:[]}, customerPhotos:[]}, dirty:false, sel:null, tab:"candles", pendingDelete:null, imgTarget:null, mediaTarget:null};
+const S = {repo:"", token:"", sha:null, data:{settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), products:[], behind:{title:"", title_ar:"", text:"", text_ar:"", items:[]}, customerPhotos:[]}, dirty:false, sel:null, tab:"candles", pendingDelete:null, pendingScent:null, imgTarget:null, mediaTarget:null};
 const LISTS = {behind: () => S.data.behind.items, cust: () => S.data.customerPhotos};
 const ytIdA = u => { const m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/.exec(u || ""); return m ? m[1] : ""; };
 const wideMQ = matchMedia("(min-width:900px)");
@@ -393,6 +416,11 @@ function normalize(){
     q._imgs = list.map(path => ({path}));
     return q;
   });
+  /* scents for the "Find my scent" quiz; any scent a candle uses is kept in the list */
+  const given = Array.isArray(d.settings.scents) ? d.settings.scents.filter(x => x && x.id) : [];
+  const sc = (given.length ? given : DEFAULT_SCENTS).map(x => ({id:String(x.id), name:x.name || "", name_ar:x.name_ar || ""}));
+  d.products.forEach(p => (p.families || []).forEach(id => { if (!sc.some(x => x.id === id)) sc.push(Object.assign({}, DEFAULT_SCENTS.find(x => x.id === id) || {id, name:id, name_ar:""})); }));
+  d.settings.scents = sc;
 }
 async function signIn(){
   const err = $("loginErr"); err.hidden = true;
@@ -435,7 +463,7 @@ function showTab(t, focus){
   S.tab = t;
   document.querySelectorAll("#tabs [data-tab]").forEach(b => { const on = b.dataset.tab === t; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
   ["candles", "home", "settings"].forEach(k => $("p-" + k).hidden = k !== t);
-  if (t === "home") renderHome(); if (t === "settings") renderSettings();
+  if (t === "home") renderHome(); if (t === "settings") renderSettings(); if (t === "candles") renderEditor();
   scrollTo(0, 0);
 }
 $("tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) showTab(b.dataset.tab); });
@@ -489,7 +517,7 @@ function editorHTML(p, i, n){
       <button class="btn danger sm" type="button" data-act="rmimg" data-k="${k}">Remove</button></div>`).join("");
   const labels = LABELS.map(([en, ar, txt]) => `<button class="chip" type="button" data-act="label" data-en="${esc(en)}" data-ar="${esc(ar)}" ${pressed((p.tag || "") === en)}>${txt || en}</button>`).join("");
   const cats = [...catPairs()].map(([en, ar]) => `<button class="chip" type="button" data-act="cat" data-en="${esc(en)}" data-ar="${esc(ar)}" ${pressed(p.cat === en)}>${esc(en)}</button>`).join("");
-  const fams = Object.entries(FAMS).map(([k, v]) => `<button class="chip" type="button" data-act="fam" data-k="${k}" ${pressed((p.families || []).includes(k))}>${v}</button>`).join("");
+  const fams = S.data.settings.scents.map(sc => `<button class="chip" type="button" data-act="fam" data-k="${esc(sc.id)}" ${pressed((p.families || []).includes(sc.id))}>${esc(sc.name || sc.name_ar || "New scent")}</button>`).join("");
   const shapes = Object.entries(TYPES).map(([k, v]) => `<button class="shape" type="button" data-act="shape" data-k="${k}" ${pressed(p.type === k)}>${artSvg(Object.assign({}, p, {type:k}))}<span>${v}</span></button>`).join("");
   const del = S.pendingDelete === p.id;
   return `<button class="back" type="button" data-act="back">&#8592; All candles</button>
@@ -529,8 +557,12 @@ function editorHTML(p, i, n){
     <p class="fine">Each option becomes a row of buttons on the candle's page.</p></section>
 
   <section class="blk"><h3>Scent finder</h3>
-    <p class="fine" style="margin:0">The quiz suggests this candle to people who pick these scents.</p>
-    <div class="chips" role="group" aria-label="Scent families">${fams}</div>
+    <p class="fine" style="margin:0">The quiz suggests this candle to people who pick these scents. Edit or remove scents in Homepage, Scent finder.</p>
+    <div class="chips" role="group" aria-label="Scents">${fams}<button class="chip add" type="button" data-act="newscent" aria-expanded="false" aria-controls="addScent">+ Add a scent</button></div>
+    <div class="addscent" id="addScent" hidden>
+      <div class="bi"><label class="lab" for="nsEn">New scent</label><span class="lt">English</span><input id="nsEn" placeholder="Citrus" autocomplete="off"><span class="lt" lang="ar">عربي</span><input id="nsAr" class="ar" placeholder="حمضيات" aria-label="New scent in Arabic" autocomplete="off"></div>
+      <div class="btnrow" style="margin:0 0 12px"><button class="btn sm" type="button" data-act="savescent">Add scent</button><button class="btn ghost sm" type="button" data-act="cancelscent">Cancel</button></div>
+    </div>
     <label class="chk"><input type="checkbox" data-f="giftable" ${p.giftable ? "checked" : ""}> Good as a gift</label></section>
 
   <section class="blk"><h3>Drawing</h3>
@@ -571,8 +603,29 @@ function renderHome(){
   $("ftPick").innerHTML = '<option value="">Choose a candle</option>' + P.map(p => `<option value="${esc(p.id)}" ${p.id === st.featuredId ? "selected" : ""}>${esc(p.name || "New candle")}</option>`).join("");
   $("bhTitle").value = b.title || ""; $("bhTitleAr").value = b.title_ar || ""; $("bhText").value = b.text || ""; $("bhTextAr").value = b.text_ar || "";
   ["behind", "cust"].forEach(l => { const arr = LISTS[l](); $(l === "behind" ? "bhList" : "cpList").innerHTML = arr.map((it, i) => miHTML(it, l, i, arr.length)).join(""); });
+  renderScents();
   growAll($("p-home"));
 }
+function renderScents(){
+  $("scList").innerHTML = S.data.settings.scents.map((sc, i) => {
+    const used = S.data.products.filter(p => (p.families || []).includes(sc.id)).length, armed = S.pendingScent === sc.id;
+    return `<div class="sc" data-sid="${esc(sc.id)}"><div class="bi"><label class="lab" for="sc-${i}">${esc(sc.name || "New scent")} <span class="hint">(${used ? "on " + used + (used === 1 ? " candle" : " candles") : "not on any candle yet"})</span></label><span class="lt">English</span><input id="sc-${i}" data-sc="name" value="${esc(sc.name)}" placeholder="Citrus"><span class="lt" lang="ar">عربي</span><input class="ar" data-sc="name_ar" value="${esc(sc.name_ar)}" placeholder="حمضيات" aria-label="${esc(sc.name || "New scent")} in Arabic"></div>
+      <button class="btn danger sm ${armed ? "armed" : ""}" type="button" data-scrm="${esc(sc.id)}">${armed ? (used ? "Tap again: removes it from " + used + (used === 1 ? " candle" : " candles") : "Tap again to remove") : "Remove"}</button></div>`;
+  }).join("");
+}
+$("addScentHome").addEventListener("click", () => {
+  S.data.settings.scents.push({id:scentId(), name:"", name_ar:""}); S.pendingScent = null; setDirty(true); renderScents();
+  const rows = document.querySelectorAll("#scList .sc"); rows[rows.length - 1].querySelector('[data-sc="name"]').focus();
+});
+$("scList").addEventListener("click", e => {
+  const b = e.target.closest("[data-scrm]"); if (!b) return;
+  const id = b.dataset.scrm;
+  if (S.pendingScent !== id) { S.pendingScent = id; renderScents(); document.querySelector('#scList [data-scrm="' + CSS.escape(id) + '"]').focus(); return; }
+  const list = S.data.settings.scents, sc = list.find(x => x.id === id);
+  S.data.settings.scents = list.filter(x => x.id !== id);
+  S.data.products.forEach(p => { p.families = (p.families || []).filter(x => x !== id); });
+  S.pendingScent = null; setDirty(true); renderScents(); status("Removed " + ((sc && sc.name) || "the scent") + ". Save to update the shop.", "dirty");
+});
 function renderSettings(){
   const st = S.data.settings;
   $("setIg").value = st.instagram || ""; $("setWa").value = st.whatsapp || ""; $("setGift").value = st.giftWrapFee; $("setGc").value = st.goatcounter || "";
@@ -611,6 +664,7 @@ $("app").addEventListener("input", e => {
   if (el.tagName === "TEXTAREA") grow(el);
   if (el.dataset.s) { const k = el.dataset.s; S.data.settings[k] = el.type === "checkbox" ? el.checked : k === "giftWrapFee" ? (parseFloat(el.value) || 0) : el.value.trim(); setDirty(true); return; }
   if (el.dataset.b) { S.data.behind[el.dataset.b] = el.value; setDirty(true); return; }
+  if (el.dataset.sc) { const sc = S.data.settings.scents.find(x => x.id === el.closest(".sc").dataset.sid); if (sc) { sc[el.dataset.sc] = el.value; setDirty(true); } return; }
   if (el.dataset.m) { const mi = el.closest(".mi"), it = LISTS[mi.dataset.list]()[+mi.dataset.i]; if (it) { it[el.dataset.m] = el.value; setDirty(true); } return; }
   if (el.dataset.a) { const k = el.dataset.a; S.data.settings.announcement[k] = el.type === "checkbox" ? el.checked : el.value.trim(); setDirty(true); return; }
   if (!el.closest("#editor")) return;
@@ -643,6 +697,9 @@ $("editor").addEventListener("click", e => {
   if (act === "label") { p.tag = b.dataset.en; p.tag_ar = b.dataset.ar; field('[data-f="tag"]', p.tag); field('[data-f="tag_ar"]', p.tag_ar); refreshShown(p); setDirty(true); return; }
   if (act === "cat") { p.cat = b.dataset.en; if (b.dataset.ar) p.cat_ar = b.dataset.ar; field('[data-f="cat"]', p.cat); field('[data-f="cat_ar"]', p.cat_ar); refreshShown(p); setDirty(true); return; }
   if (act === "fam") { const f = p.families || (p.families = []), k = b.dataset.k, j = f.indexOf(k); if (j < 0) f.push(k); else f.splice(j, 1); b.setAttribute("aria-pressed", j < 0); setDirty(true); return; }
+  if (act === "newscent") { const box = $("addScent"); box.hidden = false; b.setAttribute("aria-expanded", "true"); $("nsEn").focus(); return; }
+  if (act === "cancelscent") { closeAddScent(); return; }
+  if (act === "savescent") { addScent(p); return; }
   if (act === "shape") { p.type = b.dataset.k; refreshShown(p); setDirty(true); return; }
   if (act === "addvar") { (p.variants = p.variants || []).push({name:"", name_ar:"", choices:[{label:"", label_ar:"", add:0}]}); setDirty(true); renderEditor(); const g = document.querySelectorAll("#editor .grp"); g[g.length - 1].querySelector('[data-vf="name"]').focus(); return; }
   if (act === "delvar") { p.variants.splice(+b.closest(".grp").dataset.g, 1); setDirty(true); renderEditor(); return; }
@@ -660,6 +717,24 @@ $("editor").addEventListener("click", e => {
     P.splice(i, 1); S.pendingDelete = null; setDirty(true);
     S.sel = wide() && P.length ? P[Math.min(i, P.length - 1)].id : null; renderList(); renderEditor(); status("Candle deleted. Save to update the shop.", "dirty");
   }
+});
+function closeAddScent(){ const box = $("addScent"); if (!box) return; box.hidden = true; $("nsEn").value = ""; $("nsAr").value = ""; const b = document.querySelector('#editor [data-act="newscent"]'); b.setAttribute("aria-expanded", "false"); b.focus(); }
+function addScent(p){
+  const en = $("nsEn").value.trim(), ar = $("nsAr").value.trim(), list = S.data.settings.scents;
+  if (!en) { $("nsEn").classList.add("bad-field"); $("nsEn").focus(); status("Give the new scent an English name.", "bad"); return; }
+  let sc = list.find(x => x.name.trim().toLowerCase() === en.toLowerCase());
+  const existed = !!sc;
+  if (!sc) { sc = {id:scentId(), name:en, name_ar:ar}; list.push(sc); }
+  else if (ar && !sc.name_ar) sc.name_ar = ar;
+  if (!(p.families || (p.families = [])).includes(sc.id)) p.families.push(sc.id);
+  setDirty(true); renderEditor();
+  const chip = document.querySelector('#editor [data-act="fam"][data-k="' + CSS.escape(sc.id) + '"]'); if (chip) chip.focus();
+  status(existed ? "That scent was already on the list. It is now ticked for " + (p.name || "this candle") + "." : "Added " + en + ". It shows in the shop's scent finder after you save.", "dirty");
+}
+$("editor").addEventListener("keydown", e => {
+  if (e.target.id !== "nsEn" && e.target.id !== "nsAr") return;
+  if (e.key === "Enter") { e.preventDefault(); const p = cur(); if (p) addScent(p); }
+  if (e.key === "Escape") { e.preventDefault(); closeAddScent(); }
 });
 $("add").addEventListener("click", () => {
   const id = "c" + Date.now().toString(36);
@@ -738,6 +813,12 @@ async function save(){
       status("Every option on " + p.name + " needs a name and at least one choice.", "bad"); flag(p, '.grp[data-g="' + gi + '"] [data-vf="name"]'); return;
     }
   }
+  const st = S.data.settings;
+  st.scents.forEach(sc => { sc.name = String(sc.name || "").trim(); sc.name_ar = String(sc.name_ar || "").trim(); });
+  const blank = st.scents.filter(sc => !sc.name && !sc.name_ar).map(sc => sc.id);
+  if (blank.length) { st.scents = st.scents.filter(sc => !blank.includes(sc.id)); P.forEach(p => { p.families = (p.families || []).filter(id => !blank.includes(id)); }); }
+  const noEn = st.scents.find(sc => !sc.name);
+  if (noEn) { status("Every scent needs an English name.", "bad"); showTab("home"); const el = document.querySelector('#scList [data-sid="' + CSS.escape(noEn.id) + '"] [data-sc="name"]'); if (el) { el.classList.add("bad-field"); el.focus(); el.scrollIntoView({block:"center"}); } return; }
   for (const key of ["behind", "cust"]) for (const [i, it] of LISTS[key]().entries()) {
     if (it.type === "youtube" && !ytIdA(it.src)) {
       status("Check the YouTube link in " + (key === "behind" ? "Behind the scenes" : "Customer photos") + ".", "bad");
@@ -787,6 +868,24 @@ async function save(){
   }
 }
 $("save").addEventListener("click", save);
+
+(function(){
+  const b = document.getElementById("themeBtn"), r = document.documentElement;
+  function paint(){
+    const d = r.dataset.theme === "dark";
+    b.textContent = d ? "Light" : "Dark";
+    b.setAttribute("aria-label", d ? "Switch to light mode" : "Switch to dark mode");
+    let m = document.querySelector('meta[name=theme-color]');
+    if(!m){ m = document.createElement("meta"); m.name = "theme-color"; document.head.appendChild(m); }
+    m.content = d ? "#201816" : "#f5e8e2";
+  }
+  b.addEventListener("click", () => {
+    r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark";
+    try{ localStorage.setItem("anne-admin-theme", r.dataset.theme) }catch(e){}
+    paint();
+  });
+  paint();
+})();
 </script>
 </body>
 </html>
