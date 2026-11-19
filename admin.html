@@ -2,94 +2,229 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>Anne Shop Manager</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Karla:wght@400;500;700&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Karla:wght@400;500;700&family=Caveat:wght@500&family=Amiri&family=Aref+Ruqaa:wght@700&display=swap">
 <style>
-:root{--bg:#f5e8e2;--paper:#fbf3ee;--ink:#47302f;--muted:#7e6164;--rose:#c98f91;--deep:#8f525a;--sage:#5f7259;--line:#e2cbc4;--chip:#efdcd5;color-scheme:light}
+:root{--bg:#f5e8e2;--paper:#fbf3ee;--field:#fffaf7;--ink:#47302f;--muted:#7e6164;--rose:#c98f91;--rose-soft:#efdcd5;--deep:#8f525a;--sage:#5b6d55;--sage-soft:#dfe5d6;--line:#e2cbc4;--bad:#a23b3b;--top:64px;color-scheme:light}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Karla,system-ui,sans-serif;padding:0 max(16px,env(safe-area-inset-left)) 110px}
-h1,h2{font-family:"Cormorant Garamond",Georgia,serif;margin:0;line-height:1.1}
-.wrap{max-width:780px;margin:0 auto}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 0 14px;flex-wrap:wrap}
-header h1{font-size:2.1rem}
-header small{color:var(--muted)}
-button,.btn{font:inherit;cursor:pointer}
-.btn{background:var(--deep);color:#fff8f4;border:0;border-radius:999px;padding:10px 22px;font-weight:700;text-decoration:none;display:inline-block}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Karla,system-ui,sans-serif;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;margin:0;line-height:1.15}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--deep)}
+:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 97%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:18px;min-height:64px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;margin-inline-end:auto}
+.brand b{font:600 1.7rem/1 "Cormorant Garamond",Georgia,serif}
+.brand span{font:500 1.3rem/1 Caveat,"Bradley Hand",cursive;color:var(--deep)}
+.tabs{display:flex;gap:4px;background:var(--rose-soft);padding:4px;border-radius:999px}
+.tabs button{border:0;background:transparent;border-radius:999px;padding:8px 20px;font-weight:700;color:var(--muted);min-height:40px}
+.tabs button[aria-selected="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px #47302f26}
+.shoplink{font-weight:700;font-size:.92rem;text-decoration:none;border:1.5px solid var(--rose);border-radius:999px;padding:7px 16px;color:var(--ink);min-height:40px;display:inline-flex;align-items:center}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--deep);color:#fff8f4;border:0;border-radius:999px;padding:10px 22px;font-weight:700;text-decoration:none;min-height:44px;white-space:nowrap}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--rose)}
-.btn.sm{padding:6px 14px;font-size:.85rem}
-.btn.danger{background:transparent;color:#a23b3b;border:1.5px solid #a23b3b}
-:focus-visible{outline:2px solid var(--deep);outline-offset:2px}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:18px}
-.card h2{font-size:1.6rem;margin-bottom:10px}
-label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;font-weight:700;color:var(--muted)}
-input,select,textarea{font:400 1rem Karla,sans-serif;color:var(--ink);background:#fffaf7;border:1.5px solid var(--line);border-radius:8px;padding:9px 11px;width:100%}
-textarea{min-height:64px;resize:vertical}
-input[type=color]{padding:2px;height:40px;width:64px}
-input[type=checkbox]{width:auto}
-.ar{direction:rtl;text-align:right}
-.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:14px}
-.row>*{min-width:0}
+.btn.sm{padding:6px 14px;font-size:.88rem;min-height:38px}
+.btn.danger{background:transparent;color:var(--bad);border:1.5px solid #a23b3b80}
+.btn.danger.armed{background:var(--bad);color:#fff;border-color:var(--bad)}
+
+/* fields */
+.lab,.f>label{font-size:.84rem;font-weight:700;color:var(--muted)}
+.hint{font-weight:400}
+input,select,textarea{font:400 1rem Karla,system-ui,sans-serif;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:100%;min-height:44px}
+textarea{min-height:78px;resize:vertical;line-height:1.5;overflow:hidden}
+input:focus,select:focus,textarea:focus{border-color:var(--rose);outline:none;box-shadow:0 0 0 3px #c98f9133}
+.ar{direction:rtl;text-align:right;font-family:Amiri,"Geeza Pro","Noto Naskh Arabic",serif;font-size:1.08rem}
+.bad-field{border-color:var(--bad)!important;box-shadow:0 0 0 3px #a23b3b26!important}
+.f{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-width:0}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 14px}
+.bi{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-bottom:14px}
+.bi>.lab{grid-column:1/-1}
+.bi .lt{display:none}
+.chk{display:flex;align-items:center;gap:10px;font-weight:500;color:var(--ink);font-size:.95rem;min-height:44px;cursor:pointer}
+.chk input{width:22px;height:22px;min-height:0;margin:0;accent-color:var(--deep);flex:none}
+.money{position:relative;display:block}
+.money>span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;font-weight:700;pointer-events:none}
+.money>input{padding-left:46px;font-variant-numeric:tabular-nums}
 .fine{font-size:.86rem;color:var(--muted);margin:6px 0 0}
-.fine a{color:var(--deep);font-weight:700}
-.err{color:#a23b3b;font-weight:700;margin:10px 0 0}
-details.prod{border:1px solid var(--line);border-radius:10px;background:var(--paper);margin-bottom:10px}
-details.prod>summary{list-style:none;display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer}
-details.prod>summary::-webkit-details-marker{display:none}
-.th{width:46px;height:46px;border-radius:8px;background:var(--chip);flex:none;overflow:hidden;display:grid;place-items:center;font-size:1.3rem}
-.th img{width:100%;height:100%;object-fit:cover}
-.sm-name{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sm-price{color:var(--muted);font-variant-numeric:tabular-nums}
-.pill{background:var(--rose);color:#fff;border-radius:999px;font-size:.72rem;padding:2px 9px;font-weight:700}
-.form{padding:6px 16px 16px;border-top:1px dashed var(--line)}
-.form .row:first-child{margin-top:14px}
-.sect{margin:18px 0 10px;font:600 1.3rem "Cormorant Garamond",serif;border-bottom:1px solid var(--line);padding-bottom:4px}
-.photos{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-.ph{width:96px;display:flex;flex-direction:column;gap:4px;align-items:stretch}
-.ph .th{width:96px;height:96px}
-.ph .btn{padding:3px 8px;font-size:.75rem}
-.ph .main{font-size:.72rem;font-weight:700;color:var(--sage);text-align:center}
-.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;margin-top:14px}
-.chk{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:500}
-.checks{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
-.colors{display:flex;gap:10px;align-items:end}
-.grp{border:1px dashed var(--rose);border-radius:10px;padding:12px;margin-bottom:12px}
-.mi{display:grid;grid-template-columns:96px 1fr auto;gap:12px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:#fffaf7}
-.mi>*{min-width:0}
-.mprev{width:96px;height:96px;border-radius:8px;overflow:hidden;background:var(--chip);display:grid;place-items:center;font-size:.75rem;color:var(--muted);text-align:center}
+.fine a{font-weight:700}
+.err{color:var(--bad);font-weight:700;margin:10px 0 0}
+code{background:var(--rose-soft);padding:1px 6px;border-radius:4px;font-size:.88em}
+
+/* chips: label presets, categories, scent families */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.chip{border:1.5px solid var(--line);background:var(--field);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.88rem;min-height:38px}
+.chip[aria-pressed="true"]{background:var(--sage);border-color:var(--sage);color:#fff}
+
+/* cards */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:18px}
+.card h2{font-size:1.6rem;margin-bottom:4px}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px}
+.narrow{max-width:860px;margin:22px auto 0}
+
+/* sign in */
+.login{max-width:560px;margin:36px auto 0}
+.login h1{font-size:2.1rem;margin-bottom:6px}
+.pw{display:flex;gap:8px}
+.pw .btn{flex:none}
+.login details{margin-top:18px}
+.login summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center;gap:10px;list-style:none}
+.login summary::-webkit-details-marker{display:none}
+.login summary::before{content:"";width:7px;height:7px;border-right:2px solid;border-bottom:2px solid;transform:rotate(-45deg);transition:transform .2s}
+.login details[open] summary::before{transform:rotate(45deg)}
+.login ol{padding-left:20px;margin:6px 0}
+
+/* candles: list beside the editor */
+.cands{display:grid;grid-template-columns:310px minmax(0,1fr);gap:24px;align-items:start;padding-top:20px}
+.clist{position:sticky;top:calc(var(--top) + 16px);max-height:calc(100dvh - var(--top) - 124px);overflow:auto;overscroll-behavior:contain;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:8px}
+.clist-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 8px 10px}
+.clist-head h2{font-size:1.5rem}
+.count{font:700 .8rem Karla,sans-serif;color:var(--muted);background:var(--rose-soft);border-radius:999px;padding:2px 8px;vertical-align:4px;margin-left:4px}
+.list{list-style:none;margin:0;padding:0}
+.ci{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border:1.5px solid transparent;border-radius:12px;padding:7px 8px;min-height:66px}
+@media (hover:hover){.ci:hover{background:var(--field)}}
+.ci[aria-current="true"]{background:var(--field);border-color:var(--rose)}
+.thumb{width:52px;height:52px;border-radius:10px;background:var(--rose-soft);flex:none;overflow:hidden;display:grid;place-items:center}
+.thumb img,.thumb svg{width:100%;height:100%;object-fit:cover;display:block}
+.ci-t{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.ci-t b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-t small{font:400 .95rem/1.4 Amiri,serif;color:var(--muted);direction:rtl;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-p{display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-size:.88rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;background:var(--rose-soft);color:var(--deep);border-radius:999px;font-size:.72rem;font-weight:700;padding:2px 9px;white-space:nowrap}
+.pill.out{background:#a23b3b17;color:var(--bad)}
+.empty{color:var(--muted);padding:10px}
+
+/* the editor */
+.ed{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 26px 26px;min-width:0}
+.ed-empty{text-align:center;color:var(--muted);padding:60px 20px}
+.back{display:none;align-items:center;gap:6px;border:0;background:transparent;color:var(--deep);font-weight:700;padding:6px 0;min-height:44px;margin:-8px 0 6px}
+.ed-head{display:grid;grid-template-columns:116px minmax(0,1fr) auto;gap:20px;align-items:center;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.ed-art{width:116px;height:116px;border-radius:16px;background:var(--rose-soft);overflow:hidden;display:grid;place-items:center}
+.ed-art img,.ed-art svg{width:100%;height:100%;object-fit:cover;display:block}
+.ed-id{min-width:0}
+.ed-id h2{font-size:2.1rem;line-height:1.1;overflow-wrap:anywhere}
+.ed-id h2:focus{outline:none}
+.ed-ar{font:700 1.4rem/1.7 "Aref Ruqaa",Amiri,serif;margin:0;direction:rtl;text-align:left;min-height:.5em}
+.ed-meta{margin:6px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ed-meta b{font-variant-numeric:tabular-nums}
+.switch{display:inline-flex;align-items:center;gap:10px;font-weight:700;cursor:pointer;min-height:44px;position:relative;white-space:nowrap}
+.switch input{position:absolute;z-index:1;left:0;top:50%;transform:translateY(-50%);opacity:0;width:48px;height:32px;margin:0;min-height:0;cursor:pointer}
+.track{width:48px;height:28px;border-radius:999px;background:var(--sage);position:relative;transition:background .2s;flex:none}
+.track::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003;transition:transform .2s}
+.switch input:checked+.track{background:var(--bad)}
+.switch input:checked+.track::after{transform:translateX(20px)}
+.switch input:focus-visible+.track{outline:2px solid var(--deep);outline-offset:2px}
+.blk{margin-top:24px}
+.blk+.blk{border-top:1px dashed var(--line);padding-top:20px}
+.blk h3{font-size:1.4rem;margin-bottom:12px}
+.photos{display:flex;gap:12px;flex-wrap:wrap}
+.ph{width:106px;display:flex;flex-direction:column;gap:6px}
+.ph .thumb{width:106px;height:106px;border-radius:12px}
+.ph .main{font-size:.76rem;font-weight:700;color:var(--sage);text-align:center;min-height:38px;display:grid;place-items:center}
+.ph .btn{padding:4px 8px;font-size:.8rem}
+.addph{width:106px;height:106px;border:1.5px dashed var(--rose);border-radius:12px;background:transparent;color:var(--deep);font-weight:700;font-size:.88rem;line-height:1.3;padding:8px}
+.grp{border:1.5px dashed var(--rose);border-radius:12px;padding:14px 14px 4px;margin-bottom:12px}
+.choice{display:grid;grid-template-columns:1fr 1fr 124px 44px;gap:8px;align-items:center;margin-bottom:8px}
+.choice .x{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--field);font-size:1.25rem;line-height:1;color:var(--muted)}
+.grp-foot{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;margin:4px 0 10px}
+.shapes{display:flex;gap:10px;flex-wrap:wrap}
+.shape{width:84px;border:1.5px solid var(--line);border-radius:12px;background:var(--field);padding:6px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.78rem;font-weight:700}
+.shape svg{width:60px;height:60px}
+.shape[aria-pressed="true"]{border-color:var(--deep);box-shadow:0 0 0 2px #8f525a33}
+.colors{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px}
+.colors label{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.8rem;font-weight:700;color:var(--muted)}
+input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:pointer}
+.ed-foot{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.ed-foot .mv{display:flex;gap:8px;flex-wrap:wrap}
+
+/* homepage items: photos, videos, YouTube */
+.mi{display:grid;grid-template-columns:104px minmax(0,1fr) auto;gap:14px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:var(--field)}
+.mprev{width:104px;height:104px;border-radius:10px;overflow:hidden;background:var(--rose-soft);display:grid;place-items:center;font-size:.75rem;color:var(--muted);text-align:center}
 .mprev img,.mprev video{width:100%;height:100%;object-fit:cover}
-.mfields{display:grid;gap:8px}
+.mfields{min-width:0}
+.mfields .bi,.mfields .f{margin-bottom:8px}
+.mkind{font-size:.8rem;font-weight:700;color:var(--sage);margin:0 0 6px}
 .mbtn{display:flex;flex-direction:column;gap:6px}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-@media (max-width:600px){.mi{grid-template-columns:80px 1fr}.mbtn{grid-column:1/-1;flex-direction:row}.mprev{width:80px;height:80px}}
-.bar{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom));z-index:5}
-.bar .wrap{display:flex;gap:14px;align-items:center;justify-content:space-between}
-#status{font-size:.92rem;color:var(--muted)}
+
+/* save bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--paper);border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom));box-shadow:0 -6px 20px #47302f12}
+.bar .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between}
+#status{font-size:.92rem;color:var(--muted);flex:1;min-width:0}
+#status.dirty{color:var(--deep);font-weight:700}
+#status.dirty::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--deep);margin-right:8px;vertical-align:1px}
 #status.ok{color:var(--sage);font-weight:700}
-#status.bad{color:#a23b3b;font-weight:700}
-ol{padding-left:20px;margin:8px 0}
-code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:.88em}
+#status.bad{color:var(--bad);font-weight:700}
+.kbd{font-size:.78rem;color:var(--muted);white-space:nowrap}
+
+@media (pointer:coarse){.btn.sm,.chip{min-height:44px}.kbd{display:none}}
+@media (max-width:899px){
+  .cands{grid-template-columns:minmax(0,1fr);padding-top:14px}
+  .clist{position:static;max-height:none;overflow:visible}
+  .cands.editing .clist,.cands:not(.editing) .ed{display:none}
+  .back{display:inline-flex}
+}
+@media (max-width:760px){
+  .top .wrap{gap:8px 10px;padding-block:8px}
+  .tabs{order:3;width:100%}
+  .tabs button{flex:1;padding-inline:6px}
+  .brand b{font-size:1.45rem}
+  .ed,.card{padding:16px}
+  .ed-head{grid-template-columns:88px minmax(0,1fr);gap:14px}
+  .ed-art{width:88px;height:88px}
+  .ed-id h2{font-size:1.7rem}
+  .ed-head .switch{grid-column:1/-1}
+  .mi{grid-template-columns:84px minmax(0,1fr)}
+  .mprev{width:84px;height:84px}
+  .mbtn{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}
+}
+@media (max-width:600px){
+  .bi{grid-template-columns:1fr}
+  .bi .lt{display:block;font-size:.74rem;font-weight:700;color:var(--muted);margin-bottom:-2px}
+  .bi .lt[lang="ar"]{font-family:Amiri,serif;font-size:.9rem;font-weight:400;text-align:right}
+  .choice{grid-template-columns:1fr 1fr}
+  .choice .money{grid-column:1}
+  .choice .x{justify-self:end}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header><div><h1>Anne Shop Manager</h1><small id="repoLabel">Private page for editing your shop</small></div><button class="btn ghost sm" id="signOut" hidden>Sign out</button></header>
-
-<section id="login" class="card">
-  <h2>Sign in</h2>
-  <p class="fine" style="margin-top:0">This page saves your changes straight to your GitHub repository, so it needs a GitHub access token. Only you can use it, and it stays in this browser.</p>
-  <div class="row">
-    <label for="repo">Repository<input id="repo" value="sayedalnaser2/CANDLES" autocomplete="off" spellcheck="false"></label>
-    <label for="token">GitHub access token<input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..."></label>
+<header class="top" id="top">
+  <div class="wrap">
+    <div class="brand"><b>Anne Shop</b><span>manager</span></div>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Sections" hidden>
+      <button type="button" role="tab" id="t-candles" data-tab="candles" aria-controls="p-candles" aria-selected="true">Candles</button>
+      <button type="button" role="tab" id="t-home" data-tab="home" aria-controls="p-home" aria-selected="false" tabindex="-1">Homepage</button>
+      <button type="button" role="tab" id="t-settings" data-tab="settings" aria-controls="p-settings" aria-selected="false" tabindex="-1">Settings</button>
+    </nav>
+    <a class="shoplink" href="./" target="_blank" rel="noopener">Open shop</a>
   </div>
+</header>
+
+<main class="wrap">
+<section id="login" class="card login">
+  <h1>Sign in</h1>
+  <p class="lede">This page saves your changes straight to your GitHub repository, so it needs a GitHub access token. Only you can use it, and it stays in this browser.</p>
+  <div class="f"><label for="repo">Repository</label><input id="repo" value="sayedalnaser2/CANDLES" autocomplete="off" spellcheck="false" autocapitalize="off"></div>
+  <div class="f"><label for="token">GitHub access token</label>
+    <div class="pw"><input id="token" type="password" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="github_pat_..."><button class="btn ghost sm" type="button" id="showTok" aria-pressed="false">Show</button></div></div>
   <label class="chk" for="remember"><input id="remember" type="checkbox" checked> Remember me on this device</label>
-  <p style="margin:14px 0 0"><button class="btn" id="go">Sign in</button></p>
-  <p class="err" id="loginErr" hidden></p>
-  <details style="margin-top:16px"><summary style="cursor:pointer;font-weight:700">How do I get a token?</summary>
+  <p style="margin:14px 0 0"><button class="btn" id="go" type="button">Sign in</button></p>
+  <p class="err" id="loginErr" role="alert" hidden></p>
+  <details><summary>How do I get a token?</summary>
     <ol>
       <li>On GitHub, open <b>Settings, Developer settings, Personal access tokens, Fine-grained tokens</b>, then <b>Generate new token</b>.</li>
       <li>Name it <code>shop manager</code> and pick an expiry date.</li>
@@ -102,80 +237,87 @@ code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:.88em}
 </section>
 
 <div id="app" hidden>
-  <section class="card">
-    <h2>Announcement bar</h2>
-    <label class="chk" for="annOn"><input id="annOn" type="checkbox" data-a="on"> Show the banner at the top of the shop</label>
-    <div class="row" style="margin-top:12px">
-      <label for="annText">Text (English)<input id="annText" data-a="text" placeholder="Eid gift sets now available"></label>
-      <label for="annTextAr">Text (Arabic)<input id="annTextAr" class="ar" data-a="text_ar" placeholder="مجموعات هدايا العيد متوفرة الآن"></label>
-    </div>
-    <div class="row"><label for="annLink">Link when tapped (optional, must start with https://)<input id="annLink" data-a="link" placeholder="https://..."></label></div>
-  </section>
-
-  <section class="card">
-    <h2>Candle of the month</h2>
-    <label class="chk" for="ftOn"><input id="ftOn" type="checkbox" data-s="featuredOn"> Show a featured candle above the shelf</label>
-    <div class="row" style="margin-top:12px">
-      <label for="ftPick">Which candle<select id="ftPick" data-s="featuredId"></select></label>
-    </div>
-    <div class="row">
-      <label for="ftNote">Short note, optional (English)<input id="ftNote" data-s="featuredNote" placeholder="Our October favourite"></label>
-      <label for="ftNoteAr">Short note, optional (Arabic)<input id="ftNoteAr" class="ar" data-s="featuredNote_ar"></label>
+  <section id="p-candles" role="tabpanel" aria-labelledby="t-candles">
+    <div class="cands" id="cands">
+      <aside class="clist" aria-label="Your candles">
+        <div class="clist-head"><h2>Your candles<span class="count" id="count"></span></h2><button class="btn sm" id="add" type="button">+ New candle</button></div>
+        <ul class="list" id="list"></ul>
+      </aside>
+      <div class="ed" id="editor"></div>
     </div>
   </section>
 
-  <section class="card">
-    <h2>Shop settings</h2>
-    <div class="row">
-      <label for="setIg">Instagram username<input id="setIg" data-s="instagram" placeholder="anneshop.bh"></label>
-      <label for="setWa">WhatsApp number<input id="setWa" data-s="whatsapp" inputmode="tel" placeholder="97333123456"></label>
+  <section id="p-home" role="tabpanel" aria-labelledby="t-home" hidden>
+    <div class="narrow">
+      <section class="card">
+        <h2>Announcement bar</h2>
+        <p class="lede">A thin banner across the top of every page, for holidays, new arrivals or delivery news.</p>
+        <label class="chk" for="annOn"><input id="annOn" type="checkbox" data-a="on"> Show the banner</label>
+        <div class="bi" style="margin-top:8px"><label class="lab" for="annText">Banner text</label><span class="lt">English</span><input id="annText" data-a="text" placeholder="Eid gift sets now available"><span class="lt" lang="ar">عربي</span><input id="annTextAr" class="ar" data-a="text_ar" aria-label="Banner text in Arabic" placeholder="مجموعات هدايا العيد متوفرة الآن"></div>
+        <div class="f"><label for="annLink">Link when tapped <span class="hint">(optional, starts with https://)</span></label><input id="annLink" data-a="link" placeholder="https://..." autocapitalize="off" spellcheck="false"></div>
+      </section>
+
+      <section class="card">
+        <h2>Candle of the month</h2>
+        <p class="lede">One candle shown large above the shelf, with a short note from you.</p>
+        <label class="chk" for="ftOn"><input id="ftOn" type="checkbox" data-s="featuredOn"> Show a candle of the month</label>
+        <div class="f" style="margin-top:8px"><label for="ftPick">Which candle</label><select id="ftPick" data-s="featuredId"></select></div>
+        <div class="bi"><label class="lab" for="ftNote">Your note <span class="hint">(optional)</span></label><span class="lt">English</span><input id="ftNote" data-s="featuredNote" placeholder="Our October favourite"><span class="lt" lang="ar">عربي</span><input id="ftNoteAr" class="ar" data-s="featuredNote_ar" aria-label="Your note in Arabic" placeholder="مفضلتنا لهذا الشهر"></div>
+      </section>
+
+      <section class="card">
+        <h2>Behind the scenes</h2>
+        <p class="lede">Photos or short videos of you pouring candles. This part of the shop appears once it has at least one item.</p>
+        <div class="bi"><label class="lab" for="bhTitle">Title</label><span class="lt">English</span><input id="bhTitle" data-b="title" placeholder="Behind the scenes"><span class="lt" lang="ar">عربي</span><input id="bhTitleAr" class="ar" data-b="title_ar" aria-label="Title in Arabic" placeholder="خلف الكواليس"></div>
+        <div class="bi"><label class="lab" for="bhText">Short intro <span class="hint">(optional)</span></label><span class="lt">English</span><textarea id="bhText" data-b="text"></textarea><span class="lt" lang="ar">عربي</span><textarea id="bhTextAr" class="ar" data-b="text_ar" aria-label="Short intro in Arabic"></textarea></div>
+        <div id="bhList"></div>
+        <div class="btnrow">
+          <button class="btn sm" type="button" data-addm="behind:image">+ Add photos</button>
+          <button class="btn sm" type="button" data-addm="behind:video">+ Add a video file</button>
+          <button class="btn ghost sm" type="button" data-addm="behind:youtube">+ Add a YouTube link</button>
+        </div>
+        <p class="fine">Video files must be under 25 MB, so a 15 to 30 second clip works best. For longer videos, upload to YouTube and paste the link.</p>
+      </section>
+
+      <section class="card">
+        <h2>Customer photos</h2>
+        <p class="lede">Photos of your candles in customers' homes. Ask for permission before posting someone's photo. This part of the shop appears once it has a photo.</p>
+        <div id="cpList"></div>
+        <div class="btnrow"><button class="btn sm" type="button" data-addm="cust:image">+ Add photos</button></div>
+      </section>
     </div>
-    <p class="fine">WhatsApp: country code first, no + or spaces. Leave empty to hide the WhatsApp order buttons.</p>
-    <div class="row" style="margin-top:14px">
-      <label for="setGift">Gift wrap price (BD, 0 for free)<input id="setGift" data-s="giftWrapFee" type="number" step="0.001" min="0" inputmode="decimal"></label>
-      <label for="setGc">Visitor statistics code (optional)<input id="setGc" data-s="goatcounter" placeholder="annecandles" autocomplete="off" spellcheck="false"></label>
-    </div>
-    <p class="fine">Statistics use GoatCounter, a free and privacy-friendly counter with no cookies. Sign up at <a href="https://www.goatcounter.com/signup" target="_blank" rel="noopener">goatcounter.com</a>, choose a code (for example <code>annecandles</code>), and type that code above. You then see visits and which candles people open at <code>yourcode.goatcounter.com</code>.</p>
   </section>
 
-  <section class="card">
-    <h2>Behind the scenes</h2>
-    <p class="fine" style="margin-top:0">Photos or short videos of you pouring candles. This section appears on the shop once it has at least one item.</p>
-    <div class="row" style="margin-top:12px">
-      <label for="bhTitle">Title (English)<input id="bhTitle" data-b="title" placeholder="Behind the scenes"></label>
-      <label for="bhTitleAr">Title (Arabic)<input id="bhTitleAr" class="ar" data-b="title_ar" placeholder="خلف الكواليس"></label>
+  <section id="p-settings" role="tabpanel" aria-labelledby="t-settings" hidden>
+    <div class="narrow">
+      <section class="card">
+        <h2>Ordering</h2>
+        <p class="lede">Where customers send their orders.</p>
+        <div class="row">
+          <div class="f"><label for="setIg">Instagram username</label><input id="setIg" data-s="instagram" placeholder="anneshop.bh" autocapitalize="off" spellcheck="false"></div>
+          <div class="f"><label for="setWa">WhatsApp number</label><input id="setWa" data-s="whatsapp" inputmode="tel" placeholder="97333123456"></div>
+        </div>
+        <p class="fine" style="margin-top:-6px">WhatsApp: country code first, no + or spaces. Leave it empty to hide the WhatsApp order buttons.</p>
+      </section>
+      <section class="card">
+        <h2>Gift wrap and visitor statistics</h2>
+        <div class="row" style="margin-top:10px">
+          <div class="f"><label for="setGift">Gift wrap price <span class="hint">(0 for free)</span></label><span class="money"><span aria-hidden="true">BD</span><input id="setGift" data-s="giftWrapFee" type="number" step="0.001" min="0" inputmode="decimal"></span></div>
+          <div class="f"><label for="setGc">Visitor statistics code <span class="hint">(optional)</span></label><input id="setGc" data-s="goatcounter" placeholder="annecandles" autocomplete="off" spellcheck="false" autocapitalize="off"></div>
+        </div>
+        <p class="fine" style="margin-top:-6px">Statistics use GoatCounter, a free and privacy-friendly counter with no cookies. Sign up at <a href="https://www.goatcounter.com/signup" target="_blank" rel="noopener">goatcounter.com</a>, choose a code (for example <code>annecandles</code>), and type it above. You then see visits and which candles people open at <code>yourcode.goatcounter.com</code>.</p>
+      </section>
+      <section class="card">
+        <h2>This device</h2>
+        <p class="lede">Signed in to <b id="repoLabel"></b>. Your access token is kept only in this browser.</p>
+        <button class="btn ghost" type="button" id="signOut">Sign out</button>
+      </section>
     </div>
-    <div class="row">
-      <label for="bhText">Short intro, optional (English)<textarea id="bhText" data-b="text"></textarea></label>
-      <label for="bhTextAr">Short intro, optional (Arabic)<textarea id="bhTextAr" class="ar" data-b="text_ar"></textarea></label>
-    </div>
-    <div id="bhList"></div>
-    <div class="btnrow">
-      <button class="btn sm" type="button" data-addm="behind:image">+ Add photos</button>
-      <button class="btn sm" type="button" data-addm="behind:video">+ Add a video file</button>
-      <button class="btn ghost sm" type="button" data-addm="behind:youtube">+ Add a YouTube link</button>
-    </div>
-    <p class="fine">Video files must be under 25 MB, so a 15 to 30 second clip works best. For longer videos, upload to YouTube and paste the link.</p>
-  </section>
-
-  <section class="card">
-    <h2>Customer photos</h2>
-    <p class="fine" style="margin-top:0">Photos of your candles in customers' homes. Ask for permission before posting someone's photo. This section appears once it has a photo.</p>
-    <div id="cpList" style="margin-top:12px"></div>
-    <div class="btnrow"><button class="btn sm" type="button" data-addm="cust:image">+ Add photos</button></div>
-  </section>
-
-  <section>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 12px;gap:10px;flex-wrap:wrap">
-      <h2 style="font-size:1.8rem">Your candles</h2>
-      <button class="btn sm" id="add">+ Add a candle</button>
-    </div>
-    <div id="list"></div>
   </section>
 </div>
-</div>
+</main>
 
-<div class="bar" id="saveBar" hidden><div class="wrap"><span id="status">No changes yet</span><button class="btn" id="save" disabled>Save changes</button></div></div>
+<div class="bar" id="saveBar" hidden><div class="wrap"><span id="status" role="status">No changes yet</span><span class="kbd" id="kbd">Ctrl + S saves</span><button class="btn" id="save" type="button" disabled>Save changes</button></div></div>
 <datalist id="cats"></datalist>
 <input type="file" id="file" accept="image/*" multiple hidden aria-label="Choose candle photos">
 <input type="file" id="fileM" hidden aria-label="Choose a photo or video">
@@ -183,13 +325,20 @@ code{background:var(--chip);padding:1px 6px;border-radius:4px;font-size:.88em}
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const colr = (c, d) => /^#[0-9a-f]{6}$/i.test(String(c || "")) ? c : d;
+const money = n => "BD " + (+n || 0).toFixed(3);
 const TYPES = {jar:"Jar", tin:"Tin", cup:"Teacup", pillar:"Pillar", trio:"Gift set"};
 const FAMS = {floral:"Floral", sweet:"Sweet & bakery", woody:"Woody & warm", fresh:"Fresh & herbal", spicy:"Spicy"};
+const LABELS = [["", "", "No label"], ["New", "جديد"], ["Favourite", "المفضلة"], ["Gift", "هدية"], ["Limited", "كمية محدودة"]];
 const DEFAULT_SETTINGS = {instagram:"anneshop.bh", whatsapp:"", currency:"BD", giftWrapFee:1, goatcounter:"", announcement:{on:false, text:"", text_ar:"", link:""}, featuredOn:false, featuredId:"", featuredNote:"", featuredNote_ar:""};
-const S = {repo:"", token:"", sha:null, data:{settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), products:[], behind:{title:"", title_ar:"", text:"", text_ar:"", items:[]}, customerPhotos:[]}, dirty:false, open:new Set(), pendingDelete:null, imgTarget:null, mediaTarget:null};
+const S = {repo:"", token:"", sha:null, data:{settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), products:[], behind:{title:"", title_ar:"", text:"", text_ar:"", items:[]}, customerPhotos:[]}, dirty:false, sel:null, tab:"candles", pendingDelete:null, imgTarget:null, mediaTarget:null};
 const LISTS = {behind: () => S.data.behind.items, cust: () => S.data.customerPhotos};
 const ytIdA = u => { const m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/.exec(u || ""); return m ? m[1] : ""; };
+const wideMQ = matchMedia("(min-width:900px)");
+const wide = () => wideMQ.matches;
+const cur = () => S.data.products.find(p => p.id === S.sel);
 let confirmedLeave = false;
+$("kbd").textContent = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent) ? "⌘ S saves" : "Ctrl + S saves";
 
 function utf8ToB64(str){ const b = new TextEncoder().encode(str); let s = ""; b.forEach(x => s += String.fromCharCode(x)); return btoa(s); }
 function b64ToUtf8(b64){ const s = atob(b64); const a = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return new TextDecoder().decode(a); }
@@ -198,8 +347,36 @@ function api(path, opt){
   return fetch("https://api.github.com/repos/" + S.repo + path, Object.assign({}, opt, {headers:{Authorization:"Bearer " + S.token, Accept:"application/vnd.github+json"}}));
 }
 function status(msg, cls){ const s = $("status"); s.textContent = msg; s.className = cls || ""; }
-function setDirty(v){ S.dirty = v; $("save").disabled = !v; if (v) status("You have unsaved changes"); }
+function setDirty(v){ S.dirty = v; $("save").disabled = !v; if (v) status("Unsaved changes", "dirty"); }
 window.addEventListener("beforeunload", e => { if (S.dirty) { e.preventDefault(); e.returnValue = ""; } });
+const fitTop = () => document.documentElement.style.setProperty("--top", $("top").offsetHeight + "px");
+window.addEventListener("resize", fitTop); fitTop();
+
+/* ---- The same candle drawings as the shop (used when a candle has no photo) ---- */
+function flame(x,y,s){s=s||1;
+  return `<path d="M${x} ${y-30*s} C${x+10*s} ${y-16*s} ${x+10*s} ${y-4*s} ${x} ${y} C${x-10*s} ${y-4*s} ${x-10*s} ${y-16*s} ${x} ${y-30*s}Z" fill="#f2b765"/><path d="M${x} ${y-17*s} C${x+5*s} ${y-9*s} ${x+5*s} ${y-3*s} ${x} ${y} C${x-5*s} ${y-3*s} ${x-5*s} ${y-9*s} ${x} ${y-17*s}Z" fill="#fff0c7"/>`}
+function wick(x,y1,y2){return `<path d="M${x} ${y1} L${x} ${y2}" stroke="#4a3a35" stroke-width="2.4" stroke-linecap="round"/>`}
+function tagShape(x,y,w,h,c){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#f9efe3" stroke="${c}" stroke-width="1.4"/><path d="M${x+8} ${y+h/2-3} H${x+w-8} M${x+14} ${y+h/2+5} H${x+w-14}" stroke="${c}" stroke-width="1.6" stroke-linecap="round"/><circle cx="${x+w/2}" cy="${y+8}" r="2.4" fill="${c}"/>`}
+function artSvg(src){
+  const p = {type:src.type || "jar", c1:colr(src.c1,"#f3e3df"), c2:colr(src.c2,"#e7b9bb"), c3:colr(src.c3,"#c98f91")};
+  let s = "";
+  if (p.type === "jar") {
+    s = `<ellipse cx="100" cy="182" rx="64" ry="8" fill="#000" opacity=".12"/><rect x="50" y="92" width="100" height="88" rx="16" fill="${p.c1}"/><rect x="57" y="99" width="86" height="74" rx="11" fill="${p.c2}"/><rect x="46" y="80" width="108" height="14" rx="6" fill="${p.c3}"/>${tagShape(72,122,56,36,p.c3)}${wick(100,99,86)}${flame(100,86)}`;
+  } else if (p.type === "tin") {
+    s = `<ellipse cx="100" cy="182" rx="74" ry="8" fill="#000" opacity=".12"/><rect x="36" y="118" width="128" height="62" rx="9" fill="${p.c3}"/><rect x="30" y="108" width="140" height="16" rx="7" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/><rect x="42" y="124" width="116" height="9" rx="3" fill="${p.c2}"/>${tagShape(72,138,56,32,p.c3)}${wick(100,114,100)}${flame(100,100)}`;
+  } else if (p.type === "cup") {
+    s = `<ellipse cx="100" cy="184" rx="78" ry="9" fill="#000" opacity=".12"/><ellipse cx="100" cy="176" rx="76" ry="12" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/><ellipse cx="100" cy="174" rx="48" ry="6" fill="none" stroke="${p.c3}" stroke-width="1.2" opacity=".6"/><path d="M142 112 C176 106 176 150 140 150" fill="none" stroke="${p.c3}" stroke-width="9" stroke-linecap="round"/><path d="M142 112 C170 108 170 146 140 148" fill="none" stroke="${p.c1}" stroke-width="5" stroke-linecap="round"/><path d="M52 100 H148 C148 150 130 172 100 172 C70 172 52 150 52 100Z" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/><ellipse cx="100" cy="100" rx="48" ry="9" fill="${p.c2}" stroke="${p.c3}" stroke-width="2"/><path d="M70 128 q30 14 60 0" fill="none" stroke="${p.c3}" stroke-width="2" stroke-linecap="round"/><circle cx="100" cy="146" r="4" fill="${p.c3}"/>${wick(100,100,86)}${flame(100,86)}`;
+  } else if (p.type === "pillar") {
+    s = `<ellipse cx="100" cy="184" rx="62" ry="8" fill="#000" opacity=".12"/><ellipse cx="100" cy="176" rx="58" ry="10" fill="#c9a76a" stroke="#9a7b43" stroke-width="2"/><path d="M68 70 H132 V172 H68Z" fill="${p.c1}"/><path d="M68 70 H132 V84 q-6 12 -12 2 q-6 -10 -14 4 q-6 8 -14 -4 q-8 -10 -14 4 q-5 8 -12 -6Z" fill="${p.c3}" opacity=".35"/><ellipse cx="100" cy="70" rx="32" ry="6" fill="${p.c2}"/><path d="M84 100 V140 M116 96 V150" stroke="${p.c3}" stroke-width="1.5" opacity=".45"/>${wick(100,70,56)}${flame(100,56)}`;
+  } else {
+    const one = (x,c) => `<rect x="${x-26}" y="128" width="52" height="46" rx="7" fill="${c}"/><rect x="${x-29}" y="120" width="58" height="12" rx="5" fill="${c}" stroke="#ffffff55" stroke-width="2"/>${wick(x,118,108)}${flame(x,108,.75)}`;
+    s = `<ellipse cx="100" cy="182" rx="84" ry="8" fill="#000" opacity=".12"/><rect x="22" y="150" width="156" height="30" rx="4" fill="#d9b88e"/><path d="M96 150 H104 V180 H96Z" fill="${p.c3}"/>${one(56,p.c1)}${one(100,p.c2)}${one(144,p.c3)}<path d="M100 150 C82 128 82 142 100 150 C118 142 118 128 100 150Z" fill="${p.c3}"/>`;
+  }
+  return `<svg viewBox="0 0 200 200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+}
+/* the main photo, or the drawing when there is none (or the photo cannot be shown yet) */
+const picture = p => { const f = p._imgs[0], src = f && (f.preview || f.path); return src ? `<img src="${esc(src)}" alt="" data-pid="${esc(p.id)}">` : artSvg(p); };
+document.addEventListener("error", e => { const im = e.target; if (im && im.tagName === "IMG" && im.dataset.pid) { const p = S.data.products.find(x => x.id === im.dataset.pid); if (p) im.outerHTML = artSvg(p); } }, true);
 
 /* ---- Sign in ---- */
 function normalize(){
@@ -211,6 +388,7 @@ function normalize(){
   d.customerPhotos = Array.isArray(d.customerPhotos) ? d.customerPhotos : [];
   d.products = (d.products || []).map(p => {
     const q = Object.assign({name_ar:"", cat_ar:"", size_ar:"", notes_ar:"", tag_ar:"", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:[], added:""}, p);
+    q.variants = (Array.isArray(q.variants) ? q.variants : []).map(g => ({name:g.name || "", name_ar:g.name_ar || "", choices:(g.choices || []).map(c => ({label:c.label || "", label_ar:c.label_ar || "", add:+c.add || 0}))}));
     const list = (Array.isArray(q.images) && q.images.length) ? q.images : (q.image ? [q.image] : []);
     q._imgs = list.map(path => ({path}));
     return q;
@@ -231,8 +409,9 @@ async function signIn(){
     const j = await r.json();
     S.sha = j.sha; S.data = JSON.parse(b64ToUtf8(j.content.replace(/\n/g, ""))); normalize();
     try { if ($("remember").checked) localStorage.setItem("anneshop-admin", JSON.stringify({repo:S.repo, token:S.token})); } catch (e) {}
-    $("login").hidden = true; $("app").hidden = false; $("saveBar").hidden = false; $("signOut").hidden = false;
-    $("repoLabel").textContent = S.repo;
+    $("login").hidden = true; $("app").hidden = false; $("saveBar").hidden = false; $("tabs").hidden = false;
+    $("repoLabel").textContent = S.repo; fitTop();
+    S.sel = wide() && S.data.products.length ? S.data.products[0].id : null;
     render(); status("Loaded " + S.data.products.length + " candles");
   } catch (e) {
     err.textContent = "Something went wrong while connecting: " + e.message; err.hidden = false;
@@ -240,6 +419,7 @@ async function signIn(){
 }
 $("go").addEventListener("click", signIn);
 $("token").addEventListener("keydown", e => { if (e.key === "Enter") signIn(); });
+$("showTok").addEventListener("click", () => { const t = $("token"), show = t.type === "password"; t.type = show ? "text" : "password"; $("showTok").textContent = show ? "Hide" : "Show"; $("showTok").setAttribute("aria-pressed", show); });
 $("signOut").addEventListener("click", () => {
   if (S.dirty && !confirmedLeave) { status("Save your changes first. Press Sign out again to leave without saving.", "bad"); confirmedLeave = true; return; }
   try { localStorage.removeItem("anneshop-admin"); } catch (e) {}
@@ -250,110 +430,152 @@ try {
   if (saved) { $("repo").value = saved.repo; $("token").value = saved.token; signIn(); }
 } catch (e) {}
 
+/* ---- Tabs ---- */
+function showTab(t, focus){
+  S.tab = t;
+  document.querySelectorAll("#tabs [data-tab]").forEach(b => { const on = b.dataset.tab === t; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+  ["candles", "home", "settings"].forEach(k => $("p-" + k).hidden = k !== t);
+  if (t === "home") renderHome(); if (t === "settings") renderSettings();
+  scrollTo(0, 0);
+}
+$("tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) showTab(b.dataset.tab); });
+$("tabs").addEventListener("keydown", e => {
+  const order = ["candles", "home", "settings"], i = order.indexOf(S.tab);
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); showTab(order[(i + (e.key === "ArrowRight" ? 1 : 2)) % 3], true); }
+});
+
 /* ---- Render ---- */
-const thumbHTML = p => { const f = p._imgs[0]; const src = f && (f.preview || f.path); return src ? `<img src="${esc(src)}" alt="">` : "&#128367;"; };
-const varText = g => g.choices.map(c => c.label + " | " + (c.label_ar || "") + " | " + (c.add || 0)).join("\n");
+const pressed = on => `aria-pressed="${on ? "true" : "false"}"`;
+function catPairs(){ const m = new Map(); S.data.products.forEach(p => { if (p.cat && (!m.has(p.cat) || (!m.get(p.cat) && p.cat_ar))) m.set(p.cat, p.cat_ar || ""); }); return m; }
+function render(){ renderList(); renderEditor(); renderHome(); renderSettings(); }
+function renderList(){
+  const P = S.data.products;
+  $("count").textContent = P.length;
+  $("list").innerHTML = P.length ? P.map(p => `<li><button class="ci" type="button" data-pick="${esc(p.id)}" ${p.id === S.sel ? 'aria-current="true"' : ""}>
+      <span class="thumb">${picture(p)}</span>
+      <span class="ci-t"><b>${esc(p.name) || "New candle"}</b><small>${esc(p.name_ar)}</small></span>
+      <span class="ci-p">${money(p.price)}${p.soldOut ? '<span class="pill out">Sold out</span>' : ""}</span></button></li>`).join("")
+    : '<li class="empty">No candles yet. Press "New candle" to add your first one.</li>';
+  $("cats").innerHTML = [...catPairs().keys()].map(c => `<option value="${esc(c)}">`).join("");
+  $("cands").classList.toggle("editing", !!cur());
+}
+/* one row of a field in English and Arabic, side by side (stacked on phones) */
+function bi(label, f, val, valAr, o){
+  o = o || {};
+  const ph = t => t ? `placeholder="${esc(t)}"` : "";
+  const en = o.area ? `<textarea id="e-${f}" data-f="${f}" ${ph(o.ph)}>${esc(val)}</textarea>`
+    : `<input id="e-${f}" data-f="${f}" value="${esc(val)}" ${o.list ? `list="${o.list}"` : ""} ${ph(o.ph)}>`;
+  const ar = o.area ? `<textarea class="ar" id="e-${f}_ar" data-f="${f}_ar" aria-label="${esc(label)} in Arabic" ${ph(o.pha)}>${esc(valAr)}</textarea>`
+    : `<input class="ar" id="e-${f}_ar" data-f="${f}_ar" value="${esc(valAr)}" aria-label="${esc(label)} in Arabic" ${ph(o.pha)}>`;
+  return `<div class="bi"><label class="lab" for="e-${f}">${label}${o.hint ? ` <span class="hint">${o.hint}</span>` : ""}</label><span class="lt">English</span>${en}<span class="lt" lang="ar">عربي</span>${ar}</div>`;
+}
+function choiceHTML(c, k){
+  return `<div class="choice" data-c="${k}">
+    <input data-cf="label" value="${esc(c.label)}" placeholder="Regular" aria-label="Choice ${k + 1} in English">
+    <input class="ar" data-cf="label_ar" value="${esc(c.label_ar)}" placeholder="عادي" aria-label="Choice ${k + 1} in Arabic">
+    <span class="money"><span aria-hidden="true">+ BD</span><input data-cf="add" type="number" step="0.001" min="0" inputmode="decimal" value="${esc(c.add || 0)}" aria-label="Extra price for choice ${k + 1}"></span>
+    <button class="x" type="button" data-act="delchoice" aria-label="Remove choice ${k + 1}">&times;</button></div>`;
+}
 function varHTML(g, gi){
   return `<div class="grp" data-g="${gi}">
-    <div class="row" style="margin-bottom:8px">
-      <label>Option name (English)<input data-vf="name" value="${esc(g.name)}" placeholder="Size"></label>
-      <label>Option name (Arabic)<input class="ar" data-vf="name_ar" value="${esc(g.name_ar)}" placeholder="الحجم"></label>
-    </div>
-    <label>Choices, one per line: English name | Arabic name | extra price in BD
-      <textarea data-vf="choices" spellcheck="false" placeholder="Regular | عادي | 0&#10;Large | كبير | 2">${esc(varText(g))}</textarea></label>
-    <p style="margin:8px 0 0"><button class="btn danger sm" type="button" data-act="delvar">Remove this option</button></p>
+    <div class="bi"><label class="lab" for="vg${gi}">Option name</label><span class="lt">English</span><input id="vg${gi}" data-vf="name" value="${esc(g.name)}" placeholder="Size"><span class="lt" lang="ar">عربي</span><input class="ar" data-vf="name_ar" value="${esc(g.name_ar)}" placeholder="الحجم" aria-label="Option name in Arabic"></div>
+    <p class="lab" style="margin:0 0 6px">Choices <span class="hint">(the extra price is added to the candle's price)</span></p>
+    ${g.choices.map(choiceHTML).join("")}
+    <div class="grp-foot"><button class="btn ghost sm" type="button" data-act="addchoice">+ Add a choice</button><button class="btn danger sm" type="button" data-act="delvar">Remove this option</button></div></div>`;
+}
+function editorHTML(p, i, n){
+  const photos = p._imgs.map((im, k) => `<div class="ph"><span class="thumb"><img src="${esc(im.preview || im.path)}" alt="Photo ${k + 1}"></span>
+      ${k === 0 ? '<span class="main">Main photo</span>' : `<button class="btn ghost sm" type="button" data-act="mainimg" data-k="${k}">Make main</button>`}
+      <button class="btn danger sm" type="button" data-act="rmimg" data-k="${k}">Remove</button></div>`).join("");
+  const labels = LABELS.map(([en, ar, txt]) => `<button class="chip" type="button" data-act="label" data-en="${esc(en)}" data-ar="${esc(ar)}" ${pressed((p.tag || "") === en)}>${txt || en}</button>`).join("");
+  const cats = [...catPairs()].map(([en, ar]) => `<button class="chip" type="button" data-act="cat" data-en="${esc(en)}" data-ar="${esc(ar)}" ${pressed(p.cat === en)}>${esc(en)}</button>`).join("");
+  const fams = Object.entries(FAMS).map(([k, v]) => `<button class="chip" type="button" data-act="fam" data-k="${k}" ${pressed((p.families || []).includes(k))}>${v}</button>`).join("");
+  const shapes = Object.entries(TYPES).map(([k, v]) => `<button class="shape" type="button" data-act="shape" data-k="${k}" ${pressed(p.type === k)}>${artSvg(Object.assign({}, p, {type:k}))}<span>${v}</span></button>`).join("");
+  const del = S.pendingDelete === p.id;
+  return `<button class="back" type="button" data-act="back">&#8592; All candles</button>
+  <div class="ed-head">
+    <div class="ed-art" id="edArt">${picture(p)}</div>
+    <div class="ed-id"><h2 id="edTitle" tabindex="-1">${esc(p.name) || "New candle"}</h2><p class="ed-ar" id="edAr">${esc(p.name_ar)}</p>
+      <p class="ed-meta"><b id="edPrice">${money(p.price)}</b>${p.cat ? `<span class="pill" id="edCat">${esc(p.cat)}</span>` : ""}</p></div>
+    <label class="switch"><input type="checkbox" role="switch" aria-label="Sold out" data-f="soldOut" ${p.soldOut ? "checked" : ""}><span class="track" aria-hidden="true"></span><span id="swText" aria-hidden="true">${p.soldOut ? "Sold out" : "In stock"}</span></label>
+  </div>
+
+  <section class="blk"><h3>Photos</h3>
+    <div class="photos">${photos}<button class="addph" type="button" data-act="pick">+ Add photos</button></div>
+    <p class="fine">The first photo is the main one. Photos are made smaller automatically. Without a photo, the shop shows the drawing.</p></section>
+
+  <section class="blk"><h3>Name and description</h3>
+    ${bi("Name", "name", p.name, p.name_ar, {ph:"Rose Tea Cup", pha:"كوب الورد والشاي"})}
+    ${bi("Size and container", "size", p.size, p.size_ar, {ph:"Vintage teacup, 180 g", pha:"فنجان عتيق، 180 غ"})}
+    ${bi("Scent notes", "notes", p.notes, p.notes_ar, {area:true, ph:"Pressed rose, black tea and a little honey.", pha:"ورد مجفف وشاي أسود وقليل من العسل."})}
+    <p class="lab" style="margin:0">Shelf category <span class="hint">(the filter buttons on the shop)</span></p>
+    <div class="chips" role="group" aria-label="Shelf category">${cats}</div>
+    ${bi("Category name", "cat", p.cat, p.cat_ar, {list:"cats", ph:"Teacups", pha:"فناجين"})}</section>
+
+  <section class="blk"><h3>Price and label</h3>
+    <div class="row"><div class="f"><label for="e-price">Price</label><span class="money"><span aria-hidden="true">BD</span><input id="e-price" data-f="price" type="number" step="0.001" min="0" inputmode="decimal" value="${isFinite(p.price) ? (+p.price).toFixed(3) : ""}"></span></div></div>
+    <p class="lab" style="margin:0">Label on the candle's card</p>
+    <div class="chips" role="group" aria-label="Label">${labels}</div>
+    ${bi("Label text", "tag", p.tag, p.tag_ar, {hint:"(or write your own)", ph:"New", pha:"جديد"})}</section>
+
+  <section class="blk"><h3>Candle page</h3>
+    ${bi("Burn time", "burn", p.burn, p.burn_ar, {ph:"About 40 hours", pha:"حوالي 40 ساعة"})}
+    ${bi("Care tips", "care", p.care, p.care_ar, {area:true, hint:"(one per line)"})}</section>
+
+  <section class="blk"><h3>Options</h3>
+    <label class="chk" style="margin-bottom:8px"><input type="checkbox" data-f="personalize" ${p.personalize ? "checked" : ""}> Let customers add a name or note (for personalised candles)</label>
+    ${(p.variants || []).map(varHTML).join("")}
+    <button class="btn ghost sm" type="button" data-act="addvar">+ Add an option (size, scent, colour...)</button>
+    <p class="fine">Each option becomes a row of buttons on the candle's page.</p></section>
+
+  <section class="blk"><h3>Scent finder</h3>
+    <p class="fine" style="margin:0">The quiz suggests this candle to people who pick these scents.</p>
+    <div class="chips" role="group" aria-label="Scent families">${fams}</div>
+    <label class="chk"><input type="checkbox" data-f="giftable" ${p.giftable ? "checked" : ""}> Good as a gift</label></section>
+
+  <section class="blk"><h3>Drawing</h3>
+    <p class="fine" style="margin:0 0 10px">Shown when the candle has no photo.</p>
+    <div class="shapes" role="group" aria-label="Shape">${shapes}</div>
+    <div class="colors">
+      <label>Body<input type="color" data-f="c1" value="${esc(colr(p.c1, "#f3e3df"))}"></label>
+      <label>Wax<input type="color" data-f="c2" value="${esc(colr(p.c2, "#e7b9bb"))}"></label>
+      <label>Trim<input type="color" data-f="c3" value="${esc(colr(p.c3, "#c98f91"))}"></label>
+    </div></section>
+
+  <div class="ed-foot">
+    <div class="mv"><button class="btn ghost sm" type="button" data-act="up" ${i === 0 ? "disabled" : ""}>Move up</button><button class="btn ghost sm" type="button" data-act="down" ${i === n - 1 ? "disabled" : ""}>Move down</button><button class="btn ghost sm" type="button" data-act="dup">Duplicate</button></div>
+    <button class="btn danger sm ${del ? "armed" : ""}" type="button" data-act="del">${del ? "Tap again to delete" : "Delete candle"}</button>
   </div>`;
 }
-function prodHTML(p, i, n){
-  const typeOpts = Object.entries(TYPES).map(([k, v]) => `<option value="${k}" ${p.type === k ? "selected" : ""}>${v}</option>`).join("");
-  const del = S.pendingDelete === p.id ? "Click again to delete" : "Delete";
-  const photos = p._imgs.map((im, k) => `<div class="ph"><span class="th"><img src="${esc(im.preview || im.path)}" alt=""></span>
-      ${k === 0 ? '<span class="main">Main photo</span>' : `<button class="btn ghost" type="button" data-act="mainimg" data-k="${k}">Make main</button>`}
-      <button class="btn danger" type="button" data-act="rmimg" data-k="${k}">Remove</button></div>`).join("");
-  const fams = Object.entries(FAMS).map(([k, v]) => `<label class="chk"><input type="checkbox" data-fam="${k}" ${(p.families || []).indexOf(k) >= 0 ? "checked" : ""}> ${v}</label>`).join("");
-  return `<details class="prod" data-id="${esc(p.id)}" ${S.open.has(p.id) ? "open" : ""}>
-    <summary><span class="th">${thumbHTML(p)}</span><span class="sm-name" data-sn>${esc(p.name) || "New candle"}</span><span class="sm-price" data-sp>BD ${(+p.price || 0).toFixed(3)}</span>${p.soldOut ? '<span class="pill">Sold out</span>' : ""}</summary>
-    <div class="form">
-      <div class="sect" style="margin-top:6px">Photos</div>
-      <div class="photos">${photos}</div>
-      <button class="btn sm" type="button" data-act="pick">Add photos</button>
-      <p class="fine">The first photo is the main one. Photos are resized automatically. Without photos the shop shows a drawing.</p>
-
-      <div class="sect">Basics</div>
-      <div class="row">
-        <label>Name (English)<input data-f="name" value="${esc(p.name)}"></label>
-        <label>Name (Arabic)<input class="ar" data-f="name_ar" value="${esc(p.name_ar)}"></label>
-      </div>
-      <div class="row">
-        <label>Price (BD)<input data-f="price" type="number" step="0.001" min="0" inputmode="decimal" value="${esc(p.price)}"></label>
-        <label class="chk" style="padding-top:22px"><input type="checkbox" data-f="soldOut" ${p.soldOut ? "checked" : ""}> Mark as sold out</label>
-      </div>
-      <div class="row">
-        <label>Category (English)<input data-f="cat" list="cats" value="${esc(p.cat)}"></label>
-        <label>Category (Arabic)<input class="ar" data-f="cat_ar" value="${esc(p.cat_ar)}"></label>
-      </div>
-      <div class="row">
-        <label>Card label, optional (English)<input data-f="tag" placeholder="New, Favourite, Gift" value="${esc(p.tag)}"></label>
-        <label>Card label (Arabic)<input class="ar" data-f="tag_ar" value="${esc(p.tag_ar)}"></label>
-      </div>
-      <div class="row">
-        <label>Size and container (English)<input data-f="size" placeholder="Amber-lidded jar, 220 g" value="${esc(p.size)}"></label>
-        <label>Size and container (Arabic)<input class="ar" data-f="size_ar" value="${esc(p.size_ar)}"></label>
-      </div>
-      <div class="row">
-        <label>Scent notes (English)<textarea data-f="notes">${esc(p.notes)}</textarea></label>
-        <label>Scent notes (Arabic)<textarea class="ar" data-f="notes_ar">${esc(p.notes_ar)}</textarea></label>
-      </div>
-
-      <div class="sect">Candle page details</div>
-      <div class="row">
-        <label>Burn time (English)<input data-f="burn" placeholder="About 40 hours" value="${esc(p.burn)}"></label>
-        <label>Burn time (Arabic)<input class="ar" data-f="burn_ar" value="${esc(p.burn_ar)}"></label>
-      </div>
-      <div class="row">
-        <label>Care tips, one per line (English)<textarea data-f="care">${esc(p.care)}</textarea></label>
-        <label>Care tips, one per line (Arabic)<textarea class="ar" data-f="care_ar">${esc(p.care_ar)}</textarea></label>
-      </div>
-
-      <div class="sect">Options and extras</div>
-      <label class="chk" style="margin-bottom:12px"><input type="checkbox" data-f="personalize" ${p.personalize ? "checked" : ""}> Let customers add a name or note (for personalised candles)</label>
-      <div id="vars-${esc(p.id)}">${(p.variants || []).map(varHTML).join("")}</div>
-      <button class="btn ghost sm" type="button" data-act="addvar">+ Add an option (size, scent, color...)</button>
-      <p class="fine">Each option becomes a set of buttons on the candle page, and the extra price is added to the base price.</p>
-
-      <div class="sect">Scent finder</div>
-      <p class="fine" style="margin:0 0 8px">Tick the scent families this candle belongs to. The quiz uses these.</p>
-      <div class="checks">${fams}</div>
-      <label class="chk"><input type="checkbox" data-f="giftable" ${p.giftable ? "checked" : ""}> Good as a gift</label>
-
-      <details style="margin-top:14px"><summary style="cursor:pointer;font-weight:700;color:var(--muted)">Drawing style (used when there is no photo)</summary>
-        <div class="row" style="margin-top:10px">
-          <label>Shape<select data-f="type">${typeOpts}</select></label>
-          <div class="colors">
-            <label>Body<input type="color" data-f="c1" value="${esc(p.c1 || "#f3e3df")}"></label>
-            <label>Wax<input type="color" data-f="c2" value="${esc(p.c2 || "#e7b9bb")}"></label>
-            <label>Trim<input type="color" data-f="c3" value="${esc(p.c3 || "#c98f91")}"></label>
-          </div>
-        </div>
-      </details>
-      <div class="actions">
-        <span><button class="btn ghost sm" type="button" data-act="up" ${i === 0 ? "disabled" : ""}>Move up</button> <button class="btn ghost sm" type="button" data-act="down" ${i === n - 1 ? "disabled" : ""}>Move down</button></span>
-        <button class="btn danger sm" type="button" data-act="del">${del}</button>
-      </div>
-    </div>
-  </details>`;
+function renderEditor(){
+  const P = S.data.products, i = P.findIndex(p => p.id === S.sel);
+  $("editor").innerHTML = i < 0 ? `<p class="ed-empty">${P.length ? "Choose a candle to edit it." : 'No candles yet. Press "New candle" to add your first one.'}</p>` : editorHTML(P[i], i, P.length);
+  growAll($("editor"));
 }
-function render(){
-  const P = S.data.products, st = S.data.settings, an = st.announcement;
-  $("list").innerHTML = P.length ? P.map((p, i) => prodHTML(p, i, P.length)).join("") : '<div class="card">No candles yet. Press "Add a candle" to start.</div>';
-  $("cats").innerHTML = [...new Set(P.map(p => p.cat).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join("");
-  $("setIg").value = st.instagram || ""; $("setWa").value = st.whatsapp || ""; $("setGift").value = st.giftWrapFee; $("setGc").value = st.goatcounter || "";
+/* update the bits that show the candle without rebuilding the form (keeps your place while typing) */
+function refreshShown(p){
+  renderList();
+  const set = (id, v) => { const el = $(id); if (el) el.textContent = v; };
+  set("edTitle", p.name || "New candle"); set("edAr", p.name_ar || ""); set("edPrice", money(p.price)); set("swText", p.soldOut ? "Sold out" : "In stock");
+  const meta = document.querySelector(".ed-meta"), cat = $("edCat");
+  if (meta) { if (p.cat && !cat) meta.insertAdjacentHTML("beforeend", `<span class="pill" id="edCat">${esc(p.cat)}</span>`); else if (cat) { if (p.cat) cat.textContent = p.cat; else cat.remove(); } }
+  const art = $("edArt"); if (art && !p._imgs.length) art.innerHTML = artSvg(p);
+  document.querySelectorAll("#editor [data-act=shape]").forEach(b => { b.querySelector("svg").outerHTML = artSvg(Object.assign({}, p, {type:b.dataset.k})); b.setAttribute("aria-pressed", b.dataset.k === p.type); });
+  document.querySelectorAll("#editor [data-act=label]").forEach(b => b.setAttribute("aria-pressed", b.dataset.en === (p.tag || "")));
+  document.querySelectorAll("#editor [data-act=cat]").forEach(b => b.setAttribute("aria-pressed", b.dataset.en === p.cat));
+}
+function renderHome(){
+  const P = S.data.products, st = S.data.settings, an = st.announcement, b = S.data.behind;
   $("annOn").checked = !!an.on; $("annText").value = an.text || ""; $("annTextAr").value = an.text_ar || ""; $("annLink").value = an.link || "";
   $("ftOn").checked = !!st.featuredOn; $("ftNote").value = st.featuredNote || ""; $("ftNoteAr").value = st.featuredNote_ar || "";
   $("ftPick").innerHTML = '<option value="">Choose a candle</option>' + P.map(p => `<option value="${esc(p.id)}" ${p.id === st.featuredId ? "selected" : ""}>${esc(p.name || "New candle")}</option>`).join("");
-  const b = S.data.behind;
   $("bhTitle").value = b.title || ""; $("bhTitleAr").value = b.title_ar || ""; $("bhText").value = b.text || ""; $("bhTextAr").value = b.text_ar || "";
   ["behind", "cust"].forEach(l => { const arr = LISTS[l](); $(l === "behind" ? "bhList" : "cpList").innerHTML = arr.map((it, i) => miHTML(it, l, i, arr.length)).join(""); });
+  growAll($("p-home"));
+}
+function renderSettings(){
+  const st = S.data.settings;
+  $("setIg").value = st.instagram || ""; $("setWa").value = st.whatsapp || ""; $("setGift").value = st.giftWrapFee; $("setGc").value = st.goatcounter || "";
 }
 function miHTML(it, list, i, n){
   const yt = ytIdA(it.src);
@@ -361,70 +583,93 @@ function miHTML(it, list, i, n){
     : it.type === "youtube" ? (yt ? `<img src="https://img.youtube.com/vi/${yt}/mqdefault.jpg" alt="">` : "YouTube")
     : `<img src="${esc(it._preview || it.src)}" alt="">`;
   const kind = it.type === "video" ? "Video" : it.type === "youtube" ? "YouTube video" : "Photo";
+  const id = list + i;
   return `<div class="mi" data-list="${list}" data-i="${i}"><div class="mprev">${prev}</div>
-    <div class="mfields"><span class="fine" style="margin:0"><b>${kind}</b></span>
-      ${it.type === "youtube" ? `<label>YouTube link<input data-m="src" placeholder="https://www.youtube.com/watch?v=..." value="${esc(it.src)}" spellcheck="false"></label>` : ""}
-      ${list === "cust" ? `<label>Customer name, optional<input data-m="who" value="${esc(it.who)}"></label>` : ""}
-      <label>Caption (English)<input data-m="caption" value="${esc(it.caption)}"></label>
-      <label>Caption (Arabic)<input class="ar" data-m="caption_ar" value="${esc(it.caption_ar)}"></label></div>
+    <div class="mfields"><p class="mkind">${kind}</p>
+      ${it.type === "youtube" ? `<div class="f"><label for="m-src-${id}">YouTube link</label><input id="m-src-${id}" data-m="src" placeholder="https://www.youtube.com/watch?v=..." value="${esc(it.src)}" spellcheck="false" autocapitalize="off"></div>` : ""}
+      ${list === "cust" ? `<div class="f"><label for="m-who-${id}">Customer name <span class="hint">(optional)</span></label><input id="m-who-${id}" data-m="who" value="${esc(it.who)}"></div>` : ""}
+      <div class="bi"><label class="lab" for="m-cap-${id}">Caption</label><span class="lt">English</span><input id="m-cap-${id}" data-m="caption" value="${esc(it.caption)}"><span class="lt" lang="ar">عربي</span><input class="ar" data-m="caption_ar" value="${esc(it.caption_ar)}" aria-label="Caption in Arabic"></div></div>
     <div class="mbtn"><button class="btn ghost sm" type="button" data-ma="up" ${i === 0 ? "disabled" : ""}>Move up</button><button class="btn ghost sm" type="button" data-ma="down" ${i === n - 1 ? "disabled" : ""}>Move down</button><button class="btn danger sm" type="button" data-ma="rm">Remove</button></div></div>`;
 }
-const find = id => S.data.products.find(p => p.id === id);
+
+/* longer text boxes grow to fit what is in them */
+const grow = t => { if (!t.offsetParent) return; t.style.height = "auto"; t.style.height = (t.scrollHeight + 3) + "px"; };
+const growAll = root => root.querySelectorAll("textarea").forEach(grow);
+
+/* ---- Choosing a candle ---- */
+function select(id){
+  S.sel = id; S.pendingDelete = null; renderList(); renderEditor();
+  if (!wide()) { scrollTo(0, 0); const t = $("edTitle"); if (t) t.focus({preventScroll:true}); }
+}
+$("list").addEventListener("click", e => { const b = e.target.closest("[data-pick]"); if (b) select(b.dataset.pick); });
+wideMQ.addEventListener("change", () => { if (wide() && !cur() && S.data.products.length) select(S.data.products[0].id); });
 
 /* ---- Editing ---- */
 $("app").addEventListener("input", e => {
   const el = e.target;
+  el.classList.remove("bad-field");
+  if (el.tagName === "TEXTAREA") grow(el);
   if (el.dataset.s) { const k = el.dataset.s; S.data.settings[k] = el.type === "checkbox" ? el.checked : k === "giftWrapFee" ? (parseFloat(el.value) || 0) : el.value.trim(); setDirty(true); return; }
   if (el.dataset.b) { S.data.behind[el.dataset.b] = el.value; setDirty(true); return; }
   if (el.dataset.m) { const mi = el.closest(".mi"), it = LISTS[mi.dataset.list]()[+mi.dataset.i]; if (it) { it[el.dataset.m] = el.value; setDirty(true); } return; }
   if (el.dataset.a) { const k = el.dataset.a; S.data.settings.announcement[k] = el.type === "checkbox" ? el.checked : el.value.trim(); setDirty(true); return; }
-  const d = el.closest("details.prod"); if (!d) return;
-  const p = find(d.dataset.id); if (!p) return;
-  if (el.dataset.fam) {
-    const f = p.families || (p.families = []), i = f.indexOf(el.dataset.fam);
-    if (el.checked && i < 0) f.push(el.dataset.fam); if (!el.checked && i >= 0) f.splice(i, 1);
-    setDirty(true); return;
-  }
-  if (el.dataset.vf) {
-    const gEl = el.closest(".grp"), g = p.variants[+gEl.dataset.g], f = el.dataset.vf;
-    if (f === "choices") {
-      g.choices = el.value.split("\n").map(l => l.trim()).filter(Boolean).map(l => { const x = l.split("|").map(s => s.trim()); return {label:x[0] || "", label_ar:x[1] || "", add:parseFloat(x[2]) || 0}; }).filter(c => c.label);
-    } else g[f] = el.value;
+  if (!el.closest("#editor")) return;
+  const p = cur(); if (!p) return;
+  if (el.dataset.vf || el.dataset.cf) {
+    const g = p.variants[+el.closest(".grp").dataset.g];
+    if (el.dataset.vf) g[el.dataset.vf] = el.value;
+    else { const c = g.choices[+el.closest(".choice").dataset.c]; c[el.dataset.cf] = el.dataset.cf === "add" ? (parseFloat(el.value) || 0) : el.value; }
     setDirty(true); return;
   }
   const f = el.dataset.f; if (!f) return;
   p[f] = el.type === "checkbox" ? el.checked : f === "price" ? parseFloat(el.value) : el.value;
-  if (f === "name") d.querySelector("[data-sn]").textContent = p.name || "New candle";
-  if (f === "price") d.querySelector("[data-sp]").textContent = "BD " + (+p.price || 0).toFixed(3);
-  if (f === "soldOut") render();
-  setDirty(true);
+  refreshShown(p); setDirty(true);
 });
-$("list").addEventListener("toggle", e => { const d = e.target; if (d.dataset && d.dataset.id) { d.open ? S.open.add(d.dataset.id) : S.open.delete(d.dataset.id); } }, true);
-$("list").addEventListener("click", e => {
+/* picking a category you already use fills in its Arabic name too */
+$("app").addEventListener("change", e => {
+  const el = e.target; if (el.dataset.f !== "cat" || !el.closest("#editor")) return;
+  const p = cur(), ar = p && catPairs().get(p.cat);
+  if (p && ar && !p.cat_ar) { p.cat_ar = ar; $("e-cat_ar").value = ar; setDirty(true); }
+});
+$("editor").addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
-  e.preventDefault();
-  const id = b.closest("details.prod").dataset.id, P = S.data.products, i = P.findIndex(p => p.id === id), p = P[i], act = b.dataset.act;
-  if (act === "pick") { S.imgTarget = id; $("file").value = ""; $("file").click(); return; }
-  if (act === "rmimg") { p._imgs.splice(+b.dataset.k, 1); setDirty(true); render(); return; }
-  if (act === "mainimg") { const k = +b.dataset.k, im = p._imgs.splice(k, 1)[0]; p._imgs.unshift(im); setDirty(true); render(); return; }
-  if (act === "addvar") { (p.variants = p.variants || []).push({name:"", name_ar:"", choices:[]}); setDirty(true); render(); return; }
-  if (act === "delvar") { p.variants.splice(+b.closest(".grp").dataset.g, 1); setDirty(true); render(); return; }
-  if (act === "up" && i > 0) { [P[i - 1], P[i]] = [P[i], P[i - 1]]; setDirty(true); render(); return; }
-  if (act === "down" && i < P.length - 1) { [P[i + 1], P[i]] = [P[i], P[i + 1]]; setDirty(true); render(); return; }
+  const P = S.data.products, i = P.findIndex(x => x.id === S.sel), p = P[i], act = b.dataset.act;
+  if (!p) return;
+  const field = (sel, v) => { const el = document.querySelector("#editor " + sel); if (el) el.value = v; };
+  if (act === "back") { const id = S.sel; S.sel = null; renderList(); renderEditor(); const li = document.querySelector('[data-pick="' + CSS.escape(id) + '"]'); if (li) { li.focus(); li.scrollIntoView({block:"center"}); } return; }
+  if (act === "pick") { S.imgTarget = p.id; $("file").value = ""; $("file").click(); return; }
+  if (act === "rmimg") { p._imgs.splice(+b.dataset.k, 1); setDirty(true); renderList(); renderEditor(); return; }
+  if (act === "mainimg") { const k = +b.dataset.k, im = p._imgs.splice(k, 1)[0]; p._imgs.unshift(im); setDirty(true); renderList(); renderEditor(); return; }
+  if (act === "label") { p.tag = b.dataset.en; p.tag_ar = b.dataset.ar; field('[data-f="tag"]', p.tag); field('[data-f="tag_ar"]', p.tag_ar); refreshShown(p); setDirty(true); return; }
+  if (act === "cat") { p.cat = b.dataset.en; if (b.dataset.ar) p.cat_ar = b.dataset.ar; field('[data-f="cat"]', p.cat); field('[data-f="cat_ar"]', p.cat_ar); refreshShown(p); setDirty(true); return; }
+  if (act === "fam") { const f = p.families || (p.families = []), k = b.dataset.k, j = f.indexOf(k); if (j < 0) f.push(k); else f.splice(j, 1); b.setAttribute("aria-pressed", j < 0); setDirty(true); return; }
+  if (act === "shape") { p.type = b.dataset.k; refreshShown(p); setDirty(true); return; }
+  if (act === "addvar") { (p.variants = p.variants || []).push({name:"", name_ar:"", choices:[{label:"", label_ar:"", add:0}]}); setDirty(true); renderEditor(); const g = document.querySelectorAll("#editor .grp"); g[g.length - 1].querySelector('[data-vf="name"]').focus(); return; }
+  if (act === "delvar") { p.variants.splice(+b.closest(".grp").dataset.g, 1); setDirty(true); renderEditor(); return; }
+  if (act === "addchoice") { const gi = +b.closest(".grp").dataset.g; p.variants[gi].choices.push({label:"", label_ar:"", add:0}); setDirty(true); renderEditor(); const rows = document.querySelectorAll('#editor .grp[data-g="' + gi + '"] .choice'); rows[rows.length - 1].querySelector("input").focus(); return; }
+  if (act === "delchoice") { const g = p.variants[+b.closest(".grp").dataset.g]; g.choices.splice(+b.closest(".choice").dataset.c, 1); setDirty(true); renderEditor(); return; }
+  if (act === "up" && i > 0) { [P[i - 1], P[i]] = [P[i], P[i - 1]]; setDirty(true); renderList(); renderEditor(); return; }
+  if (act === "down" && i < P.length - 1) { [P[i + 1], P[i]] = [P[i], P[i + 1]]; setDirty(true); renderList(); renderEditor(); return; }
+  if (act === "dup") {
+    const copy = JSON.parse(JSON.stringify(p));
+    copy.id = "c" + Date.now().toString(36); copy.name = (p.name || "Candle") + " (copy)"; copy.name_ar = p.name_ar ? p.name_ar + " (نسخة)" : ""; copy.added = new Date().toISOString().slice(0, 10);
+    P.splice(i + 1, 0, copy); setDirty(true); select(copy.id); status("Copied. Change what's different, then save.", "dirty"); $("e-name").focus(); $("e-name").select(); return;
+  }
   if (act === "del") {
-    if (S.pendingDelete === id) { P.splice(i, 1); S.pendingDelete = null; setDirty(true); render(); }
-    else { S.pendingDelete = id; render(); }
+    if (S.pendingDelete !== p.id) { S.pendingDelete = p.id; renderEditor(); document.querySelector('#editor [data-act="del"]').focus(); return; }
+    P.splice(i, 1); S.pendingDelete = null; setDirty(true);
+    S.sel = wide() && P.length ? P[Math.min(i, P.length - 1)].id : null; renderList(); renderEditor(); status("Candle deleted. Save to update the shop.", "dirty");
   }
 });
 $("add").addEventListener("click", () => {
   const id = "c" + Date.now().toString(36);
-  S.data.products.unshift({id, name:"", name_ar:"", cat:"Jars", cat_ar:"", type:"jar", size:"", size_ar:"", price:5, notes:"", notes_ar:"", tag:"", tag_ar:"", soldOut:false, image:"", images:[], _imgs:[],
+  S.data.products.unshift({id, name:"", name_ar:"", cat:"Jars", cat_ar:catPairs().get("Jars") || "", type:"jar", size:"", size_ar:"", price:5, notes:"", notes_ar:"", tag:"", tag_ar:"", soldOut:false, image:"", images:[], _imgs:[],
     c1:"#f3e3df", c2:"#e7b9bb", c3:"#c98f91", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:[], added:new Date().toISOString().slice(0, 10)});
-  S.open.add(id); setDirty(true); render();
-  const el = document.querySelector('details[data-id="' + id + '"] [data-f="name"]'); if (el) el.focus();
+  setDirty(true); select(id); $("e-name").focus();
 });
+document.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") { e.preventDefault(); if (!$("save").disabled) save(); } });
 
-/* ---- Photos: resize in the browser, upload on save ---- */
+/* ---- Photos: made smaller in the browser, uploaded when you save ---- */
 const fileB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.onerror = rej; r.readAsDataURL(f); });
 function readImage(f, maxSide){
   return new Promise(resolve => {
@@ -441,9 +686,9 @@ function readImage(f, maxSide){
   });
 }
 $("file").addEventListener("change", async () => {
-  const p = find(S.imgTarget); if (!p) return;
+  const p = S.data.products.find(x => x.id === S.imgTarget); if (!p) return;
   for (const f of Array.from($("file").files)) { const r = await readImage(f); if (r) p._imgs.push(r); else status("One file could not be read as a picture.", "bad"); }
-  setDirty(true); render();
+  setDirty(true); renderList(); if (p.id === S.sel) renderEditor();
 });
 
 /* ---- Behind the scenes and customer photos ---- */
@@ -451,7 +696,7 @@ $("app").addEventListener("click", e => {
   const a = e.target.closest("[data-addm]");
   if (a) {
     const [list, kind] = a.dataset.addm.split(":");
-    if (kind === "youtube") { LISTS[list]().push({type:"youtube", src:"", caption:"", caption_ar:""}); setDirty(true); render(); return; }
+    if (kind === "youtube") { LISTS[list]().push({type:"youtube", src:"", caption:"", caption_ar:""}); setDirty(true); renderHome(); return; }
     S.mediaTarget = {list, kind}; const f = $("fileM");
     f.accept = kind === "video" ? "video/mp4,video/webm,video/quicktime" : "image/*"; f.multiple = kind === "image"; f.value = ""; f.click(); return;
   }
@@ -460,7 +705,7 @@ $("app").addEventListener("click", e => {
   if (m.dataset.ma === "rm") arr.splice(i, 1);
   else if (m.dataset.ma === "up" && i > 0) [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
   else if (m.dataset.ma === "down" && i < arr.length - 1) [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]];
-  setDirty(true); render();
+  setDirty(true); renderHome();
 });
 $("fileM").addEventListener("change", async () => {
   const t = S.mediaTarget; if (!t) return; const arr = LISTS[t.list]();
@@ -474,19 +719,31 @@ $("fileM").addEventListener("change", async () => {
       if (r) arr.push({type:"image", src:"", caption:"", caption_ar:"", who:"", _b64:r.b64, _preview:r.preview}); else status("One file could not be read as a picture.", "bad");
     }
   }
-  setDirty(true); render();
+  setDirty(true); renderHome();
 });
 
 /* ---- Save ---- */
+function flag(p, sel){
+  if (S.tab !== "candles") showTab("candles");
+  select(p.id);
+  const el = document.querySelector("#editor " + sel);
+  if (el) { el.classList.add("bad-field"); el.focus(); el.scrollIntoView({block:"center"}); }
+}
 async function save(){
   const P = S.data.products;
   for (const p of P) {
-    if (!String(p.name || "").trim()) { status("Every candle needs a name.", "bad"); S.open.add(p.id); render(); return; }
-    if (!isFinite(p.price) || p.price < 0) { status("Check the price of " + p.name + ".", "bad"); S.open.add(p.id); render(); return; }
-    for (const g of (p.variants || [])) if (!String(g.name || "").trim() || !g.choices.length) { status("Every option on " + p.name + " needs a name and at least one choice.", "bad"); S.open.add(p.id); render(); return; }
+    if (!String(p.name || "").trim()) { status("Every candle needs a name.", "bad"); flag(p, '[data-f="name"]'); return; }
+    if (!isFinite(p.price) || p.price < 0) { status("Check the price of " + p.name + ".", "bad"); flag(p, '[data-f="price"]'); return; }
+    for (const [gi, g] of (p.variants || []).entries()) if (!String(g.name || "").trim() || !g.choices.some(c => String(c.label || "").trim())) {
+      status("Every option on " + p.name + " needs a name and at least one choice.", "bad"); flag(p, '.grp[data-g="' + gi + '"] [data-vf="name"]'); return;
+    }
   }
-  for (const key of ["behind", "cust"]) for (const it of LISTS[key]()) {
-    if (it.type === "youtube" && !ytIdA(it.src)) { status("Check the YouTube link in " + (key === "behind" ? "Behind the scenes" : "Customer photos") + ".", "bad"); return; }
+  for (const key of ["behind", "cust"]) for (const [i, it] of LISTS[key]().entries()) {
+    if (it.type === "youtube" && !ytIdA(it.src)) {
+      status("Check the YouTube link in " + (key === "behind" ? "Behind the scenes" : "Customer photos") + ".", "bad");
+      showTab("home"); const el = document.querySelector('.mi[data-list="' + key + '"][data-i="' + i + '"] [data-m="src"]'); if (el) { el.classList.add("bad-field"); el.focus(); }
+      return;
+    }
   }
   $("save").disabled = true; status("Saving...");
   try {
@@ -511,7 +768,8 @@ async function save(){
     const products = P.map(p => {
       const o = {}; Object.keys(p).forEach(k => { if (k[0] !== "_") o[k] = p[k]; });
       o.images = p._imgs.map(im => im.path); o.image = o.images[0] || "";
-      o.variants = (p.variants || []).filter(g => g.choices.length);
+      o.variants = (p.variants || []).map(g => ({name:String(g.name || "").trim(), name_ar:String(g.name_ar || "").trim(),
+        choices:g.choices.filter(c => String(c.label || "").trim()).map(c => ({label:String(c.label).trim(), label_ar:String(c.label_ar || "").trim(), add:+c.add || 0}))})).filter(g => g.choices.length);
       return o;
     });
     status("Saving...");
