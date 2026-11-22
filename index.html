@@ -1404,7 +1404,7 @@ document.addEventListener("keydown", e => {
   if (!$("quiz").hidden) closeQuiz(); else if ($("drawer").classList.contains("on")) closeCart(); else if (detailState) { location.hash = "shop"; route(); }
 });
 
-/* ===================== Load products.json (edited from admin.html) ===================== */
+/* ===================== Load products.json (edited from /admin) ===================== */
 async function loadData(){
   try {
     const r = await fetch("products.json?v=" + Date.now(), {cache:"no-store"});
