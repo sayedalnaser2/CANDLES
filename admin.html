@@ -77,6 +77,11 @@ code{background:var(--rose-soft);padding:1px 6px;border-radius:4px;font-size:.88
 .chip{border:1.5px solid var(--line);background:var(--field);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.88rem;min-height:38px}
 .chip[aria-pressed="true"]{background:var(--sage);border-color:var(--sage);color:#fff}
 .chip.add{background:transparent;border-style:dashed;border-color:var(--rose);color:var(--deep)}
+.catmgr{margin:2px 0 12px}
+.catmgr summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center}
+.catrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+.catrow b{flex:1 1 140px;min-width:0}
+.catrow small{color:var(--muted)}
 .addscent{border:1.5px dashed var(--rose);border-radius:12px;padding:12px 14px 2px;margin:0 0 12px}
 .sc{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:end;padding-bottom:12px;margin-bottom:12px;border-bottom:1px dashed var(--line)}
 .sc .bi{margin:0}
@@ -421,6 +426,11 @@ function normalize(){
   const sc = (given.length ? given : DEFAULT_SCENTS).map(x => ({id:String(x.id), name:x.name || "", name_ar:x.name_ar || ""}));
   d.products.forEach(p => (p.families || []).forEach(id => { if (!sc.some(x => x.id === id)) sc.push(Object.assign({}, DEFAULT_SCENTS.find(x => x.id === id) || {id, name:id, name_ar:""})); }));
   d.settings.scents = sc;
+  /* shelf categories: a saved list, so a category can exist before any candle uses it */
+  const cl = [];
+  (Array.isArray(d.settings.categories) ? d.settings.categories : []).forEach(x => { const en = String((x && x.en) || "").trim(); if (en && !cl.some(y => y.en === en)) cl.push({en, ar:String(x.ar || "")}); });
+  d.products.forEach(p => { if (p.cat && !cl.some(y => y.en === p.cat)) cl.push({en:p.cat, ar:p.cat_ar || ""}); else if (p.cat && p.cat_ar) { const y = cl.find(z => z.en === p.cat); if (y && !y.ar) y.ar = p.cat_ar; } });
+  d.settings.categories = cl;
 }
 async function signIn(){
   const err = $("loginErr"); err.hidden = true;
@@ -474,7 +484,13 @@ $("tabs").addEventListener("keydown", e => {
 
 /* ---- Render ---- */
 const pressed = on => `aria-pressed="${on ? "true" : "false"}"`;
-function catPairs(){ const m = new Map(); S.data.products.forEach(p => { if (p.cat && (!m.has(p.cat) || (!m.get(p.cat) && p.cat_ar))) m.set(p.cat, p.cat_ar || ""); }); return m; }
+function catPairs(){
+  const m = new Map(), L = S.data.settings.categories || [];
+  L.forEach(c => m.set(c.en, c.ar || ""));
+  S.data.products.forEach(p => { if (p.cat && (!m.has(p.cat) || (!m.get(p.cat) && p.cat_ar))) m.set(p.cat, p.cat_ar || ""); });
+  return m;
+}
+function catCount(en){ return S.data.products.filter(p => p.cat === en).length; }
 function render(){ renderList(); renderEditor(); renderHome(); renderSettings(); }
 function renderList(){
   const P = S.data.products;
@@ -537,7 +553,17 @@ function editorHTML(p, i, n){
     ${bi("Size and container", "size", p.size, p.size_ar, {ph:"Vintage teacup, 180 g", pha:"فنجان عتيق، 180 غ"})}
     ${bi("Scent notes", "notes", p.notes, p.notes_ar, {area:true, ph:"Pressed rose, black tea and a little honey.", pha:"ورد مجفف وشاي أسود وقليل من العسل."})}
     <p class="lab" style="margin:0">Shelf category <span class="hint">(the filter buttons on the shop)</span></p>
-    <div class="chips" role="group" aria-label="Shelf category">${cats}</div>
+    <div class="chips" role="group" aria-label="Shelf category">${cats}<button class="chip add" type="button" data-act="newcat" aria-expanded="false" aria-controls="addCat">+ Add a category</button></div>
+    <div class="addscent" id="addCat" hidden>
+      <div class="bi"><label class="lab" for="ncEn">New category</label><span class="lt">English</span><input id="ncEn" placeholder="Wax melts" autocomplete="off"><span class="lt" lang="ar">عربي</span><input id="ncAr" class="ar" placeholder="شمع ذائب" aria-label="New category in Arabic" autocomplete="off"></div>
+      <div class="btnrow" style="margin:0 0 12px"><button class="btn sm" type="button" data-act="savecat">Add category</button><button class="btn ghost sm" type="button" data-act="cancelcat">Cancel</button></div>
+    </div>
+    <details class="catmgr"${S.catOpen ? " open" : ""}><summary>Delete a category</summary>
+      ${[...catPairs()].map(([en, ar]) => { const n = catCount(en), ask = S.pendingCat === en;
+        return `<div class="catrow"><b>${esc(en)}${ar ? ` <small lang="ar" dir="rtl">${esc(ar)}</small>` : ""}</b><small>${n} ${n === 1 ? "candle" : "candles"}</small>` +
+          (ask ? `<span class="fine" style="margin:0">${n ? "Those candles will have no category." : "This can't be undone."}</span><button class="btn danger sm" type="button" data-act="delcat" data-en="${esc(en)}">Yes, delete</button><button class="btn ghost sm" type="button" data-act="keepcat">Keep it</button>`
+               : `<button class="btn danger sm" type="button" data-act="delcat" data-en="${esc(en)}">Delete</button>`) + `</div>`; }).join("") || '<p class="fine">No categories yet.</p>'}
+    </details>
     ${bi("Category name", "cat", p.cat, p.cat_ar, {list:"cats", ph:"Teacups", pha:"فناجين"})}</section>
 
   <section class="blk"><h3>Price and label</h3>
@@ -651,7 +677,7 @@ const growAll = root => root.querySelectorAll("textarea").forEach(grow);
 
 /* ---- Choosing a candle ---- */
 function select(id){
-  S.sel = id; S.pendingDelete = null; renderList(); renderEditor();
+  S.sel = id; S.pendingDelete = null; S.pendingCat = null; S.catOpen = false; renderList(); renderEditor();
   if (!wide()) { scrollTo(0, 0); const t = $("edTitle"); if (t) t.focus({preventScroll:true}); }
 }
 $("list").addEventListener("click", e => { const b = e.target.closest("[data-pick]"); if (b) select(b.dataset.pick); });
@@ -696,6 +722,11 @@ $("editor").addEventListener("click", e => {
   if (act === "mainimg") { const k = +b.dataset.k, im = p._imgs.splice(k, 1)[0]; p._imgs.unshift(im); setDirty(true); renderList(); renderEditor(); return; }
   if (act === "label") { p.tag = b.dataset.en; p.tag_ar = b.dataset.ar; field('[data-f="tag"]', p.tag); field('[data-f="tag_ar"]', p.tag_ar); refreshShown(p); setDirty(true); return; }
   if (act === "cat") { p.cat = b.dataset.en; if (b.dataset.ar) p.cat_ar = b.dataset.ar; field('[data-f="cat"]', p.cat); field('[data-f="cat_ar"]', p.cat_ar); refreshShown(p); setDirty(true); return; }
+  if (act === "newcat") { const box = $("addCat"); box.hidden = false; b.setAttribute("aria-expanded", "true"); $("ncEn").focus(); return; }
+  if (act === "cancelcat") { closeAddCat(); return; }
+  if (act === "savecat") { addCat(p); return; }
+  if (act === "keepcat") { S.pendingCat = null; S.catOpen = true; renderEditor(); return; }
+  if (act === "delcat") { delCat(b.dataset.en); return; }
   if (act === "fam") { const f = p.families || (p.families = []), k = b.dataset.k, j = f.indexOf(k); if (j < 0) f.push(k); else f.splice(j, 1); b.setAttribute("aria-pressed", j < 0); setDirty(true); return; }
   if (act === "newscent") { const box = $("addScent"); box.hidden = false; b.setAttribute("aria-expanded", "true"); $("nsEn").focus(); return; }
   if (act === "cancelscent") { closeAddScent(); return; }
@@ -718,6 +749,26 @@ $("editor").addEventListener("click", e => {
     S.sel = wide() && P.length ? P[Math.min(i, P.length - 1)].id : null; renderList(); renderEditor(); status("Candle deleted. Save to update the shop.", "dirty");
   }
 });
+function closeAddCat(){ const box = $("addCat"); if (!box) return; box.hidden = true; $("ncEn").value = ""; $("ncAr").value = ""; const b = document.querySelector('#editor [data-act="newcat"]'); if (b) { b.setAttribute("aria-expanded", "false"); b.focus(); } }
+function addCat(p){
+  const en = $("ncEn").value.trim(), ar = $("ncAr").value.trim(), list = S.data.settings.categories;
+  if (!en) { $("ncEn").classList.add("bad-field"); $("ncEn").focus(); status("Give the new category an English name.", "bad"); return; }
+  let c = list.find(x => x.en.toLowerCase() === en.toLowerCase());
+  const existed = !!c;
+  if (!c) { c = {en, ar}; list.push(c); } else if (ar && !c.ar) c.ar = ar;
+  p.cat = c.en; p.cat_ar = c.ar || "";
+  S.catOpen = false; S.pendingCat = null; setDirty(true); renderList(); renderEditor();
+  const chip = document.querySelector('#editor [data-act="cat"][data-en="' + CSS.escape(c.en) + '"]'); if (chip) chip.focus();
+  status(existed ? "That category was already on the list. It is now set for " + (p.name || "this candle") + "." : "Added " + c.en + ". It shows on the shop once a candle uses it, after you save.", "dirty");
+}
+function delCat(en){
+  if (S.pendingCat !== en) { S.pendingCat = en; S.catOpen = true; renderEditor(); const b = document.querySelector('#editor [data-act="delcat"]'); if (b) b.focus(); return; }
+  const n = catCount(en);
+  S.data.settings.categories = S.data.settings.categories.filter(x => x.en !== en);
+  S.data.products.forEach(q => { if (q.cat === en) { q.cat = ""; q.cat_ar = ""; } });
+  S.pendingCat = null; S.catOpen = true; setDirty(true); renderList(); renderEditor();
+  status("Deleted " + en + (n ? ". " + n + (n === 1 ? " candle has" : " candles have") + " no category now." : ".") + " Press Save to publish.", "dirty");
+}
 function closeAddScent(){ const box = $("addScent"); if (!box) return; box.hidden = true; $("nsEn").value = ""; $("nsAr").value = ""; const b = document.querySelector('#editor [data-act="newscent"]'); b.setAttribute("aria-expanded", "false"); b.focus(); }
 function addScent(p){
   const en = $("nsEn").value.trim(), ar = $("nsAr").value.trim(), list = S.data.settings.scents;
@@ -735,6 +786,11 @@ $("editor").addEventListener("keydown", e => {
   if (e.target.id !== "nsEn" && e.target.id !== "nsAr") return;
   if (e.key === "Enter") { e.preventDefault(); const p = cur(); if (p) addScent(p); }
   if (e.key === "Escape") { e.preventDefault(); closeAddScent(); }
+});
+$("editor").addEventListener("keydown", e => {
+  if (e.target.id !== "ncEn" && e.target.id !== "ncAr") return;
+  if (e.key === "Enter") { e.preventDefault(); const p = cur(); if (p) addCat(p); }
+  if (e.key === "Escape") { e.preventDefault(); closeAddCat(); }
 });
 $("add").addEventListener("click", () => {
   const id = "c" + Date.now().toString(36);
