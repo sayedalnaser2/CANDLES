@@ -25,7 +25,7 @@
 /* Set language and direction before first paint so nothing slides around on load. Arabic fonts load only for Arabic. */
 window.__arFonts=function(){if(document.getElementById("arFonts"))return;var k=document.createElement("link");k.id="arFonts";k.rel="stylesheet";k.href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap";document.head.appendChild(k);};
 (function(){var l="en";try{l=localStorage.getItem("anneshop-lang")||((navigator.language||"").toLowerCase().indexOf("ar")===0?"ar":"en")}catch(e){}
-if(l!=="ar")l="en";var h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");if(!/^#candle-/.test(location.hash))c+=" intro-on"}if(sessionStorage.getItem("anneshop-arrive")){sessionStorage.removeItem("anneshop-arrive");c+=" arrive"}}catch(e){}try{if(window.CSS&&CSS.registerProperty){CSS.registerProperty({name:"--hole",syntax:"<length>",inherits:false,initialValue:"-240px"});c+=" hole"}}catch(e){}setTimeout(function(){if(!window.__mo)h.classList.add("rv-off")},4000)}h.className=c;/*/motion-head*/if(l==="ar")window.__arFonts();})();
+if(l!=="ar")l="en";var h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");if(!/^#(candle|blanket)-/.test(location.hash))c+=" intro-on"}if(sessionStorage.getItem("anneshop-arrive")){sessionStorage.removeItem("anneshop-arrive");c+=" arrive"}}catch(e){}try{if(window.CSS&&CSS.registerProperty){CSS.registerProperty({name:"--hole",syntax:"<length>",inherits:false,initialValue:"-240px"});c+=" hole"}}catch(e){}setTimeout(function(){if(!window.__mo)h.classList.add("rv-off")},4000)}h.className=c;/*/motion-head*/if(l==="ar")window.__arFonts();})();
 </script>
 <link rel="canonical" href="https://anneshopbh.com/about">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -640,7 +640,7 @@ html[lang="ar"] .i-sub{font-size:1.4rem;line-height:1.6;margin-top:2px}
     <span class="i-ember" style="--x:-19px;--d:3.2s;--t:2.5s"></span>
   </div>
   <p class="i-name"><span lang="en">Anne Shop</span><svg class="lg" lang="ar" viewBox="0 0 336 167" aria-hidden="true"><use href="#lgL"/></svg></p>
-  <p class="i-sub"><span lang="en">handmade candles</span><span lang="ar">شموع يدوية</span></p>
+  <p class="i-sub"><span lang="en">handmade candles &amp; blankets</span><span lang="ar">شموع وبطانيات يدوية</span></p>
 </div></div>
 <!--/motion-intro-->
 <!--arabic-defs-->
@@ -652,6 +652,7 @@ html[lang="ar"] .i-sub{font-size:1.4rem;line-height:1.6;margin-top:2px}
     <a class="lnk" href="./#shop" data-t="nav_shop"></a>
     <a class="lnk" href="./#custom" data-t="nav_custom"></a>
     <a class="lnk" href="events" data-t="nav_events"></a>
+    <a class="lnk" href="classes" data-t="nav_classes"></a>
     <button class="langbtn" id="langBtn" type="button"></button>
     <a class="cartbtn" href="./#shop" data-t="a_shop_short" style="text-decoration:none"></a>
   </nav>
@@ -694,7 +695,7 @@ html[lang="ar"] .i-sub{font-size:1.4rem;line-height:1.6;margin-top:2px}
   <div class="gut"><footer class="wrap rv">
     <div><svg class="lg" viewBox="0 0 336 167" aria-hidden="true"><use href="#lgL"/></svg><b>Anne Shop</b><br><span data-t="foot_tag"></span></div>
     <div><span data-t="foot_prices"></span><br><span data-t="foot_conf"></span></div>
-    <div><a href="./" data-t="a_back" style="margin-inline-end:14px"></a><span data-t="foot_ig"></span> <a id="igLink" href="https://www.instagram.com/anneshop.bh/" target="_blank" rel="noopener">@anneshop.bh</a></div>
+    <div><a href="./" data-t="a_back" style="margin-inline-end:14px"></a><a href="classes" data-t="nav_classes" style="margin-inline-end:14px"></a><span data-t="foot_ig"></span> <a id="igLink" href="https://www.instagram.com/anneshop.bh/" target="_blank" rel="noopener">@anneshop.bh</a></div>
   </footer></div>
 </main>
 
@@ -706,7 +707,7 @@ html[lang="ar"] .i-sub{font-size:1.4rem;line-height:1.6;margin-top:2px}
 <script>
 const T = {
 en:{
- n1:"1", n2:"2", n3:"3", logo_sub:"handmade candles", nav_shop:"Shop", nav_custom:"Custom orders", nav_events:"Weddings & events", lang_btn:"العربية", a_shop_short:"Shop",
+ n1:"1", n2:"2", n3:"3", logo_sub:"candles & blankets", nav_shop:"Shop", nav_custom:"Custom orders", nav_events:"Weddings & events", nav_classes:"Classes", lang_btn:"العربية", a_shop_short:"Shop",
  pr1:"Hand-poured in small batches", pr2:"Gift-ready packaging", pr3:"Ordered and confirmed by message",
  a_eyebrow:"meet Anne", story_h:"Made on a kitchen table, meant for yours",
  story_p1:"Anne Shop started with one candle poured for a friend and turned into a little collection of vintage-inspired pieces. Each candle is poured, trimmed and wrapped by hand.",
@@ -719,11 +720,11 @@ en:{
  a_s3h:"Wrapped with care", a_s3p:"Packed so it arrives safe, and gift-ready if you ask for it.",
  a_cta_h:"Find your candle", a_cta_p:"Browse the shelf, ask for something made just for you, or say hello on Instagram.",
  a_back:"Back to the shop",
- foot_tag:"Handmade candles, Bahrain", foot_prices:"Prices in Bahraini dinar (BD).", foot_conf:"Orders are confirmed by message before payment.", foot_ig:"Instagram",
- hero_cta:"Shop the candles", wa_chat:"Chat on WhatsApp", wa_short:"Chat"
+ foot_tag:"Handmade candles & blankets, Bahrain", foot_prices:"Prices in Bahraini dinar (BD).", foot_conf:"Orders are confirmed by message before payment.", foot_ig:"Instagram",
+ hero_cta:"Browse the shop", wa_chat:"Chat on WhatsApp", wa_short:"Chat"
 },
 ar:{
- n1:"١", n2:"٢", n3:"٣", logo_sub:"شموع يدوية", nav_shop:"المتجر", nav_custom:"طلبات خاصة", nav_events:"الأعراس والمناسبات", lang_btn:"English", a_shop_short:"المتجر",
+ n1:"١", n2:"٢", n3:"٣", logo_sub:"شموع وبطانيات", nav_shop:"المتجر", nav_custom:"طلبات خاصة", nav_events:"الأعراس والمناسبات", nav_classes:"الورش", lang_btn:"English", a_shop_short:"المتجر",
  pr1:"مصبوبة يدويًا بدفعات صغيرة", pr2:"تغليف جاهز للإهداء", pr3:"الطلب والتأكيد عبر الرسائل",
  a_eyebrow:"تعرّف على آن", story_h:"صُنعت على طاولة مطبخ، لتصل إلى طاولتك",
  story_p1:"بدأ متجر آن بشمعة واحدة صُبّت لصديقة، ثم أصبح مجموعة صغيرة من القطع المستوحاة من الطراز القديم. كل شمعة تُصبّ وتُقصّ وتُغلّف يدويًا.",
@@ -736,8 +737,8 @@ ar:{
  a_s3h:"تُغلّف بعناية", a_s3p:"تُعبّأ لتصل سليمة، وجاهزة للإهداء عند الطلب.",
  a_cta_h:"اعثر على شمعتك", a_cta_p:"تصفح الرف، أو اطلب شيئًا مصنوعًا خصيصًا لك، أو ألقِ التحية علينا على إنستغرام.",
  a_back:"العودة إلى المتجر",
- foot_tag:"شموع مصنوعة يدويًا، البحرين", foot_prices:"الأسعار بالدينار البحريني (د.ب).", foot_conf:"يتم تأكيد الطلبات عبر الرسائل قبل الدفع.", foot_ig:"إنستغرام",
- hero_cta:"تسوّق الشموع", wa_chat:"تحدث معنا على واتساب", wa_short:"تواصل"
+ foot_tag:"شموع وبطانيات مصنوعة يدويًا، البحرين", foot_prices:"الأسعار بالدينار البحريني (د.ب).", foot_conf:"يتم تأكيد الطلبات عبر الرسائل قبل الدفع.", foot_ig:"إنستغرام",
+ hero_cta:"تصفّح المتجر", wa_chat:"تحدث معنا على واتساب", wa_short:"تواصل"
 }};
 let lang = document.documentElement.lang === "ar" ? "ar" : "en", CONFIG = {};
 const $ = id => document.getElementById(id), t = k => (T[lang] && T[lang][k]) || T.en[k] || "";
@@ -753,7 +754,7 @@ const ig = () => "https://www.instagram.com/" + (CONFIG.instagram || "anneshop.b
 function links(){
   $("igBtn").href = ig(); $("igLink").href = ig(); $("igLink").textContent = "@" + (CONFIG.instagram || "anneshop.bh");
   const n = String(CONFIG.whatsapp || "").replace(/\D/g, "");
-  if (n) { $("waFab").href = "https://wa.me/" + n + "?text=" + encodeURIComponent("Hi Anne, I have a question about your candles."); $("waFab").hidden = false; }
+  if (n) { $("waFab").href = "https://wa.me/" + n + "?text=" + encodeURIComponent("Hi Anne, I have a question."); $("waFab").hidden = false; }
 }
 $("langBtn").addEventListener("click", () => {
   document.documentElement.classList.add("boot");

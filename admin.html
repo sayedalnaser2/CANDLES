@@ -187,6 +187,30 @@ input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:p
 #status.bad{color:var(--bad);font-weight:700}
 .kbd{font-size:.78rem;color:var(--muted);white-space:nowrap}
 
+/* test-branch notice */
+.testbar{background:var(--sage-soft);color:var(--ink);border-bottom:1px solid var(--line);font-size:.92rem}
+.testbar .wrap{display:flex;gap:8px;align-items:center;min-height:42px;flex-wrap:wrap;padding-block:6px}
+/* candle or blanket */
+.kind{display:inline-flex;gap:4px;background:var(--rose-soft);padding:4px;border-radius:999px}
+.kind button{border:0;background:transparent;border-radius:999px;padding:6px 18px;font-weight:700;color:var(--muted);min-height:38px}
+.kind button[aria-pressed="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px #47302f26}
+.clist-head{flex-wrap:wrap}
+.addrow{display:flex;gap:6px}
+.lfilter{display:flex;gap:6px;flex-wrap:wrap;padding:0 8px 10px}
+.lfilter .chip{min-height:34px;padding:3px 12px;font-size:.84rem}
+.lfilter .chip span{font-weight:400;opacity:.8}
+.pill.b{background:var(--sage-soft);color:var(--sage)}
+/* classes */
+.khead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px 18px;flex-wrap:wrap}
+.khead>div{flex:1 1 320px}
+.kc-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.kc-head h3{font-size:1.5rem;margin-inline-end:auto;overflow-wrap:anywhere}
+.kc-grid{display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;align-items:start}
+.kphoto{display:flex;flex-direction:column;gap:6px}
+.kphoto .thumb{width:120px;height:120px;border-radius:12px;font-size:.8rem;color:var(--muted);text-align:center}
+.kcard.past{opacity:.72}
+@media (max-width:600px){.kc-grid{grid-template-columns:1fr}.kphoto{flex-direction:row;flex-wrap:wrap;align-items:center}.kphoto .thumb{width:84px;height:84px}}
+@media (max-width:420px){.tabs button{font-size:.86rem;padding-inline:4px}}
 @media (pointer:coarse){.btn.sm,.chip{min-height:44px}.kbd{display:none}}
 @media (max-width:899px){
   .cands{grid-template-columns:minmax(0,1fr);padding-top:14px}
@@ -225,20 +249,23 @@ input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:p
   <div class="wrap">
     <div class="brand"><b>Anne Shop</b><span>manager</span></div>
     <nav class="tabs" id="tabs" role="tablist" aria-label="Sections" hidden>
-      <button type="button" role="tab" id="t-candles" data-tab="candles" aria-controls="p-candles" aria-selected="true">Candles</button>
+      <button type="button" role="tab" id="t-candles" data-tab="candles" aria-controls="p-candles" aria-selected="true">Shop</button>
+      <button type="button" role="tab" id="t-classes" data-tab="classes" aria-controls="p-classes" aria-selected="false" tabindex="-1">Classes</button>
       <button type="button" role="tab" id="t-home" data-tab="home" aria-controls="p-home" aria-selected="false" tabindex="-1">Homepage</button>
       <button type="button" role="tab" id="t-settings" data-tab="settings" aria-controls="p-settings" aria-selected="false" tabindex="-1">Settings</button>
     </nav>
     <button class="theme" id="themeBtn" type="button" aria-label="Switch to dark mode">Dark</button>
-    <a class="shoplink" href="https://anneshopbh.com/" target="_blank" rel="noopener">Open shop</a>
+    <a class="shoplink" id="shopLink" href="https://anneshopbh.com/" target="_blank" rel="noopener">Open shop</a>
   </div>
 </header>
+<div class="testbar" id="testBar" hidden><div class="wrap"><span>Test version: your changes save to the <b id="branchName">test</b> branch. The live shop does not change.</span></div></div>
 
 <main class="wrap">
 <section id="login" class="card login">
   <h1>Sign in</h1>
   <p class="lede">This page saves your changes straight to your GitHub repository, so it needs a GitHub access token. Only you can use it, and it stays in this browser.</p>
   <div class="f"><label for="repo">Repository</label><input id="repo" value="sayedalnaser2/CANDLES" autocomplete="off" spellcheck="false" autocapitalize="off"></div>
+  <div class="f"><label for="branch">Branch <span class="hint">(main is the live shop)</span></label><input id="branch" value="main" autocomplete="off" spellcheck="false" autocapitalize="off"></div>
   <div class="f"><label for="token">GitHub access token</label>
     <div class="pw"><input id="token" type="password" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="github_pat_..."><button class="btn ghost sm" type="button" id="showTok" aria-pressed="false">Show</button></div></div>
   <label class="chk" for="remember"><input id="remember" type="checkbox" checked> Remember me on this device</label>
@@ -259,11 +286,22 @@ input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:p
 <div id="app" hidden>
   <section id="p-candles" role="tabpanel" aria-labelledby="t-candles">
     <div class="cands" id="cands">
-      <aside class="clist" aria-label="Your candles">
-        <div class="clist-head"><h2>Your candles<span class="count" id="count"></span></h2><button class="btn sm" id="add" type="button">+ New candle</button></div>
+      <aside class="clist" aria-label="Your shop">
+        <div class="clist-head"><h2>Your shop<span class="count" id="count"></span></h2><div class="addrow"><button class="btn sm" id="add" type="button">+ Candle</button><button class="btn sm" id="addB" type="button">+ Blanket</button></div></div>
+        <div class="lfilter" id="lfilter" role="group" aria-label="Show"></div>
         <ul class="list" id="list"></ul>
       </aside>
       <div class="ed" id="editor"></div>
+    </div>
+  </section>
+
+  <section id="p-classes" role="tabpanel" aria-labelledby="t-classes" hidden>
+    <div class="narrow">
+      <section class="card">
+        <div class="khead"><div><h2>Classes</h2><p class="lede" style="margin:0">Your blanket-making classes, shown on the Classes page and on the homepage. A class hides from the shop by itself once its date has passed.</p></div>
+          <button class="btn" id="addClass" type="button">+ New class</button></div>
+      </section>
+      <div id="kList"></div>
     </div>
   </section>
 
@@ -278,10 +316,10 @@ input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:p
       </section>
 
       <section class="card">
-        <h2>Candle of the month</h2>
-        <p class="lede">One candle shown large above the shelf, with a short note from you.</p>
-        <label class="chk" for="ftOn"><input id="ftOn" type="checkbox" data-s="featuredOn"> Show a candle of the month</label>
-        <div class="f" style="margin-top:8px"><label for="ftPick">Which candle</label><select id="ftPick" data-s="featuredId"></select></div>
+        <h2>Candle or blanket of the month</h2>
+        <p class="lede">One item shown large above the shelf, with a short note from you.</p>
+        <label class="chk" for="ftOn"><input id="ftOn" type="checkbox" data-s="featuredOn"> Show an item of the month</label>
+        <div class="f" style="margin-top:8px"><label for="ftPick">Which item</label><select id="ftPick" data-s="featuredId"></select></div>
         <div class="bi"><label class="lab" for="ftNote">Your note <span class="hint">(optional)</span></label><span class="lt">English</span><input id="ftNote" data-s="featuredNote" placeholder="Our October favourite"><span class="lt" lang="ar">عربي</span><input id="ftNoteAr" class="ar" data-s="featuredNote_ar" aria-label="Your note in Arabic" placeholder="مفضلتنا لهذا الشهر"></div>
       </section>
 
@@ -346,7 +384,8 @@ input[type=color]{width:58px;height:44px;padding:3px;border-radius:10px;cursor:p
 
 <div class="bar" id="saveBar" hidden><div class="wrap"><span id="status" role="status">No changes yet</span><span class="kbd" id="kbd">Ctrl + S saves</span><button class="btn" id="save" type="button" disabled>Save changes</button></div></div>
 <datalist id="cats"></datalist>
-<input type="file" id="file" accept="image/*" multiple hidden aria-label="Choose candle photos">
+<input type="file" id="file" accept="image/*" multiple hidden aria-label="Choose photos">
+<input type="file" id="fileK" accept="image/*" hidden aria-label="Choose a class photo">
 <input type="file" id="fileM" hidden aria-label="Choose a photo or video">
 
 <script>
@@ -354,12 +393,19 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const colr = (c, d) => /^#[0-9a-f]{6}$/i.test(String(c || "")) ? c : d;
 const money = n => "BD " + (+n || 0).toFixed(3);
-const TYPES = {jar:"Jar", tin:"Tin", cup:"Teacup", pillar:"Pillar", trio:"Gift set"};
+const TYPES = {candle:{jar:"Jar", tin:"Tin", cup:"Teacup", pillar:"Pillar", trio:"Gift set"}, blanket:{knit:"Chunky knit", granny:"Granny squares", baby:"Baby roll"}};
+const lineOf = p => (p && p.line === "blanket") ? "blanket" : "candle";
+const kId = () => "k" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+const pad2 = n => String(n).padStart(2, "0");
+const todayISO = () => { const d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); };
+const noPriv = it => { const o = {}; Object.keys(it).forEach(k => { if (k[0] !== "_") o[k] = it[k]; }); return o; };
+/* the live shop saves to main; anywhere else (a test preview) saves to the test branch unless you choose otherwise */
+const defaultBranch = () => /(^|\.)anneshopbh\.com$|\.github\.io$/i.test(location.hostname) ? "main" : "test";
 const DEFAULT_SCENTS = [{id:"floral", name:"Floral", name_ar:"زهري"}, {id:"sweet", name:"Sweet & bakery", name_ar:"حلو وحلويات"}, {id:"woody", name:"Woody & warm", name_ar:"خشبي ودافئ"}, {id:"fresh", name:"Fresh & herbal", name_ar:"منعش وعشبي"}, {id:"spicy", name:"Spicy", name_ar:"متبّل"}];
 const scentId = () => "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
 const LABELS = [["", "", "No label"], ["New", "جديد"], ["Favourite", "المفضلة"], ["Gift", "هدية"], ["Limited", "كمية محدودة"]];
 const DEFAULT_SETTINGS = {instagram:"anneshop.bh", whatsapp:"", currency:"BD", giftWrapFee:1, goatcounter:"", announcement:{on:false, text:"", text_ar:"", link:""}, featuredOn:false, featuredId:"", featuredNote:"", featuredNote_ar:""};
-const S = {repo:"", token:"", sha:null, data:{settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), products:[], behind:{title:"", title_ar:"", text:"", text_ar:"", items:[]}, customerPhotos:[]}, dirty:false, sel:null, tab:"candles", pendingDelete:null, pendingScent:null, imgTarget:null, mediaTarget:null};
+const S = {repo:"", token:"", sha:null, data:{settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)), products:[], classes:[], behind:{title:"", title_ar:"", text:"", text_ar:"", items:[]}, customerPhotos:[]}, dirty:false, sel:null, tab:"candles", pendingDelete:null, pendingScent:null, imgTarget:null, mediaTarget:null, branch:"main", listLine:"all", kPending:null, kImgTarget:null};
 const LISTS = {behind: () => S.data.behind.items, cust: () => S.data.customerPhotos};
 const ytIdA = u => { const m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/))([\w-]{11})/.exec(u || ""); return m ? m[1] : ""; };
 const wideMQ = matchMedia("(min-width:900px)");
@@ -374,6 +420,8 @@ function api(path, opt){
   opt = opt || {};
   return fetch("https://api.github.com/repos/" + S.repo + path, Object.assign({}, opt, {headers:{Authorization:"Bearer " + S.token, Accept:"application/vnd.github+json"}}));
 }
+const ref = () => "?ref=" + encodeURIComponent(S.branch);
+function putFile(path, message, content, sha){ const body = {message:message, content:content, branch:S.branch}; if (sha) body.sha = sha; return api("/contents/" + path, {method:"PUT", body:JSON.stringify(body)}); }
 function status(msg, cls){ const s = $("status"); s.textContent = msg; s.className = cls || ""; }
 function setDirty(v){ S.dirty = v; $("save").disabled = !v; if (v) status("Unsaved changes", "dirty"); }
 window.addEventListener("beforeunload", e => { if (S.dirty) { e.preventDefault(); e.returnValue = ""; } });
@@ -385,6 +433,7 @@ function flame(x,y,s){s=s||1;
   return `<path d="M${x} ${y-30*s} C${x+10*s} ${y-16*s} ${x+10*s} ${y-4*s} ${x} ${y} C${x-10*s} ${y-4*s} ${x-10*s} ${y-16*s} ${x} ${y-30*s}Z" fill="#f2b765"/><path d="M${x} ${y-17*s} C${x+5*s} ${y-9*s} ${x+5*s} ${y-3*s} ${x} ${y} C${x-5*s} ${y-3*s} ${x-5*s} ${y-9*s} ${x} ${y-17*s}Z" fill="#fff0c7"/>`}
 function wick(x,y1,y2){return `<path d="M${x} ${y1} L${x} ${y2}" stroke="#4a3a35" stroke-width="2.4" stroke-linecap="round"/>`}
 function tagShape(x,y,w,h,c){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#f9efe3" stroke="${c}" stroke-width="1.4"/><path d="M${x+8} ${y+h/2-3} H${x+w-8} M${x+14} ${y+h/2+5} H${x+w-14}" stroke="${c}" stroke-width="1.6" stroke-linecap="round"/><circle cx="${x+w/2}" cy="${y+8}" r="2.4" fill="${c}"/>`}
+function vrow(x0,x1,y,c){let d="";for(let x=x0;x+12<=x1;x+=12)d+=`M${x} ${y}l6 7.5l6 -7.5`;return `<path d="${d}" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>`}
 function artSvg(src){
   const p = {type:src.type || "jar", c1:colr(src.c1,"#f3e3df"), c2:colr(src.c2,"#e7b9bb"), c3:colr(src.c3,"#c98f91")};
   let s = "";
@@ -396,6 +445,19 @@ function artSvg(src){
     s = `<ellipse cx="100" cy="184" rx="78" ry="9" fill="#000" opacity=".12"/><ellipse cx="100" cy="176" rx="76" ry="12" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/><ellipse cx="100" cy="174" rx="48" ry="6" fill="none" stroke="${p.c3}" stroke-width="1.2" opacity=".6"/><path d="M142 112 C176 106 176 150 140 150" fill="none" stroke="${p.c3}" stroke-width="9" stroke-linecap="round"/><path d="M142 112 C170 108 170 146 140 148" fill="none" stroke="${p.c1}" stroke-width="5" stroke-linecap="round"/><path d="M52 100 H148 C148 150 130 172 100 172 C70 172 52 150 52 100Z" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/><ellipse cx="100" cy="100" rx="48" ry="9" fill="${p.c2}" stroke="${p.c3}" stroke-width="2"/><path d="M70 128 q30 14 60 0" fill="none" stroke="${p.c3}" stroke-width="2" stroke-linecap="round"/><circle cx="100" cy="146" r="4" fill="${p.c3}"/>${wick(100,100,86)}${flame(100,86)}`;
   } else if (p.type === "pillar") {
     s = `<ellipse cx="100" cy="184" rx="62" ry="8" fill="#000" opacity=".12"/><ellipse cx="100" cy="176" rx="58" ry="10" fill="#c9a76a" stroke="#9a7b43" stroke-width="2"/><path d="M68 70 H132 V172 H68Z" fill="${p.c1}"/><path d="M68 70 H132 V84 q-6 12 -12 2 q-6 -10 -14 4 q-6 8 -14 -4 q-8 -10 -14 4 q-5 8 -12 -6Z" fill="${p.c3}" opacity=".35"/><ellipse cx="100" cy="70" rx="32" ry="6" fill="${p.c2}"/><path d="M84 100 V140 M116 96 V150" stroke="${p.c3}" stroke-width="1.5" opacity=".45"/>${wick(100,70,56)}${flame(100,56)}`;
+  } else if (p.type === "knit") {
+    const fold = (x,y,w,h,c) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="15" fill="${c}" stroke="${p.c3}" stroke-width="2"/>`;
+    const tassel = x => `<circle cx="${x}" cy="176" r="4" fill="${p.c3}"/><path d="M${x-3} 179 l-2 9 M${x} 179 v10 M${x+3} 179 l2 9" stroke="${p.c3}" stroke-width="1.8" stroke-linecap="round"/>`;
+    s = `<ellipse cx="100" cy="186" rx="84" ry="8" fill="#000" opacity=".12"/>${fold(20,134,160,46,p.c1)}${vrow(34,168,144,p.c3)}${vrow(34,168,158,p.c3)}${fold(28,98,144,42,p.c2)}${vrow(42,160,108,p.c3)}${vrow(42,160,121,p.c3)}${fold(36,62,128,42,p.c1)}${vrow(50,152,72,p.c3)}${vrow(50,152,85,p.c3)}${tagShape(116,70,38,26,p.c3)}${tassel(26)}${tassel(174)}`;
+  } else if (p.type === "granny") {
+    let sq = "", sc = "";
+    for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) { const x = 46 + c * 36, y = 48 + r * 36, a = (r + c) % 2 ? p.c2 : p.c1, b = (r + c) % 2 ? p.c1 : p.c2;
+      sq += `<rect x="${x}" y="${y}" width="36" height="36" fill="${a}" stroke="${p.c3}" stroke-width="1.5"/><rect x="${x+7}" y="${y+7}" width="22" height="22" fill="${p.c3}" opacity=".35"/><rect x="${x+11}" y="${y+11}" width="14" height="14" fill="${b}"/><circle cx="${x+18}" cy="${y+18}" r="2.6" fill="#f9efe3"/>`; }
+    for (let x = 40; x < 160; x += 15) sc += `<circle cx="${x+7.5}" cy="164" r="7.5" fill="${p.c3}"/>`;
+    s = `<ellipse cx="100" cy="186" rx="70" ry="7" fill="#000" opacity=".1"/><rect x="12" y="38" width="176" height="9" rx="4.5" fill="#c9a76a"/><circle cx="14" cy="42.5" r="7" fill="#9a7b43"/><circle cx="186" cy="42.5" r="7" fill="#9a7b43"/>${sc}<path d="M40 50 Q40 32 58 32 H142 Q160 32 160 50 V164 H40Z" fill="${p.c3}"/>${sq}`;
+  } else if (p.type === "baby") {
+    const dots = [[96,122],[140,122],[152,152],[112,160],[86,150],[164,132]].map(([x,y]) => `<circle cx="${x}" cy="${y}" r="3.6" fill="${p.c2}"/>`).join("");
+    s = `<ellipse cx="104" cy="184" rx="76" ry="8" fill="#000" opacity=".12"/><rect x="40" y="106" width="134" height="72" rx="36" fill="${p.c1}" stroke="${p.c3}" stroke-width="2"/>${dots}<ellipse cx="62" cy="142" rx="22" ry="36" fill="${p.c2}" stroke="${p.c3}" stroke-width="2"/><g transform="translate(62 142) scale(.62 1)"><path d="M0 -3 a3 3 0 1 1 -3 3 a8 8 0 1 0 8 -8 a14 14 0 1 1 -14 14 a20 20 0 1 0 20 -20" fill="none" stroke="${p.c3}" stroke-width="2" opacity=".7"/></g><rect x="116" y="106" width="12" height="72" fill="${p.c3}"/><path d="M122 104 C104 82 92 104 120 106Z M122 104 C140 82 152 104 124 106Z" fill="${p.c3}" stroke="${p.c3}" stroke-width="2" stroke-linejoin="round"/><path d="M118 108 l-9 20 M126 108 l9 20" stroke="${p.c3}" stroke-width="4.5" stroke-linecap="round"/><circle cx="122" cy="105" r="5.5" fill="${p.c3}"/>`;
   } else {
     const one = (x,c) => `<rect x="${x-26}" y="128" width="52" height="46" rx="7" fill="${c}"/><rect x="${x-29}" y="120" width="58" height="12" rx="5" fill="${c}" stroke="#ffffff55" stroke-width="2"/>${wick(x,118,108)}${flame(x,108,.75)}`;
     s = `<ellipse cx="100" cy="182" rx="84" ry="8" fill="#000" opacity=".12"/><rect x="22" y="150" width="156" height="30" rx="4" fill="#d9b88e"/><path d="M96 150 H104 V180 H96Z" fill="${p.c3}"/>${one(56,p.c1)}${one(100,p.c2)}${one(144,p.c3)}<path d="M100 150 C82 128 82 142 100 150 C118 142 118 128 100 150Z" fill="${p.c3}"/>`;
@@ -415,7 +477,7 @@ function normalize(){
   d.behind.items = Array.isArray(d.behind.items) ? d.behind.items : [];
   d.customerPhotos = Array.isArray(d.customerPhotos) ? d.customerPhotos : [];
   d.products = (d.products || []).map(p => {
-    const q = Object.assign({name_ar:"", cat_ar:"", size_ar:"", notes_ar:"", tag_ar:"", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:[], added:""}, p);
+    const q = Object.assign({name_ar:"", cat_ar:"", size_ar:"", notes_ar:"", tag_ar:"", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:[], added:""}, lineOf(p) === "blanket" ? {material:"", material_ar:"", lead:"", lead_ar:""} : {}, p);
     q.variants = (Array.isArray(q.variants) ? q.variants : []).map(g => ({name:g.name || "", name_ar:g.name_ar || "", choices:(g.choices || []).map(c => ({label:c.label || "", label_ar:c.label_ar || "", add:+c.add || 0}))}));
     const list = (Array.isArray(q.images) && q.images.length) ? q.images : (q.image ? [q.image] : []);
     q._imgs = list.map(path => ({path}));
@@ -426,31 +488,41 @@ function normalize(){
   const sc = (given.length ? given : DEFAULT_SCENTS).map(x => ({id:String(x.id), name:x.name || "", name_ar:x.name_ar || ""}));
   d.products.forEach(p => (p.families || []).forEach(id => { if (!sc.some(x => x.id === id)) sc.push(Object.assign({}, DEFAULT_SCENTS.find(x => x.id === id) || {id, name:id, name_ar:""})); }));
   d.settings.scents = sc;
-  /* shelf categories: a saved list, so a category can exist before any candle uses it */
+  /* shelf categories: a saved list, so a category can exist before anything uses it; each belongs to the candle or the blanket shelf */
   const cl = [];
-  (Array.isArray(d.settings.categories) ? d.settings.categories : []).forEach(x => { const en = String((x && x.en) || "").trim(); if (en && !cl.some(y => y.en === en)) cl.push({en, ar:String(x.ar || "")}); });
-  d.products.forEach(p => { if (p.cat && !cl.some(y => y.en === p.cat)) cl.push({en:p.cat, ar:p.cat_ar || ""}); else if (p.cat && p.cat_ar) { const y = cl.find(z => z.en === p.cat); if (y && !y.ar) y.ar = p.cat_ar; } });
+  (Array.isArray(d.settings.categories) ? d.settings.categories : []).forEach(x => { const en = String((x && x.en) || "").trim(), line = x && x.line === "blanket" ? "blanket" : (x && x.line ? "candle" : "");
+    if (en && !cl.some(y => y.en === en && (!line || !y.line || y.line === line))) cl.push({en, ar:String(x.ar || ""), line}); });
+  d.products.forEach(p => { if (!p.cat) return; const line = lineOf(p), y = cl.find(z => z.en === p.cat && (z.line === line || !z.line));
+    if (!y) cl.push({en:p.cat, ar:p.cat_ar || "", line}); else { if (!y.line) y.line = line; if (!y.ar && p.cat_ar) y.ar = p.cat_ar; } });
+  cl.forEach(y => { if (!y.line) y.line = "candle"; });
   d.settings.categories = cl;
+  /* classes: past dates stay here (marked Past) until you delete them; the shop hides them */
+  d.classes = (Array.isArray(d.classes) ? d.classes : []).filter(k => k && k.id).map(k => {
+    const q = Object.assign({title:"", title_ar:"", date:"", time:"", length:"", length_ar:"", level:"", level_ar:"", place:"", place_ar:"", price:0, seats:"", left:"", about:"", about_ar:"", includes:"", includes_ar:"", image:""}, k);
+    q._img = q.image ? {path:q.image} : null; return q;
+  });
 }
 async function signIn(){
   const err = $("loginErr"); err.hidden = true;
-  S.repo = $("repo").value.trim(); S.token = $("token").value.trim();
+  S.repo = $("repo").value.trim(); S.token = $("token").value.trim(); S.branch = $("branch").value.trim() || "main";
   if (!S.repo || !S.token) { err.textContent = "Enter the repository and your access token."; err.hidden = false; return; }
   $("go").disabled = true; $("go").textContent = "Signing in...";
   try {
-    const r = await api("/contents/products.json");
+    const r = await api("/contents/products.json" + ref());
     if (!r.ok) {
       err.textContent = r.status === 401 ? "GitHub did not accept that token. Check that you copied all of it and that it has not expired."
-        : "Could not open products.json in " + S.repo + ". Check the repository name, and that the token has Contents read and write access to it.";
+        : "Could not open products.json on the " + S.branch + " branch of " + S.repo + ". Check the repository and branch names, and that the token has Contents read and write access to it.";
       err.hidden = false; return;
     }
     const j = await r.json();
     S.sha = j.sha; S.data = JSON.parse(b64ToUtf8(j.content.replace(/\n/g, ""))); normalize();
-    try { if ($("remember").checked) localStorage.setItem("anneshop-admin", JSON.stringify({repo:S.repo, token:S.token})); } catch (e) {}
+    try { if ($("remember").checked) localStorage.setItem("anneshop-admin", JSON.stringify({repo:S.repo, token:S.token, branch:S.branch})); } catch (e) {}
     $("login").hidden = true; $("app").hidden = false; $("saveBar").hidden = false; $("tabs").hidden = false;
-    $("repoLabel").textContent = S.repo; fitTop();
+    $("repoLabel").textContent = S.repo + (S.branch === "main" ? "" : " (" + S.branch + " branch)"); fitTop();
+    $("testBar").hidden = S.branch === "main"; $("branchName").textContent = S.branch;
+    $("shopLink").href = S.branch === "main" ? "https://anneshopbh.com/" : "./";
     S.sel = wide() && S.data.products.length ? S.data.products[0].id : null;
-    render(); status("Loaded " + S.data.products.length + " candles");
+    render(); status("Loaded " + S.data.products.length + " items and " + S.data.classes.length + (S.data.classes.length === 1 ? " class" : " classes"));
   } catch (e) {
     err.textContent = "Something went wrong while connecting: " + e.message; err.hidden = false;
   } finally { $("go").disabled = false; $("go").textContent = "Sign in"; }
@@ -465,6 +537,7 @@ $("signOut").addEventListener("click", () => {
 });
 try {
   const saved = JSON.parse(localStorage.getItem("anneshop-admin") || "null");
+  $("branch").value = (saved && saved.branch) || defaultBranch();
   if (saved) { $("repo").value = saved.repo; $("token").value = saved.token; signIn(); }
 } catch (e) {}
 
@@ -472,35 +545,38 @@ try {
 function showTab(t, focus){
   S.tab = t;
   document.querySelectorAll("#tabs [data-tab]").forEach(b => { const on = b.dataset.tab === t; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
-  ["candles", "home", "settings"].forEach(k => $("p-" + k).hidden = k !== t);
-  if (t === "home") renderHome(); if (t === "settings") renderSettings(); if (t === "candles") renderEditor();
+  ["candles", "classes", "home", "settings"].forEach(k => $("p-" + k).hidden = k !== t);
+  if (t === "home") renderHome(); if (t === "settings") renderSettings(); if (t === "candles") renderEditor(); if (t === "classes") renderClasses();
   scrollTo(0, 0);
 }
 $("tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) showTab(b.dataset.tab); });
 $("tabs").addEventListener("keydown", e => {
-  const order = ["candles", "home", "settings"], i = order.indexOf(S.tab);
-  if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); showTab(order[(i + (e.key === "ArrowRight" ? 1 : 2)) % 3], true); }
+  const order = ["candles", "classes", "home", "settings"], i = order.indexOf(S.tab);
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); showTab(order[(i + (e.key === "ArrowRight" ? 1 : order.length - 1)) % order.length], true); }
 });
 
 /* ---- Render ---- */
 const pressed = on => `aria-pressed="${on ? "true" : "false"}"`;
-function catPairs(){
+function catPairs(line){
   const m = new Map(), L = S.data.settings.categories || [];
-  L.forEach(c => m.set(c.en, c.ar || ""));
-  S.data.products.forEach(p => { if (p.cat && (!m.has(p.cat) || (!m.get(p.cat) && p.cat_ar))) m.set(p.cat, p.cat_ar || ""); });
+  L.forEach(c => { if (!line || c.line === line) m.set(c.en, c.ar || ""); });
+  S.data.products.forEach(p => { if (p.cat && (!line || lineOf(p) === line) && (!m.has(p.cat) || (!m.get(p.cat) && p.cat_ar))) m.set(p.cat, p.cat_ar || ""); });
   return m;
 }
-function catCount(en){ return S.data.products.filter(p => p.cat === en).length; }
-function render(){ renderList(); renderEditor(); renderHome(); renderSettings(); }
+function catCount(en, line){ return S.data.products.filter(p => p.cat === en && lineOf(p) === line).length; }
+function render(){ renderList(); renderEditor(); renderClasses(); renderHome(); renderSettings(); }
 function renderList(){
-  const P = S.data.products;
+  const P = S.data.products, F = S.listLine, hasB = P.some(p => lineOf(p) === "blanket");
+  const shown = P.filter(p => !hasB || F === "all" || lineOf(p) === F);
   $("count").textContent = P.length;
-  $("list").innerHTML = P.length ? P.map(p => `<li><button class="ci" type="button" data-pick="${esc(p.id)}" ${p.id === S.sel ? 'aria-current="true"' : ""}>
+  $("lfilter").innerHTML = hasB ? [["all", "All"], ["candle", "Candles"], ["blanket", "Blankets"]].map(([k, v]) =>
+    `<button class="chip" type="button" data-lf="${k}" ${pressed(F === k)}>${v} <span>${k === "all" ? P.length : P.filter(p => lineOf(p) === k).length}</span></button>`).join("") : "";
+  $("list").innerHTML = shown.length ? shown.map(p => `<li><button class="ci" type="button" data-pick="${esc(p.id)}" ${p.id === S.sel ? 'aria-current="true"' : ""}>
       <span class="thumb">${picture(p)}</span>
-      <span class="ci-t"><b>${esc(p.name) || "New candle"}</b><small>${esc(p.name_ar)}</small></span>
-      <span class="ci-p">${money(p.price)}${p.soldOut ? '<span class="pill out">Sold out</span>' : ""}</span></button></li>`).join("")
-    : '<li class="empty">No candles yet. Press "New candle" to add your first one.</li>';
-  $("cats").innerHTML = [...catPairs().keys()].map(c => `<option value="${esc(c)}">`).join("");
+      <span class="ci-t"><b>${esc(p.name) || "New " + lineOf(p)}</b><small>${esc(p.name_ar)}</small></span>
+      <span class="ci-p">${money(p.price)}${lineOf(p) === "blanket" ? '<span class="pill b">Blanket</span>' : ""}${p.soldOut ? '<span class="pill out">Sold out</span>' : ""}</span></button></li>`).join("")
+    : `<li class="empty">${P.length ? "Nothing on this shelf yet." : 'Nothing in the shop yet. Press "+ Candle" or "+ Blanket" to add your first one.'}</li>`;
+  $("cats").innerHTML = [...catPairs(cur() ? lineOf(cur()) : null).keys()].map(c => `<option value="${esc(c)}">`).join("");
   $("cands").classList.toggle("editing", !!cur());
 }
 /* one row of a field in English and Arabic, side by side (stacked on phones) */
@@ -523,98 +599,108 @@ function choiceHTML(c, k){
 function varHTML(g, gi){
   return `<div class="grp" data-g="${gi}">
     <div class="bi"><label class="lab" for="vg${gi}">Option name</label><span class="lt">English</span><input id="vg${gi}" data-vf="name" value="${esc(g.name)}" placeholder="Size"><span class="lt" lang="ar">عربي</span><input class="ar" data-vf="name_ar" value="${esc(g.name_ar)}" placeholder="الحجم" aria-label="Option name in Arabic"></div>
-    <p class="lab" style="margin:0 0 6px">Choices <span class="hint">(the extra price is added to the candle's price)</span></p>
+    <p class="lab" style="margin:0 0 6px">Choices <span class="hint">(the extra price is added to the price)</span></p>
     ${g.choices.map(choiceHTML).join("")}
     <div class="grp-foot"><button class="btn ghost sm" type="button" data-act="addchoice">+ Add a choice</button><button class="btn danger sm" type="button" data-act="delvar">Remove this option</button></div></div>`;
 }
 function editorHTML(p, i, n){
+  const line = lineOf(p), isB = line === "blanket", word = isB ? "blanket" : "candle", many = x => x === 1 ? word : word + "s";
   const photos = p._imgs.map((im, k) => `<div class="ph"><span class="thumb"><img src="${esc(im.preview || im.path)}" alt="Photo ${k + 1}"></span>
       ${k === 0 ? '<span class="main">Main photo</span>' : `<button class="btn ghost sm" type="button" data-act="mainimg" data-k="${k}">Make main</button>`}
       <button class="btn danger sm" type="button" data-act="rmimg" data-k="${k}">Remove</button></div>`).join("");
   const labels = LABELS.map(([en, ar, txt]) => `<button class="chip" type="button" data-act="label" data-en="${esc(en)}" data-ar="${esc(ar)}" ${pressed((p.tag || "") === en)}>${txt || en}</button>`).join("");
-  const cats = [...catPairs()].map(([en, ar]) => `<button class="chip" type="button" data-act="cat" data-en="${esc(en)}" data-ar="${esc(ar)}" ${pressed(p.cat === en)}>${esc(en)}</button>`).join("");
+  const pairs = [...catPairs(line)];
+  const cats = pairs.map(([en, ar]) => `<button class="chip" type="button" data-act="cat" data-en="${esc(en)}" data-ar="${esc(ar)}" ${pressed(p.cat === en)}>${esc(en)}</button>`).join("");
   const fams = S.data.settings.scents.map(sc => `<button class="chip" type="button" data-act="fam" data-k="${esc(sc.id)}" ${pressed((p.families || []).includes(sc.id))}>${esc(sc.name || sc.name_ar || "New scent")}</button>`).join("");
-  const shapes = Object.entries(TYPES).map(([k, v]) => `<button class="shape" type="button" data-act="shape" data-k="${k}" ${pressed(p.type === k)}>${artSvg(Object.assign({}, p, {type:k}))}<span>${v}</span></button>`).join("");
-  const del = S.pendingDelete === p.id;
-  return `<button class="back" type="button" data-act="back">&#8592; All candles</button>
+  const shapes = Object.entries(TYPES[line]).map(([k, v]) => `<button class="shape" type="button" data-act="shape" data-k="${k}" ${pressed(p.type === k)}>${artSvg(Object.assign({}, p, {type:k}))}<span>${v}</span></button>`).join("");
+  const del = S.pendingDelete === p.id, same = S.data.products.filter(x => lineOf(x) === line), pos = same.indexOf(p);
+  return `<button class="back" type="button" data-act="back">&#8592; All items</button>
   <div class="ed-head">
     <div class="ed-art" id="edArt">${picture(p)}</div>
-    <div class="ed-id"><h2 id="edTitle" tabindex="-1">${esc(p.name) || "New candle"}</h2><p class="ed-ar" id="edAr">${esc(p.name_ar)}</p>
-      <p class="ed-meta"><b id="edPrice">${money(p.price)}</b>${p.cat ? `<span class="pill" id="edCat">${esc(p.cat)}</span>` : ""}</p></div>
+    <div class="ed-id"><h2 id="edTitle" tabindex="-1">${esc(p.name) || "New " + word}</h2><p class="ed-ar" id="edAr">${esc(p.name_ar)}</p>
+      <p class="ed-meta"><b id="edPrice">${money(p.price)}</b>${isB ? '<span class="pill b">Blanket</span>' : ""}${p.cat ? `<span class="pill" id="edCat">${esc(p.cat)}</span>` : ""}</p></div>
     <label class="switch"><input type="checkbox" role="switch" aria-label="Sold out" data-f="soldOut" ${p.soldOut ? "checked" : ""}><span class="track" aria-hidden="true"></span><span id="swText" aria-hidden="true">${p.soldOut ? "Sold out" : "In stock"}</span></label>
   </div>
+
+  <section class="blk"><h3>What is it?</h3>
+    <div class="kind" role="group" aria-label="What is it?"><button type="button" data-act="line" data-k="candle" ${pressed(!isB)}>Candle</button><button type="button" data-act="line" data-k="blanket" ${pressed(isB)}>Blanket</button></div>
+    <p class="fine">Candles and blankets each have their own shelf in the shop.</p></section>
 
   <section class="blk"><h3>Photos</h3>
     <div class="photos">${photos}<button class="addph" type="button" data-act="pick">+ Add photos</button></div>
     <p class="fine">The first photo is the main one. Photos are made smaller automatically. Without a photo, the shop shows the drawing.</p></section>
 
   <section class="blk"><h3>Name and description</h3>
-    ${bi("Name", "name", p.name, p.name_ar, {ph:"Rose Tea Cup", pha:"كوب الورد والشاي"})}
-    ${bi("Size and container", "size", p.size, p.size_ar, {ph:"Vintage teacup, 180 g", pha:"فنجان عتيق، 180 غ"})}
-    ${bi("Scent notes", "notes", p.notes, p.notes_ar, {area:true, ph:"Pressed rose, black tea and a little honey.", pha:"ورد مجفف وشاي أسود وقليل من العسل."})}
-    <p class="lab" style="margin:0">Shelf category <span class="hint">(the filter buttons on the shop)</span></p>
+    ${bi("Name", "name", p.name, p.name_ar, isB ? {ph:"Chunky Rose Throw", pha:"بطانية الورد السميكة"} : {ph:"Rose Tea Cup", pha:"كوب الورد والشاي"})}
+    ${isB ? bi("Size", "size", p.size, p.size_ar, {ph:"Sofa throw, about 120 × 150 cm", pha:"بطانية كنبة، حوالي 120 × 150 سم"}) : bi("Size and container", "size", p.size, p.size_ar, {ph:"Vintage teacup, 180 g", pha:"فنجان عتيق، 180 غ"})}
+    ${isB ? bi("Description", "notes", p.notes, p.notes_ar, {area:true, ph:"Big, squishy stitches in dusty rose.", pha:"غرز كبيرة وناعمة بلون وردي هادئ."}) : bi("Scent notes", "notes", p.notes, p.notes_ar, {area:true, ph:"Pressed rose, black tea and a little honey.", pha:"ورد مجفف وشاي أسود وقليل من العسل."})}
+    <p class="lab" style="margin:0">Shelf category <span class="hint">(the filter buttons on the ${word} shelf)</span></p>
     <div class="chips" role="group" aria-label="Shelf category">${cats}<button class="chip add" type="button" data-act="newcat" aria-expanded="false" aria-controls="addCat">+ Add a category</button></div>
     <div class="addscent" id="addCat" hidden>
-      <div class="bi"><label class="lab" for="ncEn">New category</label><span class="lt">English</span><input id="ncEn" placeholder="Wax melts" autocomplete="off"><span class="lt" lang="ar">عربي</span><input id="ncAr" class="ar" placeholder="شمع ذائب" aria-label="New category in Arabic" autocomplete="off"></div>
+      <div class="bi"><label class="lab" for="ncEn">New category</label><span class="lt">English</span><input id="ncEn" placeholder="${isB ? "Baby blankets" : "Wax melts"}" autocomplete="off"><span class="lt" lang="ar">عربي</span><input id="ncAr" class="ar" placeholder="${isB ? "بطانيات الأطفال" : "شمع ذائب"}" aria-label="New category in Arabic" autocomplete="off"></div>
       <div class="btnrow" style="margin:0 0 12px"><button class="btn sm" type="button" data-act="savecat">Add category</button><button class="btn ghost sm" type="button" data-act="cancelcat">Cancel</button></div>
     </div>
     <details class="catmgr"${S.catOpen ? " open" : ""}><summary>Delete a category</summary>
-      ${[...catPairs()].map(([en, ar]) => { const n = catCount(en), ask = S.pendingCat === en;
-        return `<div class="catrow"><b>${esc(en)}${ar ? ` <small lang="ar" dir="rtl">${esc(ar)}</small>` : ""}</b><small>${n} ${n === 1 ? "candle" : "candles"}</small>` +
-          (ask ? `<span class="fine" style="margin:0">${n ? "Those candles will have no category." : "This can't be undone."}</span><button class="btn danger sm" type="button" data-act="delcat" data-en="${esc(en)}">Yes, delete</button><button class="btn ghost sm" type="button" data-act="keepcat">Keep it</button>`
+      ${pairs.map(([en, ar]) => { const c = catCount(en, line), ask = S.pendingCat === line + "|" + en;
+        return `<div class="catrow"><b>${esc(en)}${ar ? ` <small lang="ar" dir="rtl">${esc(ar)}</small>` : ""}</b><small>${c} ${many(c)}</small>` +
+          (ask ? `<span class="fine" style="margin:0">${c ? "Those " + word + "s will have no category." : "This can't be undone."}</span><button class="btn danger sm" type="button" data-act="delcat" data-en="${esc(en)}">Yes, delete</button><button class="btn ghost sm" type="button" data-act="keepcat">Keep it</button>`
                : `<button class="btn danger sm" type="button" data-act="delcat" data-en="${esc(en)}">Delete</button>`) + `</div>`; }).join("") || '<p class="fine">No categories yet.</p>'}
     </details>
-    ${bi("Category name", "cat", p.cat, p.cat_ar, {list:"cats", ph:"Teacups", pha:"فناجين"})}</section>
+    ${bi("Category name", "cat", p.cat, p.cat_ar, {list:"cats", ph:isB ? "Throws" : "Teacups", pha:isB ? "بطانيات الكنبة" : "فناجين"})}</section>
 
   <section class="blk"><h3>Price and label</h3>
     <div class="row"><div class="f"><label for="e-price">Price</label><span class="money"><span aria-hidden="true">BD</span><input id="e-price" data-f="price" type="number" step="0.001" min="0" inputmode="decimal" value="${isFinite(p.price) ? (+p.price).toFixed(3) : ""}"></span></div></div>
-    <p class="lab" style="margin:0">Label on the candle's card</p>
+    <p class="lab" style="margin:0">Label on the card</p>
     <div class="chips" role="group" aria-label="Label">${labels}</div>
     ${bi("Label text", "tag", p.tag, p.tag_ar, {hint:"(or write your own)", ph:"New", pha:"جديد"})}</section>
 
-  <section class="blk"><h3>Candle page</h3>
+  ${isB ? `<section class="blk"><h3>Blanket page</h3>
+    ${bi("Material", "material", p.material, p.material_ar, {ph:"Chunky chenille yarn", pha:"خيط شنيل سميك"})}
+    ${bi("Making time", "lead", p.lead, p.lead_ar, {hint:"(also shown on the card)", ph:"Made to order, about 2 weeks", pha:"تُصنع حسب الطلب، خلال أسبوعين تقريبًا"})}
+    ${bi("Care tips", "care", p.care, p.care_ar, {area:true, hint:"(one per line)", ph:"Hand wash in cool water.\nDry flat, away from direct sun.", pha:"اغسلها يدويًا بماء بارد.\nجففها مفرودة بعيدًا عن الشمس."})}</section>`
+  : `<section class="blk"><h3>Candle page</h3>
     ${bi("Burn time", "burn", p.burn, p.burn_ar, {ph:"About 40 hours", pha:"حوالي 40 ساعة"})}
-    ${bi("Care tips", "care", p.care, p.care_ar, {area:true, hint:"(one per line)"})}</section>
+    ${bi("Care tips", "care", p.care, p.care_ar, {area:true, hint:"(one per line)"})}</section>`}
 
   <section class="blk"><h3>Options</h3>
-    <label class="chk" style="margin-bottom:8px"><input type="checkbox" data-f="personalize" ${p.personalize ? "checked" : ""}> Let customers add a name or note (for personalised candles)</label>
+    <label class="chk" style="margin-bottom:8px"><input type="checkbox" data-f="personalize" ${p.personalize ? "checked" : ""}> Let customers add a name or note (for personalised ${word}s)</label>
     ${(p.variants || []).map(varHTML).join("")}
-    <button class="btn ghost sm" type="button" data-act="addvar">+ Add an option (size, scent, colour...)</button>
-    <p class="fine">Each option becomes a row of buttons on the candle's page.</p></section>
+    <button class="btn ghost sm" type="button" data-act="addvar">+ Add an option (${isB ? "size, colour..." : "size, scent, colour..."})</button>
+    <p class="fine">Each option becomes a row of buttons on the ${word}'s page.</p></section>
 
-  <section class="blk"><h3>Scent finder</h3>
+  ${isB ? "" : `<section class="blk"><h3>Scent finder</h3>
     <p class="fine" style="margin:0">The quiz suggests this candle to people who pick these scents. Edit or remove scents in Homepage, Scent finder.</p>
     <div class="chips" role="group" aria-label="Scents">${fams}<button class="chip add" type="button" data-act="newscent" aria-expanded="false" aria-controls="addScent">+ Add a scent</button></div>
     <div class="addscent" id="addScent" hidden>
       <div class="bi"><label class="lab" for="nsEn">New scent</label><span class="lt">English</span><input id="nsEn" placeholder="Citrus" autocomplete="off"><span class="lt" lang="ar">عربي</span><input id="nsAr" class="ar" placeholder="حمضيات" aria-label="New scent in Arabic" autocomplete="off"></div>
       <div class="btnrow" style="margin:0 0 12px"><button class="btn sm" type="button" data-act="savescent">Add scent</button><button class="btn ghost sm" type="button" data-act="cancelscent">Cancel</button></div>
     </div>
-    <label class="chk"><input type="checkbox" data-f="giftable" ${p.giftable ? "checked" : ""}> Good as a gift</label></section>
+    <label class="chk"><input type="checkbox" data-f="giftable" ${p.giftable ? "checked" : ""}> Good as a gift</label></section>`}
 
   <section class="blk"><h3>Drawing</h3>
-    <p class="fine" style="margin:0 0 10px">Shown when the candle has no photo.</p>
+    <p class="fine" style="margin:0 0 10px">Shown when the ${word} has no photo.</p>
     <div class="shapes" role="group" aria-label="Shape">${shapes}</div>
     <div class="colors">
-      <label>Body<input type="color" data-f="c1" value="${esc(colr(p.c1, "#f3e3df"))}"></label>
-      <label>Wax<input type="color" data-f="c2" value="${esc(colr(p.c2, "#e7b9bb"))}"></label>
+      <label>${isB ? "Main yarn" : "Body"}<input type="color" data-f="c1" value="${esc(colr(p.c1, "#f3e3df"))}"></label>
+      <label>${isB ? "Second yarn" : "Wax"}<input type="color" data-f="c2" value="${esc(colr(p.c2, "#e7b9bb"))}"></label>
       <label>Trim<input type="color" data-f="c3" value="${esc(colr(p.c3, "#c98f91"))}"></label>
     </div></section>
 
   <div class="ed-foot">
-    <div class="mv"><button class="btn ghost sm" type="button" data-act="up" ${i === 0 ? "disabled" : ""}>Move up</button><button class="btn ghost sm" type="button" data-act="down" ${i === n - 1 ? "disabled" : ""}>Move down</button><button class="btn ghost sm" type="button" data-act="dup">Duplicate</button></div>
-    <button class="btn danger sm ${del ? "armed" : ""}" type="button" data-act="del">${del ? "Tap again to delete" : "Delete candle"}</button>
+    <div class="mv"><button class="btn ghost sm" type="button" data-act="up" ${pos <= 0 ? "disabled" : ""}>Move up</button><button class="btn ghost sm" type="button" data-act="down" ${pos >= same.length - 1 ? "disabled" : ""}>Move down</button><button class="btn ghost sm" type="button" data-act="dup">Duplicate</button></div>
+    <button class="btn danger sm ${del ? "armed" : ""}" type="button" data-act="del">${del ? "Tap again to delete" : "Delete " + word}</button>
   </div>`;
 }
 function renderEditor(){
   const P = S.data.products, i = P.findIndex(p => p.id === S.sel);
-  $("editor").innerHTML = i < 0 ? `<p class="ed-empty">${P.length ? "Choose a candle to edit it." : 'No candles yet. Press "New candle" to add your first one.'}</p>` : editorHTML(P[i], i, P.length);
+  $("editor").innerHTML = i < 0 ? `<p class="ed-empty">${P.length ? "Choose something on the left to edit it." : 'Nothing in the shop yet. Press "+ Candle" or "+ Blanket" to add your first one.'}</p>` : editorHTML(P[i], i, P.length);
   growAll($("editor"));
 }
 /* update the bits that show the candle without rebuilding the form (keeps your place while typing) */
 function refreshShown(p){
   renderList();
   const set = (id, v) => { const el = $(id); if (el) el.textContent = v; };
-  set("edTitle", p.name || "New candle"); set("edAr", p.name_ar || ""); set("edPrice", money(p.price)); set("swText", p.soldOut ? "Sold out" : "In stock");
+  set("edTitle", p.name || "New " + lineOf(p)); set("edAr", p.name_ar || ""); set("edPrice", money(p.price)); set("swText", p.soldOut ? "Sold out" : "In stock");
   const meta = document.querySelector(".ed-meta"), cat = $("edCat");
   if (meta) { if (p.cat && !cat) meta.insertAdjacentHTML("beforeend", `<span class="pill" id="edCat">${esc(p.cat)}</span>`); else if (cat) { if (p.cat) cat.textContent = p.cat; else cat.remove(); } }
   const art = $("edArt"); if (art && !p._imgs.length) art.innerHTML = artSvg(p);
@@ -626,7 +712,8 @@ function renderHome(){
   const P = S.data.products, st = S.data.settings, an = st.announcement, b = S.data.behind;
   $("annOn").checked = !!an.on; $("annText").value = an.text || ""; $("annTextAr").value = an.text_ar || ""; $("annLink").value = an.link || "";
   $("ftOn").checked = !!st.featuredOn; $("ftNote").value = st.featuredNote || ""; $("ftNoteAr").value = st.featuredNote_ar || "";
-  $("ftPick").innerHTML = '<option value="">Choose a candle</option>' + P.map(p => `<option value="${esc(p.id)}" ${p.id === st.featuredId ? "selected" : ""}>${esc(p.name || "New candle")}</option>`).join("");
+  const opt = p => `<option value="${esc(p.id)}" ${p.id === st.featuredId ? "selected" : ""}>${esc(p.name || "New " + lineOf(p))}</option>`, B = P.filter(p => lineOf(p) === "blanket");
+  $("ftPick").innerHTML = '<option value="">Choose an item</option>' + (B.length ? `<optgroup label="Candles">${P.filter(p => lineOf(p) === "candle").map(opt).join("")}</optgroup><optgroup label="Blankets">${B.map(opt).join("")}</optgroup>` : P.map(opt).join(""));
   $("bhTitle").value = b.title || ""; $("bhTitleAr").value = b.title_ar || ""; $("bhText").value = b.text || ""; $("bhTextAr").value = b.text_ar || "";
   ["behind", "cust"].forEach(l => { const arr = LISTS[l](); $(l === "behind" ? "bhList" : "cpList").innerHTML = arr.map((it, i) => miHTML(it, l, i, arr.length)).join(""); });
   renderScents();
@@ -693,6 +780,12 @@ $("app").addEventListener("input", e => {
   if (el.dataset.sc) { const sc = S.data.settings.scents.find(x => x.id === el.closest(".sc").dataset.sid); if (sc) { sc[el.dataset.sc] = el.value; setDirty(true); } return; }
   if (el.dataset.m) { const mi = el.closest(".mi"), it = LISTS[mi.dataset.list]()[+mi.dataset.i]; if (it) { it[el.dataset.m] = el.value; setDirty(true); } return; }
   if (el.dataset.a) { const k = el.dataset.a; S.data.settings.announcement[k] = el.type === "checkbox" ? el.checked : el.value.trim(); setDirty(true); return; }
+  if (el.dataset.k && el.closest("#kList")) {
+    const card = el.closest("[data-kid]"), k = S.data.classes.find(x => x.id === card.dataset.kid); if (!k) return;
+    const f = el.dataset.k;
+    k[f] = f === "price" ? (el.value === "" ? "" : parseFloat(el.value)) : (f === "seats" || f === "left") ? (el.value === "" ? "" : Math.max(0, parseInt(el.value, 10) || 0)) : el.value;
+    refreshK(card, k); setDirty(true); return;
+  }
   if (!el.closest("#editor")) return;
   const p = cur(); if (!p) return;
   if (el.dataset.vf || el.dataset.cf) {
@@ -708,7 +801,7 @@ $("app").addEventListener("input", e => {
 /* picking a category you already use fills in its Arabic name too */
 $("app").addEventListener("change", e => {
   const el = e.target; if (el.dataset.f !== "cat" || !el.closest("#editor")) return;
-  const p = cur(), ar = p && catPairs().get(p.cat);
+  const p = cur(), ar = p && catPairs(lineOf(p)).get(p.cat);
   if (p && ar && !p.cat_ar) { p.cat_ar = ar; $("e-cat_ar").value = ar; setDirty(true); }
 });
 $("editor").addEventListener("click", e => {
@@ -726,7 +819,18 @@ $("editor").addEventListener("click", e => {
   if (act === "cancelcat") { closeAddCat(); return; }
   if (act === "savecat") { addCat(p); return; }
   if (act === "keepcat") { S.pendingCat = null; S.catOpen = true; renderEditor(); return; }
-  if (act === "delcat") { delCat(b.dataset.en); return; }
+  if (act === "delcat") { delCat(b.dataset.en, lineOf(p)); return; }
+  if (act === "line") {
+    const l = b.dataset.k, from = lineOf(p); if (from === l) return;
+    (p._was = p._was || {})[from] = {type:p.type, cat:p.cat, cat_ar:p.cat_ar};   /* switching back restores the drawing and category */
+    const back = p._was[l], keepCat = !p.cat || S.data.settings.categories.some(c => c.en === p.cat && c.line === l) || P.some(q => q !== p && lineOf(q) === l && q.cat === p.cat);
+    if (l === "blanket") { p.line = "blanket"; if (!TYPES.blanket[p.type]) p.type = "knit"; ["material", "material_ar", "lead", "lead_ar"].forEach(k => { if (p[k] == null) p[k] = ""; }); }
+    else { delete p.line; if (!TYPES.candle[p.type]) p.type = "jar"; }
+    if (back) { p.type = back.type; p.cat = back.cat; p.cat_ar = back.cat_ar; } else if (!keepCat) { p.cat = ""; p.cat_ar = ""; }
+    if (S.listLine !== "all") S.listLine = l;
+    S.pendingCat = null; setDirty(true); renderList(); renderEditor();
+    status(back ? "This is a " + l + " again." : "This is now a " + l + (p.cat ? "." : ". Pick a category for it on the " + l + " shelf."), "dirty"); return;
+  }
   if (act === "fam") { const f = p.families || (p.families = []), k = b.dataset.k, j = f.indexOf(k); if (j < 0) f.push(k); else f.splice(j, 1); b.setAttribute("aria-pressed", j < 0); setDirty(true); return; }
   if (act === "newscent") { const box = $("addScent"); box.hidden = false; b.setAttribute("aria-expanded", "true"); $("nsEn").focus(); return; }
   if (act === "cancelscent") { closeAddScent(); return; }
@@ -736,38 +840,41 @@ $("editor").addEventListener("click", e => {
   if (act === "delvar") { p.variants.splice(+b.closest(".grp").dataset.g, 1); setDirty(true); renderEditor(); return; }
   if (act === "addchoice") { const gi = +b.closest(".grp").dataset.g; p.variants[gi].choices.push({label:"", label_ar:"", add:0}); setDirty(true); renderEditor(); const rows = document.querySelectorAll('#editor .grp[data-g="' + gi + '"] .choice'); rows[rows.length - 1].querySelector("input").focus(); return; }
   if (act === "delchoice") { const g = p.variants[+b.closest(".grp").dataset.g]; g.choices.splice(+b.closest(".choice").dataset.c, 1); setDirty(true); renderEditor(); return; }
-  if (act === "up" && i > 0) { [P[i - 1], P[i]] = [P[i], P[i - 1]]; setDirty(true); renderList(); renderEditor(); return; }
-  if (act === "down" && i < P.length - 1) { [P[i + 1], P[i]] = [P[i], P[i + 1]]; setDirty(true); renderList(); renderEditor(); return; }
+  if (act === "up" || act === "down") {   /* moves past the next candle (or blanket), so the order on each shelf changes */
+    const same = P.map((x, k) => lineOf(x) === lineOf(p) ? k : -1).filter(k => k >= 0), j = same[same.indexOf(i) + (act === "up" ? -1 : 1)];
+    if (j == null) return; [P[j], P[i]] = [P[i], P[j]]; setDirty(true); renderList(); renderEditor(); return;
+  }
   if (act === "dup") {
     const copy = JSON.parse(JSON.stringify(p));
-    copy.id = "c" + Date.now().toString(36); copy.name = (p.name || "Candle") + " (copy)"; copy.name_ar = p.name_ar ? p.name_ar + " (نسخة)" : ""; copy.added = new Date().toISOString().slice(0, 10);
+    copy.id = (lineOf(p) === "blanket" ? "b" : "c") + Date.now().toString(36); copy.name = (p.name || (lineOf(p) === "blanket" ? "Blanket" : "Candle")) + " (copy)"; copy.name_ar = p.name_ar ? p.name_ar + " (نسخة)" : ""; copy.added = new Date().toISOString().slice(0, 10);
     P.splice(i + 1, 0, copy); setDirty(true); select(copy.id); status("Copied. Change what's different, then save.", "dirty"); $("e-name").focus(); $("e-name").select(); return;
   }
   if (act === "del") {
     if (S.pendingDelete !== p.id) { S.pendingDelete = p.id; renderEditor(); document.querySelector('#editor [data-act="del"]').focus(); return; }
     P.splice(i, 1); S.pendingDelete = null; setDirty(true);
-    S.sel = wide() && P.length ? P[Math.min(i, P.length - 1)].id : null; renderList(); renderEditor(); status("Candle deleted. Save to update the shop.", "dirty");
+    S.sel = wide() && P.length ? P[Math.min(i, P.length - 1)].id : null; renderList(); renderEditor(); status((lineOf(p) === "blanket" ? "Blanket" : "Candle") + " deleted. Save to update the shop.", "dirty");
   }
 });
 function closeAddCat(){ const box = $("addCat"); if (!box) return; box.hidden = true; $("ncEn").value = ""; $("ncAr").value = ""; const b = document.querySelector('#editor [data-act="newcat"]'); if (b) { b.setAttribute("aria-expanded", "false"); b.focus(); } }
 function addCat(p){
   const en = $("ncEn").value.trim(), ar = $("ncAr").value.trim(), list = S.data.settings.categories;
   if (!en) { $("ncEn").classList.add("bad-field"); $("ncEn").focus(); status("Give the new category an English name.", "bad"); return; }
-  let c = list.find(x => x.en.toLowerCase() === en.toLowerCase());
+  let c = list.find(x => x.en.toLowerCase() === en.toLowerCase() && x.line === lineOf(p));
   const existed = !!c;
-  if (!c) { c = {en, ar}; list.push(c); } else if (ar && !c.ar) c.ar = ar;
+  if (!c) { c = {en, ar, line:lineOf(p)}; list.push(c); } else if (ar && !c.ar) c.ar = ar;
   p.cat = c.en; p.cat_ar = c.ar || "";
   S.catOpen = false; S.pendingCat = null; setDirty(true); renderList(); renderEditor();
   const chip = document.querySelector('#editor [data-act="cat"][data-en="' + CSS.escape(c.en) + '"]'); if (chip) chip.focus();
-  status(existed ? "That category was already on the list. It is now set for " + (p.name || "this candle") + "." : "Added " + c.en + ". It shows on the shop once a candle uses it, after you save.", "dirty");
+  status(existed ? "That category was already on the list. It is now set for " + (p.name || "this " + lineOf(p)) + "." : "Added " + c.en + ". It shows on the shop once something uses it, after you save.", "dirty");
 }
-function delCat(en){
-  if (S.pendingCat !== en) { S.pendingCat = en; S.catOpen = true; renderEditor(); const b = document.querySelector('#editor [data-act="delcat"]'); if (b) b.focus(); return; }
-  const n = catCount(en);
-  S.data.settings.categories = S.data.settings.categories.filter(x => x.en !== en);
-  S.data.products.forEach(q => { if (q.cat === en) { q.cat = ""; q.cat_ar = ""; } });
+function delCat(en, line){
+  const key = line + "|" + en;
+  if (S.pendingCat !== key) { S.pendingCat = key; S.catOpen = true; renderEditor(); const b = document.querySelector('#editor [data-act="delcat"]'); if (b) b.focus(); return; }
+  const n = catCount(en, line), word = line === "blanket" ? "blanket" : "candle";
+  S.data.settings.categories = S.data.settings.categories.filter(x => !(x.en === en && x.line === line));
+  S.data.products.forEach(q => { if (q.cat === en && lineOf(q) === line) { q.cat = ""; q.cat_ar = ""; } });
   S.pendingCat = null; S.catOpen = true; setDirty(true); renderList(); renderEditor();
-  status("Deleted " + en + (n ? ". " + n + (n === 1 ? " candle has" : " candles have") + " no category now." : ".") + " Press Save to publish.", "dirty");
+  status("Deleted " + en + (n ? ". " + n + (n === 1 ? " " + word + " has" : " " + word + "s have") + " no category now." : ".") + " Press Save to publish.", "dirty");
 }
 function closeAddScent(){ const box = $("addScent"); if (!box) return; box.hidden = true; $("nsEn").value = ""; $("nsAr").value = ""; const b = document.querySelector('#editor [data-act="newscent"]'); b.setAttribute("aria-expanded", "false"); b.focus(); }
 function addScent(p){
@@ -794,9 +901,96 @@ $("editor").addEventListener("keydown", e => {
 });
 $("add").addEventListener("click", () => {
   const id = "c" + Date.now().toString(36);
-  S.data.products.unshift({id, name:"", name_ar:"", cat:"Jars", cat_ar:catPairs().get("Jars") || "", type:"jar", size:"", size_ar:"", price:5, notes:"", notes_ar:"", tag:"", tag_ar:"", soldOut:false, image:"", images:[], _imgs:[],
+  if (S.listLine === "blanket") S.listLine = "all";
+  S.data.products.unshift({id, name:"", name_ar:"", cat:"Jars", cat_ar:catPairs("candle").get("Jars") || "", type:"jar", size:"", size_ar:"", price:5, notes:"", notes_ar:"", tag:"", tag_ar:"", soldOut:false, image:"", images:[], _imgs:[],
     c1:"#f3e3df", c2:"#e7b9bb", c3:"#c98f91", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:[], added:new Date().toISOString().slice(0, 10)});
   setDirty(true); select(id); $("e-name").focus();
+});
+$("addB").addEventListener("click", () => {
+  const id = "b" + Date.now().toString(36), first = [...catPairs("blanket")][0] || ["", ""];
+  if (S.listLine === "candle") S.listLine = "all";
+  S.data.products.unshift({id, line:"blanket", name:"", name_ar:"", cat:first[0], cat_ar:first[1], type:"knit", size:"", size_ar:"", price:25, notes:"", notes_ar:"", tag:"", tag_ar:"", soldOut:false, image:"", images:[], _imgs:[],
+    c1:"#e7b9bb", c2:"#f3e3df", c3:"#97565b", material:"", material_ar:"", lead:"", lead_ar:"", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:[], added:todayISO()});
+  setDirty(true); select(id); $("e-name").focus();
+});
+$("lfilter").addEventListener("click", e => { const b = e.target.closest("[data-lf]"); if (b) { S.listLine = b.dataset.lf; renderList(); } });
+
+/* ---- Classes ---- */
+function kDateLabel(k){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(k.date || ""); if (!m) return "No date yet";
+  const t = /^(\d{1,2}):(\d{2})$/.exec(k.time || ""), d = new Date(+m[1], +m[2] - 1, +m[3]);
+  let s = new Intl.DateTimeFormat("en-GB", {weekday:"short", day:"numeric", month:"short", year:"numeric"}).format(d);
+  if (t) { const h = +t[1]; s += ", " + ((h % 12) || 12) + ":" + t[2] + (h < 12 ? " am" : " pm"); }
+  return s;
+}
+function kHeadHTML(k){
+  const past = /^\d{4}-\d{2}-\d{2}$/.test(k.date || "") && k.date < todayISO(), full = k.left !== "" && k.left != null && +k.left === 0;
+  return `<h3>${esc(k.title) || "New class"}</h3><span class="pill">${esc(kDateLabel(k))}</span>${past ? '<span class="pill out">Past: hidden on the shop</span>' : ""}${full ? '<span class="pill out">Full</span>' : ""}`;
+}
+function kbi(label, f, k, o, id){
+  const ph = x => x ? `placeholder="${esc(x)}"` : "";
+  const en = o.area ? `<textarea id="${id}-${f}" data-k="${f}" ${ph(o.ph)}>${esc(k[f])}</textarea>` : `<input id="${id}-${f}" data-k="${f}" value="${esc(k[f])}" ${ph(o.ph)}>`;
+  const ar = o.area ? `<textarea class="ar" data-k="${f}_ar" aria-label="${esc(label)} in Arabic" ${ph(o.pha)}>${esc(k[f + "_ar"])}</textarea>` : `<input class="ar" data-k="${f}_ar" value="${esc(k[f + "_ar"])}" aria-label="${esc(label)} in Arabic" ${ph(o.pha)}>`;
+  return `<div class="bi"><label class="lab" for="${id}-${f}">${label}${o.hint ? ` <span class="hint">${o.hint}</span>` : ""}</label><span class="lt">English</span>${en}<span class="lt" lang="ar">عربي</span>${ar}</div>`;
+}
+function kcHTML(k, i){
+  const id = "k" + i, past = /^\d{4}-\d{2}-\d{2}$/.test(k.date || "") && k.date < todayISO(), armed = S.kPending === k.id, im = k._img;
+  return `<section class="card kcard${past ? " past" : ""}" data-kid="${esc(k.id)}">
+    <div class="kc-head">${kHeadHTML(k)}</div>
+    <div class="kc-grid">
+      <div class="kphoto"><span class="thumb">${im ? `<img src="${esc(im.preview || im.path)}" alt="">` : "No photo"}</span>
+        <button class="btn ghost sm" type="button" data-kact="pick">${im ? "Change photo" : "+ Add photo"}</button>${im ? '<button class="btn danger sm" type="button" data-kact="rmimg">Remove photo</button>' : ""}</div>
+      <div>
+        ${kbi("Class name", "title", k, {ph:"Chunky blanket in an afternoon", pha:"بطانية سميكة في عصرية واحدة"}, id)}
+        <div class="row">
+          <div class="f"><label for="${id}-date">Date</label><input id="${id}-date" type="date" data-k="date" value="${esc(k.date)}"></div>
+          <div class="f"><label for="${id}-time">Starts at</label><input id="${id}-time" type="time" data-k="time" value="${esc(k.time)}"></div>
+          <div class="f"><label for="${id}-price">Price per person</label><span class="money"><span aria-hidden="true">BD</span><input id="${id}-price" data-k="price" type="number" step="0.001" min="0" inputmode="decimal" value="${k.price === "" || !isFinite(k.price) ? "" : (+k.price).toFixed(3)}"></span></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="${id}-seats">Seats in total</label><input id="${id}-seats" data-k="seats" type="number" min="0" step="1" inputmode="numeric" value="${esc(k.seats)}"></div>
+          <div class="f"><label for="${id}-left">Seats left <span class="hint">(0 shows Full)</span></label><input id="${id}-left" data-k="left" type="number" min="0" step="1" inputmode="numeric" value="${esc(k.left)}"></div>
+        </div>
+        ${kbi("How long", "length", k, {ph:"3 hours", pha:"3 ساعات"}, id)}
+        ${kbi("Level", "level", k, {hint:"(optional)", ph:"Beginners", pha:"للمبتدئين"}, id)}
+        ${kbi("Place", "place", k, {ph:"Anne Shop studio, Bahrain", pha:"مشغل متجر آن، البحرين"}, id)}
+        ${kbi("About this class", "about", k, {area:true, ph:"What people learn and make.", pha:"ماذا سيتعلم المشاركون ويصنعون."}, id)}
+        ${kbi("What's included", "includes", k, {hint:"(optional)", ph:"Yarn, tea and something sweet", pha:"الخيط والشاي وشيء حلو"}, id)}
+      </div>
+    </div>
+    <div class="ed-foot"><div class="mv"><button class="btn ghost sm" type="button" data-kact="dup">Copy to a new date</button></div>
+      <button class="btn danger sm ${armed ? "armed" : ""}" type="button" data-kact="del">${armed ? "Tap again to delete" : "Delete class"}</button></div>
+  </section>`;
+}
+function renderClasses(){
+  const K = S.data.classes || [];
+  $("kList").innerHTML = K.length ? K.map(kcHTML).join("") : '<p class="empty" style="text-align:center">No classes yet. Press "+ New class" to add your first date.</p>';
+  growAll($("kList"));
+}
+function refreshK(card, k){ card.querySelector(".kc-head").innerHTML = kHeadHTML(k); card.classList.toggle("past", /^\d{4}-\d{2}-\d{2}$/.test(k.date || "") && k.date < todayISO()); }
+const focusK = (id, f) => { const el = document.querySelector('[data-kid="' + CSS.escape(id) + '"] [data-k="' + f + '"]'); if (el) { el.focus(); el.scrollIntoView({block:"center"}); } return el; };
+$("addClass").addEventListener("click", () => {
+  const d = new Date(Date.now() + 7 * 864e5), k = {id:kId(), title:"", title_ar:"", date:d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()), time:"16:00", length:"", length_ar:"", level:"", level_ar:"", place:"", place_ar:"", price:15, seats:8, left:8, about:"", about_ar:"", includes:"", includes_ar:"", image:"", _img:null};
+  S.data.classes.unshift(k); S.kPending = null; setDirty(true); renderClasses(); focusK(k.id, "title");
+});
+$("kList").addEventListener("click", e => {
+  const b = e.target.closest("[data-kact]"); if (!b) return;
+  const K = S.data.classes, i = K.findIndex(x => x.id === b.closest("[data-kid]").dataset.kid), k = K[i], a = b.dataset.kact; if (!k) return;
+  if (a === "pick") { S.kImgTarget = k.id; $("fileK").value = ""; $("fileK").click(); return; }
+  if (a === "rmimg") { k._img = null; setDirty(true); renderClasses(); return; }
+  if (a === "dup") {
+    const c = JSON.parse(JSON.stringify(noPriv(k))); c.id = kId(); c.date = ""; c.left = c.seats; c._img = k._img ? Object.assign({}, k._img) : null;
+    K.splice(i + 1, 0, c); S.kPending = null; setDirty(true); renderClasses(); focusK(c.id, "date"); status("Copied. Pick the new date, then save.", "dirty"); return;
+  }
+  if (a === "del") {
+    if (S.kPending !== k.id) { S.kPending = k.id; renderClasses(); const d = document.querySelector('[data-kid="' + CSS.escape(k.id) + '"] [data-kact="del"]'); if (d) d.focus(); return; }
+    K.splice(i, 1); S.kPending = null; setDirty(true); renderClasses(); status("Class deleted. Save to update the shop.", "dirty");
+  }
+});
+$("fileK").addEventListener("change", async () => {
+  const k = S.data.classes.find(x => x.id === S.kImgTarget), f = $("fileK").files[0]; if (!k || !f) return;
+  const r = await readImage(f, 1200); if (!r) { status("That file could not be read as a picture.", "bad"); return; }
+  k._img = r; setDirty(true); renderClasses();
 });
 document.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") { e.preventDefault(); if (!$("save").disabled) save(); } });
 
@@ -863,7 +1057,7 @@ function flag(p, sel){
 async function save(){
   const P = S.data.products;
   for (const p of P) {
-    if (!String(p.name || "").trim()) { status("Every candle needs a name.", "bad"); flag(p, '[data-f="name"]'); return; }
+    if (!String(p.name || "").trim()) { status("Every " + lineOf(p) + " needs a name.", "bad"); flag(p, '[data-f="name"]'); return; }
     if (!isFinite(p.price) || p.price < 0) { status("Check the price of " + p.name + ".", "bad"); flag(p, '[data-f="price"]'); return; }
     for (const [gi, g] of (p.variants || []).entries()) if (!String(g.name || "").trim() || !g.choices.some(c => String(c.label || "").trim())) {
       status("Every option on " + p.name + " needs a name and at least one choice.", "bad"); flag(p, '.grp[data-g="' + gi + '"] [data-vf="name"]'); return;
@@ -882,6 +1076,13 @@ async function save(){
       return;
     }
   }
+  const flagK = (k, f, msg) => { status(msg, "bad"); if (S.tab !== "classes") showTab("classes"); const el = focusK(k.id, f); if (el) el.classList.add("bad-field"); };
+  for (const k of S.data.classes) {
+    if (!String(k.title || "").trim()) { flagK(k, "title", "Every class needs a name in English."); return; }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(k.date || "")) { flagK(k, "date", "Pick a date for " + k.title + "."); return; }
+    if (k.price !== "" && (!isFinite(k.price) || k.price < 0)) { flagK(k, "price", "Check the price of " + k.title + "."); return; }
+    if (k.seats !== "" && k.left !== "" && +k.left > +k.seats) { flagK(k, "left", "Seats left can't be more than the seats in total for " + k.title + "."); return; }
+  }
   $("save").disabled = true; status("Saving...");
   try {
     let n = 0;
@@ -889,7 +1090,7 @@ async function save(){
       if (im.path) continue;
       n++; status("Uploading photo " + n + "...");
       const path = "images/" + p.id + "-" + Date.now().toString(36) + n + ".jpg";
-      const r = await api("/contents/" + path, {method:"PUT", body:JSON.stringify({message:"Add photo for " + p.name, content:im.b64})});
+      const r = await putFile(path, "Add photo for " + p.name, im.b64);
       if (!r.ok) throw new Error("photo upload failed (" + r.status + ")");
       im.path = path;
     }
@@ -897,9 +1098,17 @@ async function save(){
       if (!it._b64) continue;
       n++; status("Uploading " + (it.type === "video" ? "video " : "photo ") + n + "...");
       const path = (it.type === "video" ? "videos/" : "images/") + (key === "behind" ? "bts-" : "cust-") + Date.now().toString(36) + n + "." + (it._ext || "jpg");
-      const r = await api("/contents/" + path, {method:"PUT", body:JSON.stringify({message:"Add " + (it.type === "video" ? "video" : "photo") + " for the shop", content:it._b64})});
+      const r = await putFile(path, "Add " + (it.type === "video" ? "video" : "photo") + " for the shop", it._b64);
       if (!r.ok) throw new Error((it.type === "video" ? "video" : "photo") + " upload failed (" + r.status + ")");
       it.src = path; delete it._b64;
+    }
+    for (const k of S.data.classes) {
+      const im = k._img; if (!im || im.path) continue;
+      n++; status("Uploading photo " + n + "...");
+      const path = "images/class-" + k.id + "-" + Date.now().toString(36) + n + ".jpg";
+      const r = await putFile(path, "Add photo for the " + k.title + " class", im.b64);
+      if (!r.ok) throw new Error("photo upload failed (" + r.status + ")");
+      im.path = path;
     }
     const cleanItem = it => { const o = {}; Object.keys(it).forEach(k => { if (k[0] !== "_") o[k] = it[k]; }); return o; };
     const products = P.map(p => {
@@ -911,10 +1120,11 @@ async function save(){
     });
     status("Saving...");
     const b = S.data.behind;
-    const clean = {settings:S.data.settings, products,
+    const classes = S.data.classes.map(k => { const o = noPriv(k); o.image = k._img && k._img.path ? k._img.path : ""; return o; });
+    const clean = {settings:S.data.settings, products, classes,
       behind:{title:b.title, title_ar:b.title_ar, text:b.text, text_ar:b.text_ar, items:b.items.filter(it => it.src).map(cleanItem)},
       customerPhotos:S.data.customerPhotos.filter(it => it.src).map(cleanItem)};
-    const r = await api("/contents/products.json", {method:"PUT", body:JSON.stringify({message:"Update shop", content:utf8ToB64(JSON.stringify(clean, null, 2) + "\n"), sha:S.sha})});
+    const r = await putFile("products.json", "Update shop", utf8ToB64(JSON.stringify(clean, null, 2) + "\n"), S.sha);
     if (r.status === 409 || r.status === 422) throw new Error("the shop file changed somewhere else. Reload this page and try again");
     if (!r.ok) throw new Error("GitHub answered " + r.status);
     const j = await r.json(); S.sha = j.content.sha;
