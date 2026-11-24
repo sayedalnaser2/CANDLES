@@ -25,7 +25,7 @@
 /* Set language and direction before first paint so nothing slides around on load. Arabic fonts load only for Arabic. */
 window.__arFonts=function(){if(document.getElementById("arFonts"))return;var k=document.createElement("link");k.id="arFonts";k.rel="stylesheet";k.href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap";document.head.appendChild(k);};
 (function(){var l="en";try{l=localStorage.getItem("anneshop-lang")||((navigator.language||"").toLowerCase().indexOf("ar")===0?"ar":"en")}catch(e){}
-if(l!=="ar")l="en";var h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");if(!/^#(candle|blanket)-/.test(location.hash))c+=" intro-on"}if(sessionStorage.getItem("anneshop-arrive")){sessionStorage.removeItem("anneshop-arrive");c+=" arrive"}}catch(e){}try{if(window.CSS&&CSS.registerProperty){CSS.registerProperty({name:"--hole",syntax:"<length>",inherits:false,initialValue:"-240px"});c+=" hole"}}catch(e){}setTimeout(function(){if(!window.__mo)h.classList.add("rv-off")},4000)}h.className=c;/*/motion-head*/if(l==="ar")window.__arFonts();})();
+if(l!=="ar")l="en";var h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");if(!/^#(candle|blanket|dress)-/.test(location.hash))c+=" intro-on"}if(sessionStorage.getItem("anneshop-arrive")){sessionStorage.removeItem("anneshop-arrive");c+=" arrive"}}catch(e){}try{if(window.CSS&&CSS.registerProperty){CSS.registerProperty({name:"--hole",syntax:"<length>",inherits:false,initialValue:"-240px"});c+=" hole"}}catch(e){}setTimeout(function(){if(!window.__mo)h.classList.add("rv-off")},4000)}h.className=c;/*/motion-head*/if(l==="ar")window.__arFonts();})();
 </script>
 <link rel="canonical" href="https://anneshopbh.com/classes">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -709,7 +709,7 @@ html[lang="ar"] .i-sub{font-size:1.4rem;line-height:1.6;margin-top:2px}
     <span class="i-ember" style="--x:-19px;--d:3.2s;--t:2.5s"></span>
   </div>
   <p class="i-name"><span lang="en">Anne Shop</span><svg class="lg" lang="ar" viewBox="0 0 336 167" aria-hidden="true"><use href="#lgL"/></svg></p>
-  <p class="i-sub"><span lang="en">handmade candles &amp; blankets</span><span lang="ar">شموع وبطانيات يدوية</span></p>
+  <p class="i-sub"><span lang="en">handmade &amp; vintage</span><span lang="ar">يدويّ وعتيق</span></p>
 </div></div>
 <!--/motion-intro-->
 <!--arabic-defs-->
@@ -807,7 +807,7 @@ html[lang="ar"] .i-sub{font-size:1.4rem;line-height:1.6;margin-top:2px}
 <script>
 const T = {
 en:{
- n1:"1", n2:"2", n3:"3", logo_sub:"candles & blankets", nav_shop:"Shop", nav_story:"Our story", nav_events:"Weddings & events", lang_btn:"العربية", a_shop_short:"Shop", a_back:"Back to the shop",
+ n1:"1", n2:"2", n3:"3", logo_sub:"handmade & vintage", nav_shop:"Shop", nav_story:"Our story", nav_events:"Weddings & events", lang_btn:"العربية", a_shop_short:"Shop", a_back:"Back to the shop",
  k_eyebrow:"learn with Anne", k_h1:"<span class=\"nw\">Blanket-making</span> <em>classes</em>",
  k_lead:"Spend a cozy few hours learning to make your own blanket, in a small group with tea on the table. Pick a date below and book your seat by message.",
  k_cta:"See the dates", k_private_cta:"Private class",
@@ -830,11 +830,11 @@ en:{
  wa_send:"Send on WhatsApp", ig_send:"Send on Instagram", copy:"Copy", copied:"Copied", select_copy:"Press copy on the selected text", close:"Close",
  ig_hint:"✓ Your message is copied. In the Instagram chat, press and hold the message box, tap Paste, then send.", ig_fail:"Couldn't copy automatically. Your message is selected above: copy it, then paste it in the Instagram chat.",
  fine_wa:"WhatsApp opens with your message already written. Instagram can't do that, so your message is copied: paste it in the chat and send.", fine_ig:"Instagram can't fill in messages, so your message is copied: paste it in the chat and send.",
- foot_tag:"Handmade candles & blankets, Bahrain", foot_prices:"Prices in Bahraini dinar (BD).", foot_conf:"Bookings are confirmed by message before payment.", foot_ig:"Instagram",
+ foot_tag:"Candles, blankets & vintage dresses, Bahrain", foot_prices:"Prices in Bahraini dinar (BD).", foot_conf:"Bookings are confirmed by message before payment.", foot_ig:"Instagram",
  wa_chat:"Chat on WhatsApp", wa_short:"Chat", doc_title:"Blanket-making classes | Anne Shop"
 },
 ar:{
- n1:"١", n2:"٢", n3:"٣", logo_sub:"شموع وبطانيات", nav_shop:"المتجر", nav_story:"قصتنا", nav_events:"الأعراس والمناسبات", lang_btn:"English", a_shop_short:"المتجر", a_back:"العودة إلى المتجر",
+ n1:"١", n2:"٢", n3:"٣", logo_sub:"يدويّ وعتيق", nav_shop:"المتجر", nav_story:"قصتنا", nav_events:"الأعراس والمناسبات", lang_btn:"English", a_shop_short:"المتجر", a_back:"العودة إلى المتجر",
  k_eyebrow:"تعلّم مع آن", k_h1:"ورش صنع <em>البطانيات</em>",
  k_lead:"اقضِ بضع ساعات دافئة تتعلّم فيها صنع بطانيتك بنفسك، مع مجموعة صغيرة وكوب شاي. اختر موعدًا من الأسفل واحجز مقعدك عبر الرسائل.",
  k_cta:"شاهد المواعيد", k_private_cta:"ورشة خاصة",
@@ -857,7 +857,7 @@ ar:{
  wa_send:"أرسل عبر واتساب", ig_send:"أرسل عبر إنستغرام", copy:"نسخ", copied:"تم النسخ", select_copy:"اضغط نسخ على النص المحدد", close:"إغلاق",
  ig_hint:"✓ تم نسخ رسالتك. في محادثة إنستغرام، اضغط مطولًا على خانة الرسالة، ثم اختر لصق، ثم أرسل.", ig_fail:"تعذر النسخ تلقائيًا. رسالتك محددة أعلاه: انسخها ثم الصقها في محادثة إنستغرام.",
  fine_wa:"يفتح واتساب والرسالة مكتوبة جاهزة. إنستغرام لا يسمح بذلك، لذا يتم نسخ رسالتك: الصقها في المحادثة وأرسل.", fine_ig:"إنستغرام لا يسمح بكتابة الرسالة تلقائيًا، لذا يتم نسخ رسالتك: الصقها في المحادثة وأرسل.",
- foot_tag:"شموع وبطانيات مصنوعة يدويًا، البحرين", foot_prices:"الأسعار بالدينار البحريني (د.ب).", foot_conf:"يتم تأكيد الحجوزات عبر الرسائل قبل الدفع.", foot_ig:"إنستغرام",
+ foot_tag:"شموع وبطانيات وفساتين عتيقة، البحرين", foot_prices:"الأسعار بالدينار البحريني (د.ب).", foot_conf:"يتم تأكيد الحجوزات عبر الرسائل قبل الدفع.", foot_ig:"إنستغرام",
  wa_chat:"تحدث معنا على واتساب", wa_short:"تواصل", doc_title:"ورش صنع البطانيات | متجر آن"
 }};
 let lang = document.documentElement.lang === "ar" ? "ar" : "en", CONFIG = {}, CLASSES = [], loaded = false, failed = false;

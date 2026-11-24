@@ -14,7 +14,7 @@ arabic = (M / "arabic.css").read_text(encoding="utf-8").strip()
 ardefs = (M / "arabic-defs.html").read_text(encoding="utf-8").strip()
 
 HEAD = ('/*motion-head*/var c="boot",m=false;try{m=!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}'
-        'if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");if(!/^#(candle|blanket)-/.test(location.hash))c+=" intro-on"}'
+        'if(m){c+=" motion";try{if(!sessionStorage.getItem("anneshop-intro")){sessionStorage.setItem("anneshop-intro","1");if(!/^#(candle|blanket|dress)-/.test(location.hash))c+=" intro-on"}'
         'if(sessionStorage.getItem("anneshop-arrive")){sessionStorage.removeItem("anneshop-arrive");c+=" arrive"}}catch(e){}'
         'try{if(window.CSS&&CSS.registerProperty){CSS.registerProperty({name:"--hole",syntax:"<length>",inherits:false,initialValue:"-240px"});c+=" hole"}}catch(e){}'
         'setTimeout(function(){if(!window.__mo)h.classList.add("rv-off")},4000)}h.className=c;/*/motion-head*/')
