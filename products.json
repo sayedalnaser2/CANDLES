@@ -443,12 +443,39 @@
     },
     {
       "line": "dress",
-      "unique": true,
+      "unique": false,
       "families": [],
       "giftable": false,
       "personalize": false,
       "soldOut": false,
-      "variants": [],
+      "variants": [
+        {
+          "name": "Size",
+          "name_ar": "المقاس",
+          "choices": [
+            {
+              "label": "S",
+              "label_ar": "S",
+              "add": 0
+            },
+            {
+              "label": "M",
+              "label_ar": "M",
+              "add": 0
+            },
+            {
+              "label": "L",
+              "label_ar": "L",
+              "add": 0
+            },
+            {
+              "label": "XL",
+              "label_ar": "XL",
+              "add": 0
+            }
+          ]
+        }
+      ],
       "added": "2026-11-24",
       "image": "",
       "images": [],
@@ -462,19 +489,17 @@
       "cat": "Day dresses",
       "cat_ar": "فساتين نهارية",
       "type": "tea",
-      "size": "UK 10 (fits like a modern UK 8)",
-      "size_ar": "مقاس بريطاني 10 (يناسب مقاس 8 الحديث)",
+      "size": "Sizes S to XL",
+      "size_ar": "المقاسات من S إلى XL",
       "price": 32,
-      "notes": "A sweet 1950s tea dress with a full skirt, little puff sleeves and a tie belt.",
-      "notes_ar": "فستان شاي من الخمسينيات بتنورة واسعة وأكمام منفوخة صغيرة وحزام بعقدة.",
-      "era": "1950s",
-      "era_ar": "الخمسينيات",
-      "measure": "Bust 86 cm · Waist 66 cm · Length 104 cm",
-      "measure_ar": "الصدر 86 سم · الخصر 66 سم · الطول 104 سم",
+      "notes": "A sweet tea dress in the 1950s style, with a full skirt, little puff sleeves and a tie belt.",
+      "notes_ar": "فستان شاي بطراز الخمسينيات، بتنورة واسعة وأكمام منفوخة صغيرة وحزام بعقدة.",
+      "era": "1950s style",
+      "era_ar": "بطراز الخمسينيات",
+      "measure": "S: bust 84 cm, waist 66 cm\nM: bust 90 cm, waist 72 cm\nL: bust 96 cm, waist 78 cm\nXL: bust 102 cm, waist 84 cm",
+      "measure_ar": "S: الصدر 84 سم، الخصر 66 سم\nM: الصدر 90 سم، الخصر 72 سم\nL: الصدر 96 سم، الخصر 78 سم\nXL: الصدر 102 سم، الخصر 84 سم",
       "material": "Cotton with a polka-dot print",
       "material_ar": "قطن بنقشة منقطة",
-      "cond": "Excellent vintage condition",
-      "cond_ar": "حالة ممتازة",
       "care": "Gentle hand wash in cool water.\nDry flat or on a padded hanger, in the shade.\nCool iron on the reverse.",
       "care_ar": "اغسله يدويًا بلطف بماء بارد.\nجففه مفرودًا أو على علاقة مبطنة في الظل.\nكوِه على حرارة منخفضة من الجهة الداخلية.",
       "c1": "#e7b9bb",
@@ -483,12 +508,34 @@
     },
     {
       "line": "dress",
-      "unique": true,
+      "unique": false,
       "families": [],
       "giftable": false,
       "personalize": false,
       "soldOut": false,
-      "variants": [],
+      "variants": [
+        {
+          "name": "Size",
+          "name_ar": "المقاس",
+          "choices": [
+            {
+              "label": "S",
+              "label_ar": "S",
+              "add": 0
+            },
+            {
+              "label": "M",
+              "label_ar": "M",
+              "add": 0
+            },
+            {
+              "label": "L",
+              "label_ar": "L",
+              "add": 0
+            }
+          ]
+        }
+      ],
       "added": "2026-11-24",
       "image": "",
       "images": [],
@@ -502,33 +549,53 @@
       "cat": "Day dresses",
       "cat_ar": "فساتين نهارية",
       "type": "shift",
-      "size": "UK 12",
-      "size_ar": "مقاس بريطاني 12",
+      "size": "Sizes S to L",
+      "size_ar": "المقاسات من S إلى L",
       "price": 28,
-      "notes": "A crisp 1960s shift with a Peter Pan collar, three buttons and two little pockets.",
-      "notes_ar": "فستان قصير من الستينيات بياقة مستديرة وثلاثة أزرار وجيبين صغيرين.",
-      "era": "1960s",
-      "era_ar": "الستينيات",
-      "measure": "Bust 92 cm · Waist 80 cm · Length 90 cm",
-      "measure_ar": "الصدر 92 سم · الخصر 80 سم · الطول 90 سم",
-      "material": "Wool blend",
-      "material_ar": "مزيج صوف",
-      "cond": "Very good, light wear on the lining",
-      "cond_ar": "حالة جيدة جدًا، أثر استخدام خفيف على البطانة",
-      "care": "Dry clean only.",
-      "care_ar": "تنظيف جاف فقط.",
+      "notes": "A crisp shift in the 1960s style, with a Peter Pan collar, three buttons and two little pockets.",
+      "notes_ar": "فستان قصير بطراز الستينيات، بياقة مستديرة وثلاثة أزرار وجيبين صغيرين.",
+      "era": "1960s style",
+      "era_ar": "بطراز الستينيات",
+      "measure": "S: bust 86 cm, length 88 cm\nM: bust 92 cm, length 90 cm\nL: bust 98 cm, length 92 cm",
+      "measure_ar": "S: الصدر 86 سم، الطول 88 سم\nM: الصدر 92 سم، الطول 90 سم\nL: الصدر 98 سم، الطول 92 سم",
+      "material": "Soft cotton twill",
+      "material_ar": "قماش قطني ناعم",
+      "care": "Gentle machine wash at 30°C.\nHang to dry in the shade.\nWarm iron.",
+      "care_ar": "غسيل لطيف في الغسالة على 30 درجة.\nعلّقه ليجف في الظل.\nكيّ على حرارة متوسطة.",
       "c1": "#a9b6a0",
       "c2": "#f3e3df",
       "c3": "#5b6d55"
     },
     {
       "line": "dress",
-      "unique": true,
+      "unique": false,
       "families": [],
       "giftable": false,
       "personalize": false,
       "soldOut": false,
-      "variants": [],
+      "variants": [
+        {
+          "name": "Size",
+          "name_ar": "المقاس",
+          "choices": [
+            {
+              "label": "S",
+              "label_ar": "S",
+              "add": 0
+            },
+            {
+              "label": "M",
+              "label_ar": "M",
+              "add": 0
+            },
+            {
+              "label": "L",
+              "label_ar": "L",
+              "add": 0
+            }
+          ]
+        }
+      ],
       "added": "2026-11-24",
       "image": "",
       "images": [],
@@ -542,19 +609,17 @@
       "cat": "Party dresses",
       "cat_ar": "فساتين سهرة",
       "type": "maxi",
-      "size": "UK 8",
-      "size_ar": "مقاس بريطاني 8",
+      "size": "Sizes S to L",
+      "size_ar": "المقاسات من S إلى L",
       "price": 35,
-      "notes": "A floaty 1970s maxi with bell sleeves and a tie at the waist.",
-      "notes_ar": "فستان طويل خفيف من السبعينيات بأكمام واسعة ورباط عند الخصر.",
-      "era": "1970s",
-      "era_ar": "السبعينيات",
-      "measure": "Bust 82 cm · Waist 64 cm · Length 140 cm",
-      "measure_ar": "الصدر 82 سم · الخصر 64 سم · الطول 140 سم",
+      "notes": "A floaty maxi in the 1970s style, with bell sleeves and a tie at the waist.",
+      "notes_ar": "فستان طويل خفيف بطراز السبعينيات، بأكمام واسعة ورباط عند الخصر.",
+      "era": "1970s style",
+      "era_ar": "بطراز السبعينيات",
+      "measure": "S: bust 84 cm, length 138 cm\nM: bust 90 cm, length 140 cm\nL: bust 96 cm, length 142 cm",
+      "measure_ar": "S: الصدر 84 سم، الطول 138 سم\nM: الصدر 90 سم، الطول 140 سم\nL: الصدر 96 سم، الطول 142 سم",
       "material": "Cotton voile with tiny flowers",
       "material_ar": "قماش قطني خفيف بزهور صغيرة",
-      "cond": "Good, a small mark near the hem",
-      "cond_ar": "حالة جيدة، بقعة صغيرة قرب الحافة",
       "care": "Gentle hand wash in cool water.\nDry flat or on a padded hanger, in the shade.\nCool iron on the reverse.",
       "care_ar": "اغسله يدويًا بلطف بماء بارد.\nجففه مفرودًا أو على علاقة مبطنة في الظل.\nكوِه على حرارة منخفضة من الجهة الداخلية.",
       "c1": "#e8cfa6",

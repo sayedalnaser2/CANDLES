@@ -398,7 +398,8 @@ const LINES = ["candle", "blanket", "dress"];
 const lineOf = p => (p && LINES.indexOf(p.line) > 0) ? p.line : "candle";
 const WORD = {candle:["candle", "candles", "Candle", "Candles"], blanket:["blanket", "blankets", "Blanket", "Blankets"], dress:["dress", "dresses", "Dress", "Dresses"]};
 /* fields only blankets or dresses have */
-const EXTRA = {blanket:["material", "material_ar", "lead", "lead_ar"], dress:["era", "era_ar", "measure", "measure_ar", "material", "material_ar", "cond", "cond_ar"]};
+const EXTRA = {blanket:["material", "material_ar", "lead", "lead_ar"], dress:["era", "era_ar", "measure", "measure_ar", "material", "material_ar", "lead", "lead_ar"]};
+const SIZES = () => [{name:"Size", name_ar:"المقاس", choices:["S", "M", "L", "XL"].map(x => ({label:x, label_ar:x, add:0}))}];
 const kId = () => "k" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
 const pad2 = n => String(n).padStart(2, "0");
 const todayISO = () => { const d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); };
@@ -621,7 +622,7 @@ function editorHTML(p, i, n){
   const line = lineOf(p), W = WORD[line], word = W[0], many = x => x === 1 ? W[0] : W[1];
   const ph = {candle:{name:["Rose Tea Cup", "كوب الورد والشاي"], size:["Size and container", "Vintage teacup, 180 g", "فنجان عتيق، 180 غ"], notes:["Scent notes", "Pressed rose, black tea and a little honey.", "ورد مجفف وشاي أسود وقليل من العسل."], cat:["Teacups", "فناجين"], newcat:["Wax melts", "شمع ذائب"]},
     blanket:{name:["Chunky Rose Throw", "بطانية الورد السميكة"], size:["Size", "Sofa throw, about 120 × 150 cm", "بطانية كنبة، حوالي 120 × 150 سم"], notes:["Description", "Big, squishy stitches in dusty rose.", "غرز كبيرة وناعمة بلون وردي هادئ."], cat:["Throws", "بطانيات الكنبة"], newcat:["Baby blankets", "بطانيات الأطفال"]},
-    dress:{name:["Rose Garden Tea Dress", "فستان حديقة الورد"], size:["Size", "UK 10 (fits like a modern UK 8)", "مقاس بريطاني 10"], notes:["Description", "A sweet 1950s tea dress with a full skirt.", "فستان شاي من الخمسينيات بتنورة واسعة."], cat:["Day dresses", "فساتين نهارية"], newcat:["Party dresses", "فساتين سهرة"]}}[line];
+    dress:{name:["Rose Garden Tea Dress", "فستان حديقة الورد"], size:["Sizes", "Sizes S to XL", "المقاسات من S إلى XL"], notes:["Description", "A sweet tea dress in the 1950s style, with a full skirt.", "فستان شاي بطراز الخمسينيات بتنورة واسعة."], cat:["Day dresses", "فساتين نهارية"], newcat:["Party dresses", "فساتين سهرة"]}}[line];
   const photos = p._imgs.map((im, k) => `<div class="ph"><span class="thumb"><img src="${esc(im.preview || im.path)}" alt="Photo ${k + 1}"></span>
       ${k === 0 ? '<span class="main">Main photo</span>' : `<button class="btn ghost sm" type="button" data-act="mainimg" data-k="${k}">Make main</button>`}
       <button class="btn danger sm" type="button" data-act="rmimg" data-k="${k}">Remove</button></div>`).join("");
@@ -636,10 +637,10 @@ function editorHTML(p, i, n){
     ${bi("Making time", "lead", p.lead, p.lead_ar, {hint:"(also shown on the card)", ph:"Made to order, about 2 weeks", pha:"تُصنع حسب الطلب، خلال أسبوعين تقريبًا"})}
     ${bi("Care tips", "care", p.care, p.care_ar, {area:true, hint:"(one per line)", ph:"Hand wash in cool water.\nDry flat, away from direct sun.", pha:"اغسلها يدويًا بماء بارد.\nجففها مفرودة بعيدًا عن الشمس."})}</section>`
     : line === "dress" ? `<section class="blk"><h3>Dress page</h3>
-    ${bi("Era", "era", p.era, p.era_ar, {hint:"(also shown on the card)", ph:"1950s", pha:"الخمسينيات"})}
-    ${bi("Measurements", "measure", p.measure, p.measure_ar, {hint:"(measured flat, in cm)", ph:"Bust 86 cm · Waist 66 cm · Length 104 cm", pha:"الصدر 86 سم · الخصر 66 سم · الطول 104 سم"})}
+    ${bi("Style", "era", p.era, p.era_ar, {hint:"(also shown on the card)", ph:"1950s style", pha:"بطراز الخمسينيات"})}
+    ${bi("Size guide", "measure", p.measure, p.measure_ar, {area:true, hint:"(one size per line)", ph:"S: bust 84 cm, waist 66 cm\nM: bust 90 cm, waist 72 cm", pha:"S: الصدر 84 سم، الخصر 66 سم\nM: الصدر 90 سم، الخصر 72 سم"})}
     ${bi("Fabric", "material", p.material, p.material_ar, {ph:"Cotton with a polka-dot print", pha:"قطن بنقشة منقطة"})}
-    ${bi("Condition", "cond", p.cond, p.cond_ar, {hint:"(mention any marks or repairs)", ph:"Excellent vintage condition", pha:"حالة ممتازة"})}
+    ${bi("Making or delivery time", "lead", p.lead, p.lead_ar, {hint:"(optional, also shown on the card)", ph:"Ready to send in 2 days", pha:"جاهز للإرسال خلال يومين"})}
     ${bi("Care tips", "care", p.care, p.care_ar, {area:true, hint:"(one per line)", ph:"Gentle hand wash in cool water.\nDry flat in the shade.", pha:"اغسله يدويًا بلطف بماء بارد.\nجففه مفرودًا في الظل."})}</section>`
     : `<section class="blk"><h3>Candle page</h3>
     ${bi("Burn time", "burn", p.burn, p.burn_ar, {ph:"About 40 hours", pha:"حوالي 40 ساعة"})}
@@ -851,7 +852,7 @@ $("editor").addEventListener("click", e => {
     const back = p._was[l], keepCat = !p.cat || S.data.settings.categories.some(c => c.en === p.cat && c.line === l) || P.some(q => q !== p && lineOf(q) === l && q.cat === p.cat);
     if (l !== "candle") { p.line = l; if (!TYPES[l][p.type]) p.type = Object.keys(TYPES[l])[0]; EXTRA[l].forEach(k => { if (p[k] == null) p[k] = ""; }); }
     else { delete p.line; if (!TYPES.candle[p.type]) p.type = "jar"; }
-    if (back) { p.type = back.type; p.cat = back.cat; p.cat_ar = back.cat_ar; p.unique = back.unique; } else { p.unique = l === "dress"; if (!keepCat) { p.cat = ""; p.cat_ar = ""; } }
+    if (back) { p.type = back.type; p.cat = back.cat; p.cat_ar = back.cat_ar; p.unique = back.unique; } else if (!keepCat) { p.cat = ""; p.cat_ar = ""; }
     if (S.listLine !== "all") S.listLine = l;
     S.pendingCat = null; setDirty(true); renderList(); renderEditor();
     status(back ? "This is a " + l + " again." : "This is now a " + l + (p.cat ? "." : ". Pick a category for it on the " + l + " shelf."), "dirty"); return;
@@ -941,8 +942,8 @@ $("addB").addEventListener("click", () => {
 $("addD").addEventListener("click", () => {
   const id = "d" + Date.now().toString(36), first = [...catPairs("dress")][0] || ["", ""];
   if (S.listLine !== "dress") S.listLine = "all";
-  S.data.products.unshift({id, line:"dress", unique:true, name:"", name_ar:"", cat:first[0], cat_ar:first[1], type:"tea", size:"", size_ar:"", price:30, notes:"", notes_ar:"", tag:"", tag_ar:"", soldOut:false, image:"", images:[], _imgs:[],
-    c1:"#e7b9bb", c2:"#fbf3ee", c3:"#97565b", era:"", era_ar:"", measure:"", measure_ar:"", material:"", material_ar:"", cond:"", cond_ar:"", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:[], added:todayISO()});
+  S.data.products.unshift({id, line:"dress", unique:false, name:"", name_ar:"", cat:first[0], cat_ar:first[1], type:"tea", size:"", size_ar:"", price:30, notes:"", notes_ar:"", tag:"", tag_ar:"", soldOut:false, image:"", images:[], _imgs:[],
+    c1:"#e7b9bb", c2:"#fbf3ee", c3:"#97565b", era:"", era_ar:"", measure:"", measure_ar:"", material:"", material_ar:"", lead:"", lead_ar:"", burn:"", burn_ar:"", care:"", care_ar:"", families:[], giftable:false, personalize:false, variants:SIZES(), added:todayISO()});
   setDirty(true); select(id); $("e-name").focus();
 });
 $("lfilter").addEventListener("click", e => { const b = e.target.closest("[data-lf]"); if (b) { S.listLine = b.dataset.lf; renderList(); } });
