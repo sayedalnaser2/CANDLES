@@ -322,7 +322,6 @@ aside.on{transform:none}
   .gi.vid{grid-column:1/-1}
   .fab span{display:none}
   .fab{padding:14px;min-width:48px;min-height:48px;justify-content:center;transition:bottom .2s}
-  .fab.up{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
   .cartbar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
   /* comfortable tap targets and no iOS focus-zoom */
@@ -422,6 +421,36 @@ aside.on{transform:none}
 html[lang="ar"] .ktile i,html[lang="ar"] .ktile small{letter-spacing:0;text-transform:none}
 html[lang="ar"] .ktile b{font-family:var(--f-body);font-weight:700}
 html[lang="ar"] .learn .hand:not(:empty){display:inline-block;rotate:2.5deg;transform-origin:100% 100%;font-size:1.4rem;line-height:1.5;color:var(--rose-deep);margin-bottom:2px}
+/* classes on the shelf */
+.art .ktile,.dmain .ktile{position:absolute;top:10px;left:10px;z-index:1;box-shadow:0 4px 10px var(--shadow)}
+.dmain .ktile{top:16px;left:16px;width:74px}
+.dmain .ktile i{font-size:.74rem;padding:4px 0}
+.dmain .ktile b{font-size:2.1rem}
+.dmain .ktile small{font-size:.8rem;padding-bottom:6px}
+.info .kleft{margin:0;font-size:.8rem;font-weight:700;color:var(--muted)}
+.info .kleft.low,.info .kleft.full{color:var(--rose-deep)}
+.price small,.dprice small{font:400 .8rem var(--f-body);color:var(--muted);margin-inline-start:5px;white-space:nowrap}
+.kseats{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.86rem;color:var(--muted);margin:-6px 0 6px}
+.kseats.low{color:var(--rose-deep);font-weight:700}
+.dots{display:inline-flex;gap:4px;flex-wrap:wrap}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--rose-deep)}
+.dots i.o{background:transparent;box-shadow:inset 0 0 0 1.6px var(--sage-deep)}
+.kempty{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px;border:1px dashed var(--line);border-radius:16px;padding:18px 20px}
+.kempty p{margin:0;color:var(--muted);flex:1 1 280px}
+.kpriv{margin:18px 0 0}
+.kpriv a{color:var(--rose-deep);font-weight:700}
+.bk{display:flex;flex-direction:column;gap:14px;padding-top:12px}
+.bk-k{display:flex;gap:12px;align-items:center}
+.bk-k>span{min-width:0}
+.bk-k b{display:block;font:600 1.3rem/1.2 var(--f-display)}
+.bk-k small{display:block;color:var(--muted);font-size:.86rem}
+.bk .grp{margin:0}
+.bk .grp h3{font:700 .85rem/1.4 var(--f-body);color:var(--muted);margin:0 0 8px}
+.bk-tot{display:flex;justify-content:space-between;font:600 1.3rem var(--f-display);border-top:1px dashed var(--line);padding-top:10px}
+html[lang="ar"] .bk-tot{font-family:var(--f-body);font-weight:700}
+.bk-links{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+html[lang="ar"] :is(.price,.dprice) small{font-weight:400}
 @media (max-width:760px){
   .shoptop{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "shelves" "tools";gap:14px}
   .shoptop:has(.shelves[hidden]){grid-template-areas:"head" "tools"}
@@ -824,6 +853,10 @@ html[lang="ar"] .i-sub{font-size:1.4rem;line-height:1.6;margin-top:2px}
   <div id="detailBody"></div>
 </div></div></div>
 
+<div class="modal" id="book" hidden><div class="panel" role="dialog" aria-modal="true" aria-labelledby="bTitle">
+  <div class="dh"><h2 id="bTitle"></h2><button class="x" id="bClose" type="button" data-al="close">&times;</button></div>
+  <div class="qb" id="bBody"></div>
+</div></div>
 <div class="modal" id="quiz" hidden><div class="panel" role="dialog" aria-modal="true" aria-labelledby="qTitle">
   <div class="dh"><h2 id="qTitle"></h2><button class="x" id="qClose" type="button" data-al="close">&times;</button></div>
   <div class="qb" id="qBody"></div>
@@ -893,7 +926,17 @@ en:{
  share:"Share", share_wa:"Share on WhatsApp", copy_link:"Copy link", link_copied:"Link copied",
  bh_eyebrow:"a peek at the table", bh_title:"Behind the scenes", cp_eyebrow:"from our customers", cp_title:"Your cozy corners", prev:"Previous", next:"Next",
  k_eyebrow:"learn with Anne", k_title:"Blanket-making classes", k_lead:"Make your own cozy blanket in a small, friendly class. Pick a date and book your seat by message.",
- k_cta:"See all classes", k_private:"Private class", k_soon:"New class dates are coming soon. Open the classes page to ask about the next one.", k_left:"{n} seats left", k_left1:"1 seat left", k_full:"Full"
+ k_cta:"See all classes", k_private:"Private class", k_soon:"New class dates are coming soon. Open the classes page to ask about the next one.", k_left:"{n} seats left", k_left1:"1 seat left", k_full:"Full",
+ shelf_k:"Classes", shelf_k_sub:"learn to make your own", search_ph_k:"Search classes", no_match_k:"No classes match your search. Try another word or clear the filters.",
+ k_none:"New class dates are coming soon. Send Anne a message and she will tell you when the next one is announced.", k_notify:"Tell me about new dates",
+ k_book:"Reserve a seat", k_wait:"Join the waiting list", k_wait_short:"Waiting list", k_each:"per person", k_free:"Free", k_full_txt:"This class is full",
+ k_when:"When", k_len:"Length", k_where:"Where", k_inc_h:"Included", k_level:"Level", b_seats:"How many seats?",
+ b_wait_intro:"This class is full. Join the waiting list and Anne will message you if a seat opens up.", k_priv_q:"Coming as a group? Ask about a private class →",
+ k_gone:"That class has already taken place. Here are the next dates.",
+ b_title:"Reserve a seat", b_wait_title:"Join the waiting list", b_prepare:"Prepare my message", b_note:"Anne replies to confirm your seat, the address and how to pay.",
+ b_wa_send:"Send on WhatsApp", b_ig_send:"Send on Instagram",
+ b_ig_hint:"✓ Your message is copied. In the Instagram chat, press and hold the message box, tap Paste, then send.", b_ig_fail:"Couldn't copy automatically. Your message is selected above: copy it, then paste it in the Instagram chat.",
+ b_fine_wa:"WhatsApp opens with your message already written. Instagram can't do that, so your message is copied: paste it in the chat and send.", b_fine_ig:"Instagram can't fill in messages, so your message is copied: paste it in the chat and send."
 },
 ar:{
  brand:"متجر آن", logo_sub:"دافئ وكلاسيكي", nav_shop:"المتجر", nav_classes:"الورش", nav_story:"قصتنا", nav_custom:"طلبات خاصة", nav_events:"الأعراس والمناسبات", welcome:"أهلًا بعودتك، ", not_you:"لست أنت؟", c_events_link:"تخطط لزفاف أو هدايا شركات أو بسطة في سوق؟ شاهد صفحة المناسبات ←", cart:"السلة", lang_btn:"English",
@@ -936,7 +979,17 @@ ar:{
  share:"مشاركة", share_wa:"مشاركة عبر واتساب", copy_link:"نسخ الرابط", link_copied:"تم نسخ الرابط",
  bh_eyebrow:"نظرة على طاولة العمل", bh_title:"خلف الكواليس", cp_eyebrow:"من عملائنا", cp_title:"زواياكم الدافئة", prev:"السابق", next:"التالي",
  k_eyebrow:"تعلّم مع آن", k_title:"ورش صنع البطانيات", k_lead:"اصنع بطانيتك الدافئة بنفسك في ورشة صغيرة وودودة. اختر الموعد واحجز مقعدك عبر الرسائل.",
- k_cta:"شاهد كل الورش", k_private:"ورشة خاصة", k_soon:"مواعيد الورش الجديدة قريبًا. افتح صفحة الورش لتسأل عن الموعد القادم.", k_left:"المقاعد المتبقية: {n}", k_left1:"المقاعد المتبقية: ١", k_full:"مكتملة"
+ k_cta:"شاهد كل الورش", k_private:"ورشة خاصة", k_soon:"مواعيد الورش الجديدة قريبًا. افتح صفحة الورش لتسأل عن الموعد القادم.", k_left:"المقاعد المتبقية: {n}", k_left1:"المقاعد المتبقية: ١", k_full:"مكتملة",
+ shelf_k:"الورش", shelf_k_sub:"اصنعها بيديك", search_ph_k:"ابحث في الورش", no_match_k:"لا توجد ورش مطابقة لبحثك. جرّب كلمة أخرى أو امسح التصفية.",
+ k_none:"مواعيد الورش الجديدة قريبًا. أرسل رسالة إلى آن وستخبرك عند الإعلان عن الورشة القادمة.", k_notify:"أخبروني بالمواعيد الجديدة",
+ k_book:"احجز مقعدًا", k_wait:"انضم إلى قائمة الانتظار", k_wait_short:"قائمة الانتظار", k_each:"للشخص", k_free:"مجانًا", k_full_txt:"هذه الورشة مكتملة",
+ k_when:"الموعد", k_len:"المدة", k_where:"المكان", k_inc_h:"يشمل", k_level:"المستوى", b_seats:"كم مقعدًا تريد؟",
+ b_wait_intro:"هذه الورشة مكتملة. انضم إلى قائمة الانتظار وسترسل لك آن إذا توفر مقعد.", k_priv_q:"تأتون كمجموعة؟ اسألوا عن ورشة خاصة ←",
+ k_gone:"انتهى موعد هذه الورشة. هذه هي المواعيد القادمة.",
+ b_title:"احجز مقعدًا", b_wait_title:"انضم إلى قائمة الانتظار", b_prepare:"جهّز رسالتي", b_note:"ستردّ عليك آن لتأكيد مقعدك والعنوان وطريقة الدفع.",
+ b_wa_send:"أرسل عبر واتساب", b_ig_send:"أرسل عبر إنستغرام",
+ b_ig_hint:"✓ تم نسخ رسالتك. في محادثة إنستغرام، اضغط مطولًا على خانة الرسالة، ثم اختر لصق، ثم أرسل.", b_ig_fail:"تعذر النسخ تلقائيًا. رسالتك محددة أعلاه: انسخها ثم الصقها في محادثة إنستغرام.",
+ b_fine_wa:"يفتح واتساب والرسالة مكتوبة جاهزة. إنستغرام لا يسمح بذلك، لذا يتم نسخ رسالتك: الصقها في المحادثة وأرسل.", b_fine_ig:"إنستغرام لا يسمح بكتابة الرسالة تلقائيًا، لذا يتم نسخ رسالتك: الصقها في المحادثة وأرسل."
 }};
 /* scents for the quiz come from the manager (settings.scents); these five are used until it has a list */
 const DEFAULT_SCENTS = ["floral","sweet","woody","fresh","spicy"].map(id => ({id}));
@@ -949,9 +1002,11 @@ const lineOf = p => (p && LINES.indexOf(p.line) > 0) ? p.line : "candle";
 /* the words each shelf uses */
 const SH = {candle:{k:"c", eb:"shop_eyebrow", title:"shop_title", ph:"search_ph", empty:"empty", none:"no_match", feat:"feat_eyebrow", view:"feat_view"},
   blanket:{k:"b", eb:"shop_eyebrow_b", title:"shop_title_b", ph:"search_ph_b", empty:"empty_b", none:"no_match_b", feat:"feat_eyebrow_b", view:"feat_view_b"},
-  dress:{k:"d", eb:"shop_eyebrow_d", title:"shop_title_d", ph:"search_ph_d", empty:"empty_d", none:"no_match_d", feat:"feat_eyebrow_d", view:"feat_view_d"}};
+  dress:{k:"d", eb:"shop_eyebrow_d", title:"shop_title_d", ph:"search_ph_d", empty:"empty_d", none:"no_match_d", feat:"feat_eyebrow_d", view:"feat_view_d"},
+  class:{k:"k", eb:"k_eyebrow", title:"k_title", ph:"search_ph_k", empty:"k_none", none:"no_match_k"}};
 const FACTS = {candle:[["burn", "burn"]], blanket:[["material", "material"], ["made", "lead"]], dress:[["style", "era"], ["sizeguide", "measure"], ["fabric", "material"], ["made", "lead"]]};
-const hrefOf = p => "#" + lineOf(p) + "-" + encodeURIComponent(p.id);
+const hrefOf = p => isK(p) ? "#class-" + encodeURIComponent(p.id) : "#" + lineOf(p) + "-" + encodeURIComponent(p.id);
+const nameOf = p => L(p, isK(p) ? "title" : "name");
 
 /* ===================== State ===================== */
 const $ = id => document.getElementById(id);
@@ -989,11 +1044,11 @@ document.addEventListener("click", e => {
   const a = e.target.closest(".igdm"); if (!a) return;
   const pre = document.getElementById(a.dataset.src); if (!pre) return;
   const txt = pre.textContent;
-  const hint = document.getElementById("igHint");
-  const fail = () => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); if (hint) { hint.textContent = t("ig_fail"); hint.hidden = false; } };
-  const done = () => { if (hint) { hint.textContent = t("ig_hint"); hint.hidden = false; } else toast(t("ig_copied")); };
+  const hint = document.getElementById(a.dataset.hint || "igHint"), w = a.dataset.hint ? "b_" : "";   /* the seat form has its own words */
+  const fail = () => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); if (hint) { hint.textContent = t(w + "ig_fail"); hint.hidden = false; } };
+  const done = () => { if (hint) { hint.textContent = t(w + "ig_hint"); hint.hidden = false; } else toast(t("ig_copied")); };
   try { navigator.clipboard.writeText(txt).then(done, fail); } catch(err) { fail(); }
-  track("order/instagram", "Instagram DM");
+  track(w ? "class/instagram" : "order/instagram", "Instagram DM");
 });
 const igUrl = () => "https://www.instagram.com/" + encodeURIComponent(CONFIG.instagram || "anneshop.bh") + "/";
 const waUrl = text => "https://wa.me/" + String(CONFIG.whatsapp).replace(/\D/g, "") + "?text=" + encodeURIComponent(text);
@@ -1020,10 +1075,12 @@ function vrow(x0,x1,y,c){let d="";for(let x=x0;x+12<=x1;x+=12)d+=`M${x} ${y}l6 7
 const SHELF_ICON = {
   candle:`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="35" rx="14" ry="2.2" fill="#000" opacity=".1"/><path d="M30 21c4.6-1 4.6 6.2 0 6.4" fill="none" stroke="#97565b" stroke-width="1.8" stroke-linecap="round"/><path d="M9 19h22c0 8.5-4.6 13.4-11 13.4S9 27.5 9 19Z" fill="#f3e3df" stroke="#97565b" stroke-width="1.6"/><ellipse cx="20" cy="19" rx="11" ry="2.4" fill="#e7b9bb" stroke="#97565b" stroke-width="1.4"/><path d="M20 18.6v-4" stroke="#4a3a35" stroke-width="1.4" stroke-linecap="round"/><path class="flame" d="M20 5.6c3.2 3.8 3.2 7.3 0 8.8c-3.2-1.5-3.2-5 0-8.8Z" fill="#f2b765"/></svg>`,
   dress:`<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 8.6c0-1.6 2.3-2 2.3-3.8 0-1.3-1-2-2.3-2s-2.2.8-2.2 1.8" fill="none" stroke="#9a7b43" stroke-width="1.5" stroke-linecap="round"/><path d="M20 8.6 9.4 12.8c-.9.4-.6 1 .3 1h20.6c.9 0 1.2-.6.3-1Z" fill="none" stroke="#9a7b43" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.4 13.6c1.6 1.8 3.4 2.6 5.6 2.6s4-.8 5.6-2.6l1.6 2-1.6 7.4h-11.2l-1.6-7.4Z" fill="#e7b9bb" stroke="#97565b" stroke-width="1.3" stroke-linejoin="round"/><path d="M14.4 23.6h11.2l6.2 11.2c-7.6 2.4-16 2.4-23.6 0Z" fill="#e7b9bb" stroke="#97565b" stroke-width="1.3" stroke-linejoin="round"/><path d="M14 22.4h12v2.2H14Z" fill="#97565b"/><circle cx="16" cy="29" r="1" fill="#fbf3ee"/><circle cx="21.6" cy="31.4" r="1" fill="#fbf3ee"/><circle cx="25.6" cy="28.6" r="1" fill="#fbf3ee"/><circle cx="19" cy="27" r="1" fill="#fbf3ee"/></svg>`,
-  blanket:`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="35.4" rx="14" ry="2.2" fill="#000" opacity=".1"/><path d="M7 7 L28 30" stroke="#c9a76a" stroke-width="2.4" stroke-linecap="round"/><path d="M33 7 L13 30" stroke="#c9a76a" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="7" r="2.6" fill="#8f525a"/><circle cx="33" cy="7" r="2.6" fill="#8f525a"/><circle cx="20" cy="22.5" r="11" fill="#c98f91"/><path d="M10.4 19.4c6-3.2 13-2.6 19.2 1.6M9.8 25c6.4-4 13.4-4 20.4.8M13.4 30.4c4.6-3.6 10-4.4 14.6-2.6M16.4 12.6c3.6 5 3.8 13.4-.6 19.4" fill="none" stroke="#97565b" stroke-width="1.4" stroke-linecap="round" opacity=".8"/><path d="M30.4 27.4c3.6 1.4 5.4 4.4 3.4 7.4" fill="none" stroke="#c98f91" stroke-width="1.6" stroke-linecap="round"/></svg>`
+  blanket:`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="35.4" rx="14" ry="2.2" fill="#000" opacity=".1"/><path d="M7 7 L28 30" stroke="#c9a76a" stroke-width="2.4" stroke-linecap="round"/><path d="M33 7 L13 30" stroke="#c9a76a" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="7" r="2.6" fill="#8f525a"/><circle cx="33" cy="7" r="2.6" fill="#8f525a"/><circle cx="20" cy="22.5" r="11" fill="#c98f91"/><path d="M10.4 19.4c6-3.2 13-2.6 19.2 1.6M9.8 25c6.4-4 13.4-4 20.4.8M13.4 30.4c4.6-3.6 10-4.4 14.6-2.6M16.4 12.6c3.6 5 3.8 13.4-.6 19.4" fill="none" stroke="#97565b" stroke-width="1.4" stroke-linecap="round" opacity=".8"/><path d="M30.4 27.4c3.6 1.4 5.4 4.4 3.4 7.4" fill="none" stroke="#c98f91" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  class:`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="36" rx="13" ry="2.1" fill="#000" opacity=".1"/><rect x="7" y="8.4" width="26" height="25" rx="4" fill="#fbf3ee" stroke="#97565b" stroke-width="1.6"/><path d="M7 16h26v-3.6a4 4 0 0 0-4-4H11a4 4 0 0 0-4 4Z" fill="#c98f91" stroke="#97565b" stroke-width="1.6" stroke-linejoin="round"/><path d="M13.6 5.6v5.4M26.4 5.6v5.4" stroke="#9a7b43" stroke-width="2.2" stroke-linecap="round"/><circle cx="19.4" cy="24.8" r="5.6" fill="#a9b6a0"/><path d="M14.4 23.4c3.2-1.7 6.8-1.5 10 .6M14.2 26.6c3.3-1.9 7-1.9 10.2.2M17.6 19.6c1.9 2.5 1.9 7.4-.4 10.4" fill="none" stroke="#5b6d55" stroke-width="1.1" stroke-linecap="round" opacity=".85"/><path d="M24.6 28.2c2.6.6 4 2.2 3.4 4" fill="none" stroke="#a9b6a0" stroke-width="1.4" stroke-linecap="round"/></svg>`
 };
 const YARN_MINI = `<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 6.5c3-1.6 7-1.4 10 .6M2.6 9.6c3.4-2 7.4-2 10.8.2M6 2.6c1.6 3 1.6 7.6-.4 11" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`;
 const HANGER = `<path d="M100 40 C100 33 108 31 108 24 C108 17 103 14 99 14 C95 14 92 17 92 21" fill="none" stroke="#9a7b43" stroke-width="3" stroke-linecap="round"/><path d="M100 40 L52 58 Q47 61 53 62 H147 Q153 61 148 58 Z" fill="none" stroke="#9a7b43" stroke-width="3.4" stroke-linejoin="round"/>`;
+const CLOCK_MINI = `<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.6V8l2.4 1.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const HANGER_MINI = `<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 5.2c0-1 1.5-1.2 1.5-2.4C9.5 1.9 8.8 1.4 8 1.4s-1.4.5-1.4 1.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 5.2 1.8 11c-.5.5-.2 1.1.5 1.1h11.4c.7 0 1-.6.5-1.1Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>`;
 function artSvg(src){
   const p = {type:src.type || "jar", c1:colr(src.c1,"#f3e3df"), c2:colr(src.c2,"#e7b9bb"), c3:colr(src.c3,"#c98f91"), name:src.name || ""};
@@ -1142,7 +1199,7 @@ function applyStatic(){
   $("langBtn").lang = lang === "ar" ? "en" : "ar";
   $("drawer").setAttribute("aria-label", t("cart_title"));
   $("lb").setAttribute("aria-label", t("photos"));
-  document.title = detailState ? L(detailState.p, "name") + " | Anne Shop" : t("doc_title");
+  document.title = detailState ? nameOf(detailState.p) + " | Anne Shop" : t("doc_title");
 }
 function quiet(){ document.documentElement.classList.add("boot"); requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove("boot"))); }
 function setLang(l){
@@ -1150,7 +1207,7 @@ function setLang(l){
   lang = l; try { localStorage.setItem("anneshop-lang", l); } catch(e) {}
   if (l === "ar" && window.__arFonts) window.__arFonts();
   applyStatic(); renderAll();
-  if (detailState) renderDetail();
+  if (detailState) { renderDetail(); placeFab(); }
   if (!$("quiz").hidden) renderQuiz();
   if ($("cOut").hidden === false) buildCustomOut();
 }
@@ -1169,8 +1226,10 @@ function renderAnn(){
 /* ===================== Shop grid ===================== */
 const shelfProducts = () => PRODUCTS.filter(p => lineOf(p) === shelf);
 const linesInUse = () => LINES.filter(l => PRODUCTS.some(p => lineOf(p) === l));
+/* the shelves to pick from: each kind of product in the shop, then Classes once a class has been added (past dates hide by themselves) */
+const shelvesInUse = () => linesInUse().concat(CLASSES.some(k => kDate(k)) ? ["class"] : []);
 function renderShelves(){
-  const used = linesInUse(), on = used.length > 1;
+  const used = shelvesInUse(), on = used.length > 1;
   if (used.indexOf(shelf) < 0) shelf = used[0] || "candle";
   const sh = SH[shelf], el = $("shelves");
   el.hidden = !on; el.setAttribute("aria-label", t("shelves_label")); el.style.setProperty("--n", used.length);
@@ -1178,19 +1237,25 @@ function renderShelves(){
   $("shopEyebrow").textContent = t(sh.eb); $("shopTitle").textContent = t(sh.title);
   $("search").placeholder = t(sh.ph); $("search").setAttribute("aria-label", $("search").placeholder);
   $("findScent").hidden = shelf !== "candle";
+  $("sort").hidden = shelf === "class";   /* classes always run in date order */
 }
 function setShelf(l){ if (shelf === l) return; shelf = l; filter = "All"; renderShelves(); renderChips(); renderGrid(); }
+/* chips: a shelf's categories (for classes, the level: Beginners, Improvers...) */
 function renderChips(){
-  const seen = [], rows = [];
-  shelfProducts().forEach(p => { if (p.cat && seen.indexOf(p.cat) < 0) { seen.push(p.cat); rows.push(p); } });
+  const kc = shelf === "class", f = kc ? "level" : "cat", seen = [], rows = [];
+  (kc ? upcoming() : shelfProducts()).forEach(p => { if (p[f] && seen.indexOf(p[f]) < 0) { seen.push(p[f]); rows.push(p); } });
   if (filter !== "All" && seen.indexOf(filter) < 0) filter = "All";
   $("chips").hidden = rows.length < 2;
   $("chips").innerHTML = `<button class="chip" type="button" aria-pressed="${filter==="All"}" data-c="All">${esc(t("all"))}</button>` +
-    rows.map(p => `<button class="chip" type="button" aria-pressed="${filter===p.cat}" data-c="${esc(p.cat)}">${esc(L(p,"cat"))}</button>`).join("");
+    rows.map(p => `<button class="chip" type="button" aria-pressed="${filter===p[f]}" data-c="${esc(p[f])}">${esc(L(p,f))}</button>`).join("");
 }
 function visible(){
-  let list = shelfProducts().filter(p => filter === "All" || p.cat === filter);
   const s = toLatin(q.trim().toLowerCase());
+  if (shelf === "class") {
+    const list = upcoming().filter(k => filter === "All" || k.level === filter);
+    return s ? list.filter(k => toLatin([k.title,k.title_ar,k.about,k.about_ar,k.level,k.level_ar,k.place,k.place_ar,k.includes,k.includes_ar,k.length,k.length_ar,kWhenEn(k),kWhen(k)].join(" ").toLowerCase()).indexOf(s) >= 0) : list;
+  }
+  let list = shelfProducts().filter(p => filter === "All" || p.cat === filter);
   if (s) list = list.filter(p => [p.name,p.name_ar,p.notes,p.notes_ar,p.cat,p.cat_ar,p.size,p.size_ar,p.material,p.material_ar,p.era,p.era_ar,(p.families||[]).map(id => { const sc = allScents().find(x => x.id === id); return sc ? [id, sc.name, sc.name_ar].join(" ") : id; }).join(" ")].join(" ").toLowerCase().indexOf(s) >= 0);
   if (sort === "low") list = list.slice().sort((a,b) => minPrice(a) - minPrice(b));
   else if (sort === "high") list = list.slice().sort((a,b) => minPrice(b) - minPrice(a));
@@ -1219,8 +1284,10 @@ function cardHTML(p){
 }
 function renderGrid(){
   if (loadFailed) { $("grid").innerHTML = `<p>${esc(t("loading_err"))}</p>`; return; }
-  const list = visible();
-  $("grid").innerHTML = list.length ? list.map(cardHTML).join("") : `<p>${esc(t(shelfProducts().length ? SH[shelf].none : SH[shelf].empty))}</p>`;
+  const list = visible(), kc = shelf === "class";
+  if (list.length) { $("grid").innerHTML = list.map(p => kc ? kCardHTML(p) : cardHTML(p)).join(""); return; }
+  if (kc && !upcoming().length) { $("grid").innerHTML = `<div class="kempty"><p>${esc(t("k_none"))}</p><a class="btn" target="_blank" rel="noopener" href="${esc(newsHref())}">${esc(t("k_notify"))}</a><a class="btn ghost" href="classes#private">${esc(t("k_private"))}</a></div>`; return; }
+  $("grid").innerHTML = `<p>${esc(t(kc ? SH.class.none : shelfProducts().length ? SH[shelf].none : SH[shelf].empty))}</p>`;
 }
 /* ---- Candle of the month ---- */
 function renderFeatured(){
@@ -1284,16 +1351,103 @@ const pad2 = n => String(n).padStart(2, "0");
 const todayISO = () => { const d = new Date(); return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); };
 const kDate = k => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec((k && k.date) || ""); if (!m) return null; const h = /^(\d{1,2}):(\d{2})$/.exec(k.time || ""); return new Date(+m[1], +m[2] - 1, +m[3], h ? +h[1] : 12, h ? +h[2] : 0); };
 const upcoming = () => CLASSES.filter(k => kDate(k) && k.date >= todayISO()).sort((a, b) => kDate(a) - kDate(b));
-const fmtDay = (d, o) => { try { return new Intl.DateTimeFormat(lang === "ar" ? "ar-u-nu-arab" : "en-GB", o).format(d); } catch(e) { return d.toDateString(); } };
-function kTime(k){ const m = /^(\d{1,2}):(\d{2})$/.exec(k.time || ""); if (!m) return ""; const h = +m[1], h12 = (h % 12) || 12;
-  return lang === "ar" ? N(h12 + ":" + m[2]) + " " + (h < 12 ? "صباحًا" : "مساءً") : h12 + ":" + m[2] + " " + (h < 12 ? "am" : "pm"); }
+const fmtDay = (d, o, l) => { try { return new Intl.DateTimeFormat((l || lang) === "ar" ? "ar-u-nu-arab" : "en-GB", o).format(d); } catch(e) { return d.toDateString(); } };
+function kTime(k, l){ const m = /^(\d{1,2}):(\d{2})$/.exec(k.time || ""); if (!m) return ""; const h = +m[1], h12 = (h % 12) || 12;
+  return (l || lang) === "ar" ? N(h12 + ":" + m[2]) + " " + (h < 12 ? "صباحًا" : "مساءً") : h12 + ":" + m[2] + " " + (h < 12 ? "am" : "pm"); }
 const kWhen = k => [fmtDay(kDate(k), {weekday:"long", day:"numeric", month:"long"}), kTime(k)].filter(Boolean).join(" · ");
+const kWhenEn = k => [fmtDay(kDate(k), {weekday:"long", day:"numeric", month:"long", year:"numeric"}, "en"), kTime(k, "en")].filter(Boolean).join(", ");
 const kTile = k => { const d = kDate(k); return `<span class="ktile" aria-hidden="true"><i>${esc(fmtDay(d, {weekday:"short"}))}</i><b>${esc(fmtDay(d, {day:"numeric"}))}</b><small>${esc(fmtDay(d, {month:"short"}))}</small></span>`; };
 const kLeft = k => { const n = parseInt(toLatin(k.left == null ? "" : k.left), 10); return isFinite(n) ? Math.max(0, n) : null; };
 function kLeftText(k){ const n = kLeft(k); if (n === null) return ""; if (n === 0) return t("k_full"); return n === 1 ? t("k_left1") : t("k_left").replace("{n}", N(n)); }
+const kById = id => CLASSES.find(k => k.id === id);
+const isK = x => !!x && CLASSES.indexOf(x) >= 0;
+const kOpen = k => !!kDate(k) && k.date >= todayISO();               /* still to come */
+const kMax = k => { const n = kLeft(k); return n === null ? 10 : n; };  /* seats that can still be booked */
+const kImg = k => /^(images\/|https:\/\/)[^\s"'<>]+$/.test(k.image || "") ? k.image : "";
+/* same colours as on the classes page: by place in the list of dates */
+const PAL = [["#c98f91","#97565b","#a9b6a0","#5b6d55","#f3e3df"], ["#a9b6a0","#5b6d55","#e8cfa6","#b98a54","#f1cfd2"], ["#e8cfa6","#b98a54","#c98f91","#97565b","#cdd8c4"]];
+const kPal = k => PAL[Math.max(0, upcoming().indexOf(k)) % PAL.length];
+function basket(c){
+  const ball = (x, y, r, f, l) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}"/><path d="M${x-r*.86} ${y-r*.28}q${r*.86} ${-r*.54} ${r*1.72} ${r*.07}M${x-r*.93} ${y+r*.18}q${r*.93} ${-r*.6} ${r*1.86} 0M${x-r*.64} ${y+r*.71}q${r*.68} ${-r*.46} ${r*1.36} ${-r*.21}M${x-r*.21} ${y-r*.96}q${r*.57} ${r*.93} ${-r*.07} ${r*1.93}" fill="none" stroke="${l}" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>`;
+  return `<svg viewBox="0 0 200 200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="184" rx="82" ry="8" fill="#000" opacity=".12"/>` +
+    `<path d="M100 122 L146 34" stroke="#c9a76a" stroke-width="4.5" stroke-linecap="round"/><circle cx="146" cy="34" r="6" fill="#8f525a"/><path d="M114 124 L168 52" stroke="#c9a76a" stroke-width="4.5" stroke-linecap="round"/><circle cx="168" cy="52" r="6" fill="#8f525a"/>` +
+    ball(72, 112, 28, c[0], c[1]) + ball(124, 108, 30, c[2], c[3]) + ball(150, 124, 15, c[4], c[0]) +
+    `<path d="M34 126 H168 L156 176 Q154 181 148 181 H54 Q48 181 46 176Z" fill="#d9b88e" stroke="#9a7b43" stroke-width="2"/><path d="M42 142 H160 M45 158 H156 M70 128 L68 180 M100 128 V180 M130 128 L132 180" stroke="#9a7b43" stroke-width="1.6" opacity=".55"/><rect x="28" y="118" width="146" height="13" rx="6.5" fill="#c9a76a" stroke="#9a7b43" stroke-width="2"/></svg>`;
+}
+const kArt = (k, alt) => kImg(k) ? `<img src="${esc(kImg(k))}" alt="${esc(alt || "")}" loading="lazy">` : basket(kPal(k));
+function seatsHTML(k){
+  const left = kLeft(k), n = parseInt(toLatin(k.seats == null ? "" : k.seats), 10), seats = isFinite(n) && n > 0 ? n : 0;
+  if (left === null) return "";
+  const taken = seats ? Math.max(0, seats - left) : 0;
+  const dots = seats && seats <= 24 ? `<span class="dots" aria-hidden="true">${Array.from({length:seats}, (_, i) => `<i class="${i < taken ? "" : "o"}"></i>`).join("")}</span>` : "";
+  return `<div class="kseats${left <= 2 ? " low" : ""}">${dots}<span>${esc(left === 0 ? t("k_full_txt") : kLeftText(k))}</span></div>`;
+}
+const newsHref = () => String(CONFIG.whatsapp || "").replace(/\D/g, "") ? waUrl("Hi Anne, please tell me when new blanket classes are announced.") : igDm();
+/* a class on the shelf: drawn like the other cards, with its date on a little calendar */
+function kCardHTML(k){
+  const href = hrefOf(k), n = kLeft(k), full = n === 0, price = +k.price || 0, meta = [kTime(k), L(k,"length")].filter(Boolean).join(" · ");
+  const action = `<button class="add" type="button" data-book="${esc(k.id)}">${esc(t(full ? "k_wait_short" : "k_book"))}</button>`;
+  return `<article class="card kcard sz">
+    <a class="art" href="${href}" aria-label="${esc(L(k,"title"))}" style="background:color-mix(in srgb, ${kPal(k)[0]} 18%, var(--paper))">${kArt(k, L(k,"title"))}${kTile(k)}</a>
+    <div class="info"><span class="size">${esc(L(k,"level"))}</span><h3><a href="${href}">${esc(L(k,"title"))}</a></h3><p class="notes">${esc(L(k,"about"))}</p>
+      <p class="made">${CLOCK_MINI}<span><span class="vh">${esc(fmtDay(kDate(k), {weekday:"long", day:"numeric", month:"long"}))}, </span>${esc(meta)}</span></p>${n === null ? "" : `<p class="kleft${full ? " full" : n <= 2 ? " low" : ""}">${esc(kLeftText(k))}</p>`}
+      <div class="buy"><span class="price"><span class="amt">${esc(price ? fmt(price) : t("k_free"))}</span>${price ? `<small>${esc(t("k_each"))}</small>` : ""}</span>${action}</div></div></article>`;
+}
+/* reserving a seat: a short form that becomes a message to Anne. Classes never go in the cart. */
+const WA_ICO = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 5h16v11H10l-6 4z"/><path d="M8.5 10.5h7"/></svg>`;
+const IG_ICO = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor"/></svg>`;
+let bk = null;
+const bkMax = () => bk.wait ? 10 : Math.max(1, kMax(bk.k));
+function bookText(){
+  const k = bk.k, price = +k.price || 0;
+  const out = [bk.wait ? "Class waiting list - Anne Shop" : "Class reservation - Anne Shop", "", "Class: " + (k.title || k.title_ar || ""), "When: " + kWhenEn(k), (bk.wait ? "Seats wanted: " : "Seats: ") + bk.qty];
+  if (!bk.wait && price) out.push("Price: " + fmtEn(price) + " each, " + fmtEn(price * bk.qty) + " total");
+  out.push("", "Name: " + bk.name.trim(), "Phone: " + toLatin(bk.phone.trim()));
+  return out.join("\n");
+}
+function bkQty(){
+  $("bQty").textContent = N(bk.qty);
+  const q = $("bBody").querySelectorAll(".qty button"); q[0].disabled = bk.qty <= 1; q[1].disabled = bk.qty >= bkMax();
+  if ($("bTot")) $("bTot").textContent = fmt((+bk.k.price || 0) * bk.qty);
+}
+function bkOut(){
+  const txt = bookText(), wa = String(CONFIG.whatsapp || "").replace(/\D/g, "");
+  $("bOut").hidden = false; $("bSum").textContent = txt;
+  $("bLinks").innerHTML = (wa ? `<a class="btn wa" target="_blank" rel="noopener" href="${esc(waUrl(txt))}">${WA_ICO} ${esc(t("b_wa_send"))}</a>` : "") +
+    `<a class="btn wa ig igdm" data-src="bSum" data-hint="bHint" target="_blank" rel="noopener" href="${esc(igDm())}">${IG_ICO} ${esc(t("b_ig_send"))}</a><button class="btn ghost" type="button" id="bCopy">${esc(t("copy"))}</button>`;
+  $("bFine").textContent = t(wa ? "b_fine_wa" : "b_fine_ig");
+}
+function renderBook(){
+  const k = bk.k, price = +k.price || 0, len = L(k, "length"), place = L(k, "place");
+  $("bTitle").textContent = t(bk.wait ? "b_wait_title" : "b_title");
+  $("bBody").innerHTML = `<div class="bk">
+    <div class="bk-k">${kTile(k)}<span><b>${esc(L(k, "title"))}</b><small>${esc(kWhen(k))}${len ? " · " + esc(len) : ""}</small>${place ? `<small>${esc(place)}</small>` : ""}</span></div>
+    ${bk.wait ? `<p class="fine">${esc(t("b_wait_intro"))}</p>` : ""}
+    <div class="grp"><h3 id="bSeatsH">${esc(t("b_seats"))}</h3><div class="qty" role="group" aria-labelledby="bSeatsH"><button type="button" data-d="-1" aria-label="${esc(t("qty_minus"))}">−</button><span id="bQty"></span><button type="button" data-d="1" aria-label="${esc(t("qty_plus"))}">+</button></div></div>
+    ${!bk.wait && price ? `<div class="bk-tot"><span>${esc(t("total"))}</span><span id="bTot"></span></div>` : ""}
+    <label class="fld" for="bName">${esc(t("f_name"))}<input id="bName" autocomplete="name"></label>
+    <label class="fld" for="bPhone">${esc(t("f_phone"))}<input id="bPhone" inputmode="tel" autocomplete="tel"></label>
+    <p class="fine err" id="bErr" hidden>${esc(t("f_err"))}</p>
+    <button class="btn" type="button" id="bGo">${esc(t("b_prepare"))}</button>
+    <div id="bOut" hidden><pre class="sum" id="bSum"></pre><p class="ighint" id="bHint" hidden></p><div class="bk-links" id="bLinks"></div><p class="fine" id="bFine"></p></div>
+    ${bk.wait ? "" : `<p class="fine">${esc(t("b_note"))}</p>`}
+  </div>`;
+  $("bName").value = bk.name; $("bPhone").value = bk.phone; bkQty();
+  if (bk.built) bkOut();
+}
+function openBook(id){
+  const k = kById(id); if (!k || !kOpen(k)) return;
+  bk = {k:k, qty:1, wait:kLeft(k) === 0, name:savedName() || form.name, phone:form.phone, built:false};
+  renderBook(); $("book").hidden = false; $("detail").inert = true;
+  layer("book", true, $("bClose")); track((bk.wait ? "class/wait/" : "class/reserve/") + k.id, k.title);
+}
+function closeBook(){
+  if ($("book").hidden) return;
+  $("book").hidden = true; $("detail").inert = false; layer("book", false); bk = null;
+}
 function renderLearn(){
   const list = upcoming().slice(0, 2);
-  $("kNext").innerHTML = list.length ? list.map(k => `<li><a href="classes#k-${encodeURIComponent(k.id)}">${kTile(k)}<span class="kt"><b>${esc(L(k,"title"))}</b><small>${esc([kTime(k), L(k,"length")].filter(Boolean).join(" · "))}</small>${kLeftText(k) ? `<small class="kleft${kLeft(k) === 0 ? " full" : ""}">${esc(kLeftText(k))}</small>` : ""}</span></a></li>`).join("")
+  $("kNext").innerHTML = list.length ? list.map(k => `<li><a href="${hrefOf(k)}">${kTile(k)}<span class="kt"><b>${esc(L(k,"title"))}</b><small>${esc([kTime(k), L(k,"length")].filter(Boolean).join(" · "))}</small>${kLeftText(k) ? `<small class="kleft${kLeft(k) === 0 ? " full" : ""}">${esc(kLeftText(k))}</small>` : ""}</span></a></li>`).join("")
     : `<li class="knone">${esc(t("k_soon"))}</li>`;
 }
 
@@ -1301,10 +1455,20 @@ function renderLearn(){
 function updateFab(){
   const f = $("waFab");
   if (!String(CONFIG.whatsapp || "").replace(/\D/g, "")) { f.hidden = true; return; }
-  const msg = detailState ? "Hi Anne, I have a question about " + detailState.p.name + "." : "Hi Anne, I have a question.";
-  f.classList.toggle("up", !!detailState && !detailState.p.soldOut);
+  const msg = detailState ? "Hi Anne, I have a question about " + (detailState.cls ? "the " + detailState.p.title + " class" : detailState.p.name) + "." : "Hi Anne, I have a question.";
   f.href = waUrl(msg); f.setAttribute("aria-label", t("wa_chat")); $("fabText").textContent = t("wa_short"); f.hidden = false;
+  placeFab();
 }
+/* on a product or class page the chat button steps up whenever the buy bar would sit under it
+   (on phones that bar sticks to the bottom, or sits just above it on short pages) */
+function placeFab(){
+  const f = $("waFab"), row = detailState && !f.hidden ? document.querySelector("#detailBody .buyrow") : null;
+  if (!row) { f.style.bottom = ""; return; }
+  const r = row.getBoundingClientRect(), a = f.getBoundingClientRect(), gap = 12, low = innerHeight - 18 - a.height;
+  const hit = r.top < innerHeight && r.bottom > low - gap && r.left < a.right && r.right > a.left;
+  f.style.bottom = hit ? Math.round(innerHeight - r.top + gap) + "px" : "";
+}
+$("detail").addEventListener("scroll", placeFab, {passive:true}); addEventListener("resize", placeFab);
 function renderAll(){ renderAnn(); renderFeatured(); renderShelves(); renderChips(); renderGrid(); renderLearn(); renderGalleries(); renderCart(); updateFab(); renderWelcome(); }
 
 /* ===================== Cart ===================== */
@@ -1431,16 +1595,16 @@ $("openCart").addEventListener("click", openCart); $("closeCart").addEventListen
 
 /* ===================== Product page ===================== */
 let tapAt = null;
-document.addEventListener("click", e => { const a = e.target.closest && e.target.closest('a[href^="#candle-"],a[href^="#blanket-"],a[href^="#dress-"]'); if (a) { const r = a.getBoundingClientRect(); tapAt = {x:r.left + r.width / 2, y:r.top + r.height / 2, t:Date.now()}; } }, true);
+document.addEventListener("click", e => { const a = e.target.closest && e.target.closest('a[href^="#candle-"],a[href^="#blanket-"],a[href^="#dress-"],a[href^="#class-"]'); if (a) { const r = a.getBoundingClientRect(); tapAt = {x:r.left + r.width / 2, y:r.top + r.height / 2, t:Date.now()}; } }, true);
 function openDetail(p){
-  detailState = {p:p, sel:groups(p).map(() => 0), qty:1, note:""};
+  detailState = {p:p, sel:groups(p).map(() => 0), qty:1, note:"", cls:isK(p)};
   const d = $("detail"); clearTimeout(closeDetail.t); d.classList.remove("closing");
   if (tapAt && Date.now() - tapAt.t < 1500) { d.style.setProperty("--ox", Math.round(tapAt.x) + "px"); d.style.setProperty("--oy", Math.round(tapAt.y) + "px"); }
   else { d.style.removeProperty("--ox"); d.style.removeProperty("--oy"); }
   tapAt = null;
   d.hidden = false; document.body.style.overflow = "hidden";
-  renderDetail(); $("detail").scrollTop = 0; updateFab(); layer("detail", true, $("dBack"));
-  track("candle/" + p.id, p.name);
+  renderDetail(); $("detail").scrollTop = 0; updateFab(); layer("detail", true, $("dBack")); setTimeout(placeFab, 420);   /* again once the page has finished opening */
+  if (isK(p)) track("class/" + p.id, p.title); else track("candle/" + p.id, p.name);
 }
 function closeDetail(){
   const d = $("detail");
@@ -1451,7 +1615,30 @@ function closeDetail(){
     closeDetail.t = setTimeout(() => { d.hidden = true; d.classList.remove("closing"); }, 380);
   } else d.hidden = true;
 }
+/* a class's own page: date, seats left, what's included, and Reserve a seat (no cart) */
+function renderClassDetail(){
+  const st = detailState, k = st.p, price = +k.price || 0, full = kLeft(k) === 0, priceTxt = price ? fmt(price) : t("k_free");
+  $("detail").setAttribute("aria-label", L(k,"title")); document.title = L(k,"title") + " | Anne Shop";
+  const facts = [["k_when", kWhen(k)], ["k_len", L(k,"length")], ["k_where", L(k,"place")], ["k_inc_h", L(k,"includes")], ["k_level", L(k,"level")]].filter(f => f[1]);
+  $("detailBody").innerHTML = `<div class="dgrid">
+    <div><div class="dmain" style="background:color-mix(in srgb, ${kPal(k)[0]} 18%, var(--paper))">${kArt(k, L(k,"title"))}${kTile(k)}</div></div>
+    <div class="dinfo">
+      <p class="eyebrow">${esc(full ? t("k_full") : (L(k,"level") || t("shelf_k")))}</p>
+      <h2>${esc(L(k,"title"))}</h2><span class="size">${esc(kWhen(k))}</span>
+      <div class="dprice" id="dPrice">${esc(priceTxt)}${price ? `<small>${esc(t("k_each"))}</small>` : ""}</div>
+      ${L(k,"about") ? `<p class="lead">${esc(L(k,"about"))}</p>` : ""}
+      ${seatsHTML(k)}
+      <div class="buyrow"><span class="bprice">${esc(priceTxt)}</span>
+        <button class="btn" type="button" data-act="book">${esc(t(full ? "k_wait" : "k_book"))}</button></div>
+      <div class="share"><span class="fine">${esc(t("share"))}</span>
+        <a class="btn ghost sm" data-act="sharewa" target="_blank" rel="noopener" href="${esc(shareWa(k))}">${esc(t("share_wa"))}</a>
+        <button class="btn ghost sm" type="button" data-act="copylink">${esc(t("copy_link"))}</button></div>
+      <div class="facts">${facts.map(f => `<div><h3>${esc(t(f[0]))}</h3><p>${esc(f[1])}</p></div>`).join("")}</div>
+      <p class="kpriv"><a href="classes#private">${esc(t("k_priv_q"))}</a></p>
+    </div></div>`;
+}
 function renderDetail(){
+  if (detailState.cls) { renderClassDetail(); return; }
   const st = detailState, p = st.p, G = groups(p), im = imgs(p);
   const main = im.length ? `<div class="slides" id="dSlides">${im.map(s => `<img src="${esc(s)}" alt="${esc(L(p,"name"))}" loading="lazy" draggable="false" data-pid="${esc(p.id)}">`).join("")}</div>` : artSvg(p);
   const thumbs = im.length > 1 ? `<div class="thumbs">${im.map((s,i) => `<button class="tb" type="button" data-act="img" data-i="${i}" aria-pressed="${i===0}"><img src="${esc(s)}" alt=""></button>`).join("")}</div>` : "";
@@ -1489,7 +1676,7 @@ function renderDetail(){
     </div></div>`;
 }
 const shareUrl = p => location.origin + location.pathname + hrefOf(p);
-const shareWa = p => "https://wa.me/?text=" + encodeURIComponent(L(p, "name") + " - Anne Shop\n" + shareUrl(p));
+const shareWa = p => "https://wa.me/?text=" + encodeURIComponent(nameOf(p) + " - Anne Shop\n" + shareUrl(p));
 function copyPlain(text){
   (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => toast(t("link_copied"))).catch(() => {
     const ta = document.createElement("textarea"); ta.value = text; ta.style.cssText = "position:fixed;opacity:0"; document.body.appendChild(ta); ta.select();
@@ -1513,6 +1700,7 @@ $("detailBody").addEventListener("click", e => {
   else if (a === "opt") { st.sel[+b.dataset.g] = +b.dataset.c; b.parentNode.querySelectorAll(".opt").forEach(x => x.setAttribute("aria-pressed", String(x === b))); $("dPrice").textContent = fmt(unit(st.p, st.sel)); if ($("dPrice2")) $("dPrice2").textContent = $("dPrice").textContent; }
   else if (a === "q") { st.qty = Math.max(1, Math.min(99, st.qty + +b.dataset.d)); $("dQty").textContent = N(st.qty); }
   else if (a === "add") addLine(st.p.id, st.sel.slice(), st.note.trim(), st.qty);
+  else if (a === "book") openBook(st.p.id);
 });
 $("detailBody").addEventListener("input", e => {
   if (!detailState) return;
@@ -1527,8 +1715,12 @@ $("detailBody").addEventListener("scroll", e => {
 $("dBack").addEventListener("click", () => { location.hash = "shop"; route(); });
 function route(){
   const h = location.hash;
-  const go = {"#candles":"candle", "#blankets":"blanket", "#dresses":"dress"}[h];
+  const go = {"#candles":"candle", "#blankets":"blanket", "#dresses":"dress", "#classes":"class"}[h];
   if (go) { closeDetail(); setShelf(go); requestAnimationFrame(() => $("shop").scrollIntoView()); return; }
+  const mk = /^#class-(.+)$/.exec(h);
+  if (mk) { let id = mk[1]; try { id = decodeURIComponent(id); } catch(e) {} const k = kById(id);
+    if (k && kOpen(k)) { setShelf("class"); if (!detailState || detailState.p !== k) openDetail(k); return; }
+    if (CLASSES.length) { closeDetail(); setShelf("class"); toast(t("k_gone")); requestAnimationFrame(() => $("shop").scrollIntoView()); return; } }
   const m = /^#(?:candle|blanket|dress)-(.+)$/.exec(h);
   if (m) { let id = m[1]; try { id = decodeURIComponent(id); } catch(e) {} const p = byId(id); if (p) { setShelf(lineOf(p)); if (!detailState || detailState.p !== p) openDetail(p); return; } if (PRODUCTS.length) toast(t("not_found")); }
   closeDetail();
@@ -1589,17 +1781,36 @@ $("cGo").addEventListener("click", () => {
 $("cLinks").addEventListener("click", e => { if (e.target.id === "cCopy") copyText(customText(), $("cSum")); });
 
 /* ===================== Wiring ===================== */
-$("grid").addEventListener("click", e => { const b = e.target.closest("[data-add]"); if (b) addLine(b.dataset.add, [], "", 1); });
+$("grid").addEventListener("click", e => { const b = e.target.closest("[data-add]"); if (b) addLine(b.dataset.add, [], "", 1); const k = e.target.closest("[data-book]"); if (k) openBook(k.dataset.book); });
 $("shelves").addEventListener("click", e => { const b = e.target.closest("[data-shelf]"); if (b) { setShelf(b.dataset.shelf); track("shelf/" + shelf, "Shelf"); } });
 $("chips").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (!b) return; filter = b.dataset.c; renderChips(); renderGrid(); });
 $("search").addEventListener("input", e => { q = e.target.value; renderGrid(); });
 $("sort").addEventListener("change", e => { sort = e.target.value; renderGrid(); });
 $("langBtn").addEventListener("click", () => setLang(lang === "ar" ? "en" : "ar"));
 $("annX").addEventListener("click", () => { try { sessionStorage.setItem("anneshop-ann", (lang === "ar" && CONFIG.announcement.text_ar) ? CONFIG.announcement.text_ar : CONFIG.announcement.text); } catch(e) {} $("annBar").hidden = true; });
+$("bClose").addEventListener("click", closeBook);
+$("book").addEventListener("click", e => { if (e.target === $("book")) closeBook(); });
+$("bBody").addEventListener("click", e => {
+  if (!bk) return;
+  const d = e.target.closest("[data-d]");
+  if (d) { bk.qty = Math.max(1, Math.min(bkMax(), bk.qty + +d.dataset.d)); bkQty(); if (bk.built) bkOut(); return; }
+  if (e.target.id === "bGo") {
+    const bad = !bk.name.trim() || digits(bk.phone).length < 7;
+    $("bErr").hidden = !bad; if (bad) return;
+    rememberName(bk.name); bk.built = true; $("bHint").hidden = true; bkOut();
+    $("bOut").scrollIntoView({behavior:"smooth", block:"nearest"}); return;
+  }
+  if (e.target.id === "bCopy") { copyText(bookText(), $("bSum")); track("class/copy", bk.k.title); }
+});
+$("bBody").addEventListener("input", e => {
+  if (!bk) return;
+  if (e.target.id === "bName") bk.name = e.target.value; else if (e.target.id === "bPhone") bk.phone = e.target.value; else return;
+  if (bk.built) bkOut();
+});
 document.addEventListener("keydown", e => {
   if (!$("lb").hidden) { if (e.key === "Escape") lbClose(); else if (e.key === "ArrowRight") lbStep(lang === "ar" ? -1 : 1); else if (e.key === "ArrowLeft") lbStep(lang === "ar" ? 1 : -1); return; }
   if (e.key !== "Escape") return;
-  if (!$("quiz").hidden) closeQuiz(); else if ($("drawer").classList.contains("on")) closeCart(); else if (detailState) { location.hash = "shop"; route(); }
+  if (!$("book").hidden) closeBook(); else if (!$("quiz").hidden) closeQuiz(); else if ($("drawer").classList.contains("on")) closeCart(); else if (detailState) { location.hash = "shop"; route(); }
 });
 
 /* ===================== Load products.json (edited from /admin) ===================== */

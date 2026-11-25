@@ -814,7 +814,7 @@ en:{
  k_pr1:"Small, friendly groups", k_pr2:"Learn at your own pace", k_pr3:"Booked and confirmed by message",
  k_up_eyebrow:"pick a date", k_up:"Upcoming classes", k_loading:"Loading classes...", k_load_err:"We couldn't load the classes. Please refresh the page.",
  k_none:"New class dates are coming soon. Send Anne a message and she will tell you when the next one is announced.", k_notify:"Tell me about new dates",
- k_full:"Full", k_full_txt:"This class is full", k_left:"{n} seats left", k_left1:"Only 1 seat left", k_book:"Book a seat", k_wait:"Join the waiting list", k_each:"per person", k_free:"Free", k_inc:"Included:",
+ k_full:"Full", k_full_txt:"This class is full", k_left:"{n} seats left", k_left1:"Only 1 seat left", k_book:"Reserve a seat", k_wait:"Join the waiting list", k_each:"per person", k_free:"Free", k_inc:"Included:",
  k_how_eyebrow:"simple and personal", k_how:"How booking works",
  k_s1h:"Choose a class", k_s1p:"Pick a date, choose how many seats, and send your booking to Anne on WhatsApp or Instagram.",
  k_s2h:"Anne confirms", k_s2p:"She replies to confirm your seat, the address and how to pay.",
@@ -825,8 +825,8 @@ en:{
  p_qty:"How many people?", p_date:"Preferred date", p_ideas:"What would you like to make? Any questions?",
  f_name:"Your name", f_phone:"Phone number", f_err:"Please add your name and phone number.",
  c_prepare:"Prepare my request", c_sum_title:"Your request",
- b_title:"Book a seat", b_wait_title:"Join the waiting list", b_seats:"How many seats?", b_wait_intro:"This class is full. Join the waiting list and Anne will message you if a seat opens up.",
- b_prepare:"Prepare my booking", b_prepare_wait:"Prepare my message", total:"Total", qty_minus:"One less", qty_plus:"One more",
+ b_title:"Reserve a seat", b_wait_title:"Join the waiting list", b_seats:"How many seats?", b_wait_intro:"This class is full. Join the waiting list and Anne will message you if a seat opens up.",
+ b_prepare:"Prepare my message", b_prepare_wait:"Prepare my message", total:"Total", qty_minus:"One less", qty_plus:"One more",
  wa_send:"Send on WhatsApp", ig_send:"Send on Instagram", copy:"Copy", copied:"Copied", select_copy:"Press copy on the selected text", close:"Close",
  ig_hint:"✓ Your message is copied. In the Instagram chat, press and hold the message box, tap Paste, then send.", ig_fail:"Couldn't copy automatically. Your message is selected above: copy it, then paste it in the Instagram chat.",
  fine_wa:"WhatsApp opens with your message already written. Instagram can't do that, so your message is copied: paste it in the chat and send.", fine_ig:"Instagram can't fill in messages, so your message is copied: paste it in the chat and send.",
@@ -853,7 +853,7 @@ ar:{
  f_name:"اسمك", f_phone:"رقم الهاتف", f_err:"الرجاء إضافة اسمك ورقم هاتفك.",
  c_prepare:"جهّز طلبي", c_sum_title:"طلبك",
  b_title:"احجز مقعدًا", b_wait_title:"انضم إلى قائمة الانتظار", b_seats:"كم مقعدًا تريد؟", b_wait_intro:"هذه الورشة مكتملة. انضم إلى قائمة الانتظار وسترسل لك آن إذا توفر مقعد.",
- b_prepare:"جهّز حجزي", b_prepare_wait:"جهّز رسالتي", total:"المجموع", qty_minus:"أنقص واحدًا", qty_plus:"أضف واحدًا",
+ b_prepare:"جهّز رسالتي", b_prepare_wait:"جهّز رسالتي", total:"المجموع", qty_minus:"أنقص واحدًا", qty_plus:"أضف واحدًا",
  wa_send:"أرسل عبر واتساب", ig_send:"أرسل عبر إنستغرام", copy:"نسخ", copied:"تم النسخ", select_copy:"اضغط نسخ على النص المحدد", close:"إغلاق",
  ig_hint:"✓ تم نسخ رسالتك. في محادثة إنستغرام، اضغط مطولًا على خانة الرسالة، ثم اختر لصق، ثم أرسل.", ig_fail:"تعذر النسخ تلقائيًا. رسالتك محددة أعلاه: انسخها ثم الصقها في محادثة إنستغرام.",
  fine_wa:"يفتح واتساب والرسالة مكتوبة جاهزة. إنستغرام لا يسمح بذلك، لذا يتم نسخ رسالتك: الصقها في المحادثة وأرسل.", fine_ig:"إنستغرام لا يسمح بكتابة الرسالة تلقائيًا، لذا يتم نسخ رسالتك: الصقها في المحادثة وأرسل.",
@@ -968,7 +968,7 @@ let bk = null;
 function maxSeats(){ const l = kLeft(bk.k); return bk.wait || l === null ? 10 : Math.max(1, l); }
 function bookText(){
   const k = bk.k, price = +k.price || 0;
-  const out = [bk.wait ? "Class waiting list - Anne Shop" : "Class booking - Anne Shop", "", "Class: " + (k.title || k.title_ar || ""), "When: " + kWhenEn(k), (bk.wait ? "Seats wanted: " : "Seats: ") + bk.qty];
+  const out = [bk.wait ? "Class waiting list - Anne Shop" : "Class reservation - Anne Shop", "", "Class: " + (k.title || k.title_ar || ""), "When: " + kWhenEn(k), (bk.wait ? "Seats wanted: " : "Seats: ") + bk.qty];
   if (!bk.wait && price) out.push("Price: " + fmtEn(price) + " each, " + fmtEn(price * bk.qty) + " total");
   out.push("", "Name: " + bk.name.trim(), "Phone: " + toLatin(bk.phone.trim()));
   return out.join("\n");
